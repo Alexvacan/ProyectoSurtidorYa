@@ -1,15 +1,19 @@
-import sumar from "./sumador";
+import { Conductor } from './Conductor.js';
 
-const first = document.querySelector("#primer-numero");
-const second = document.querySelector("#segundo-numero");
-const form = document.querySelector("#sumar-form");
-const div = document.querySelector("#resultado-div");
+export class Presenter {
+  constructor() {
+    this.conductor = new Conductor();
+  }
 
-form.addEventListener("submit", (event) => {
-  event.preventDefault();
+  mostrarSurtidores() {
+    const surtidores = this.conductor.listaSurtidores();
+    const lista = document.getElementById('lista-surtidores');
+    lista.innerHTML = '';
 
-  const firstNumber = Number.parseInt(first.value);
-  const secondNumber = Number.parseInt(second.value);
-
-  div.innerHTML = "<p>" + sumar(firstNumber, secondNumber) + "</p>";
-});
+    surtidores.forEach(s => {
+      const item = document.createElement('li');
+      item.textContent = `${s.nombre} - ${s.estado} - Autos en fila: ${s.fila}`;
+      lista.appendChild(item);
+    });
+  }
+}

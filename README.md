@@ -1,4 +1,4 @@
-#### Proyeto base para proyectos tddlab:
+#### Proyeto SurtidorYa
 
 #### Creado a partir de proyecto usado en IngSoftware: parcel-jest-base
 

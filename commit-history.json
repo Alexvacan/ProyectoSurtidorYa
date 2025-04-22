@@ -1,0 +1,19 @@
+[
+  {
+    "sha": "53355a1fa6a4455be757e05ee70683f5065f6822",
+    "author": "chenaoh",
+    "commit": {
+      "date": "2025-04-22T23:19:46.000Z",
+      "message": "Primer avance del proyecto SurtidorYa",
+      "url": "https://github.com/UCB-TallerDeDesarrollo/TDDLabBaseProject/commit/53355a1fa6a4455be757e05ee70683f5065f6822"
+    },
+    "stats": {
+      "total": 110,
+      "additions": 62,
+      "deletions": 48,
+      "date": "2025-04-22"
+    },
+    "coverage": 0,
+    "test_count": 1
+  }
+]

@@ -18,4 +18,26 @@ export class Presenter {
       lista.appendChild(item);
     });
   }
+
+  manejarFormulario() {
+    const form = document.getElementById('form-surtidor');
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault(); // 👈 Esto evita recargar
+
+      const nombre = form.querySelector('#nombre').value.trim();
+      const estado = form.querySelector('#estado').value;
+      const fila = form.querySelector('#fila').value;
+
+      // Validamos que no estén vacíos
+      if (!nombre || !fila) {
+        alert('Por favor, completa todos los campos.');
+        return;
+      }
+
+      this.conductor.agregarSurtidor(nombre, estado, fila);
+      this.mostrarSurtidores();
+      form.reset(); // limpia el formulario
+    });
+  }
 }

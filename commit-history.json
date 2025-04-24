@@ -32,5 +32,22 @@
     },
     "coverage": 0,
     "test_count": 1
+  },
+  {
+    "sha": "cb267886c301b2bd03570e079d476e0c68948ce9",
+    "author": "chenaoh",
+    "commit": {
+      "date": "2025-04-24T07:18:18.000Z",
+      "message": "Agregar lista de surtidores",
+      "url": "https://github.com/Alexvacan/ProyectoSurtidorYa/commit/cb267886c301b2bd03570e079d476e0c68948ce9"
+    },
+    "stats": {
+      "total": 46,
+      "additions": 44,
+      "deletions": 2,
+      "date": "2025-04-24"
+    },
+    "coverage": 0,
+    "test_count": 1
   }
 ]

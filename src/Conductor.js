@@ -15,7 +15,11 @@ export class Conductor {
     }
   
     agregarSurtidor(nombre, estado, fila) {
-      this.surtidores.push({ nombre, estado, fila: parseInt(fila) });
+      this.surtidores.push({
+        nombre: nombre.trim(),
+        estado: estado.trim(),
+        fila: parseInt(fila)
+      });
       this.guardarEnLocalStorage();
     }
   

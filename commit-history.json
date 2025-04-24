@@ -66,5 +66,22 @@
     },
     "coverage": 0,
     "test_count": 0
+  },
+  {
+    "sha": "7ec655ad081b0a72caccb2a66be8c8874c04f9b4",
+    "author": "chenaoh",
+    "commit": {
+      "date": "2025-04-24T07:53:20.000Z",
+      "message": "Mostrar surtidores con y sin gasolina",
+      "url": "https://github.com/Alexvacan/ProyectoSurtidorYa/commit/7ec655ad081b0a72caccb2a66be8c8874c04f9b4"
+    },
+    "stats": {
+      "total": 50,
+      "additions": 41,
+      "deletions": 9,
+      "date": "2025-04-24"
+    },
+    "coverage": 0,
+    "test_count": 0
   }
 ]

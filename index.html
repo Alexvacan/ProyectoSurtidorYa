@@ -6,7 +6,9 @@
   <title>Lista de Surtidores</title>
 </head>
 <body>
-  <h1>Surtidores disponibles</h1>
+  <h1 id="titulo">Surtidores disponibles</h1>
+
+  <button id="toggle-estado">Mostrar todos los surtidores</button>
 
   <form id="form-surtidor">
     <input type="text" id="nombre" placeholder="Nombre del surtidor" required />
@@ -26,6 +28,7 @@
     const presenter = new Presenter();
     presenter.mostrarSurtidores();
     presenter.manejarFormulario();
+    presenter.manejarToggle();
   </script>
 </body>
 </html>

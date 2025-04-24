@@ -4,9 +4,9 @@ export class Conductor {
       this.surtidores = guardados
         ? JSON.parse(guardados)
         : [
-            { nombre: 'Surtidor A', estado: 'Disponible', fila: 5 },
-            { nombre: 'Surtidor B', estado: 'Sin gasolina', fila: 0 },
-            { nombre: 'Surtidor C', estado: 'Disponible', fila: 2 }
+            { nombre: 'Surtidor A', estado: 'Disponible', fila: 5, zona: 'Cercado' },
+            { nombre: 'Surtidor B', estado: 'Sin gasolina', fila: 0, zona: 'Pacata' },
+            { nombre: 'Surtidor C', estado: 'Disponible', fila: 2, zona: 'Quillacollo' }
           ];
     }
   
@@ -14,11 +14,12 @@ export class Conductor {
       return this.surtidores;
     }
   
-    agregarSurtidor(nombre, estado, fila) {
+    agregarSurtidor(nombre, estado, fila, zona) {
       this.surtidores.push({
-        nombre: nombre.trim(),
+        nombre,
         estado: estado.trim(),
-        fila: parseInt(fila)
+        fila: parseInt(fila),
+        zona
       });
       this.guardarEnLocalStorage();
     }

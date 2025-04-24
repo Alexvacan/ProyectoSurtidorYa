@@ -100,5 +100,22 @@
     },
     "coverage": 0,
     "test_count": 2
+  },
+  {
+    "sha": "a5f086213438949c452d303d75c3b8cfeaddff6f",
+    "author": "chenaoh",
+    "commit": {
+      "date": "2025-04-24T14:25:06.000Z",
+      "message": "Filtrar por zona",
+      "url": "https://github.com/Alexvacan/ProyectoSurtidorYa/commit/a5f086213438949c452d303d75c3b8cfeaddff6f"
+    },
+    "stats": {
+      "total": 119,
+      "additions": 86,
+      "deletions": 33,
+      "date": "2025-04-24"
+    },
+    "coverage": 0,
+    "test_count": 4
   }
 ]

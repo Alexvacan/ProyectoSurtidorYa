@@ -6,7 +6,7 @@
   <title>Lista de Surtidores</title>
 </head>
 <body>
-  <h1 id="titulo">Surtidores disponibles</h1>
+  <h1>Surtidores</h1>
 
   <button id="toggle-estado">Mostrar todos los surtidores</button>
 
@@ -17,8 +17,25 @@
       <option value="Sin gasolina">Sin gasolina</option>
     </select>
     <input type="number" id="fila" placeholder="Autos en fila" required min="0" />
+    <select id="zona" required>
+      <option value="">Seleccionar zona</option>
+      <option value="Cercado">Cercado</option>
+      <option value="Pacata">Pacata</option>
+      <option value="Quillacollo">Quillacollo</option>
+      <option value="Tiquipaya">Tiquipaya</option>
+    </select>
     <button type="submit">Agregar surtidor</button>
   </form>
+  
+  <label for="filtro-zona">Filtrar por zona:</label>
+  <select id="filtro-zona">
+    <option value="">Todas las zonas</option>
+    <option value="Cercado">Cercado</option>
+    <option value="Pacata">Pacata</option>
+    <option value="Quillacollo">Quillacollo</option>
+    <option value="Tiquipaya">Tiquipaya</option>
+  </select>
+  
 
   <ul id="lista-surtidores"></ul>
 
@@ -26,9 +43,7 @@
     import { Presenter } from './src/presenter.js';
 
     const presenter = new Presenter();
-    presenter.mostrarSurtidores();
-    presenter.manejarFormulario();
-    presenter.manejarToggle();
+    presenter.inicializar();
   </script>
 </body>
 </html>

@@ -4,32 +4,26 @@ export class Presenter {
   constructor() {
     this.conductor = new Conductor();
     this.mostrarTodos = false;
+    this.zonaSeleccionada = '';
   }
 
   mostrarSurtidores() {
-    const surtidores = this.conductor.listaSurtidores();
-    const filtrados = this.mostrarTodos
-      ? surtidores
-      : surtidores.filter(s => s.estado === 'Disponible');
+    let surtidores = this.conductor.listaSurtidores();
+
+    if (!this.mostrarTodos) {
+      surtidores = surtidores.filter(s => s.estado === 'Disponible');
+    }
+
+    if (this.zonaSeleccionada) {
+      surtidores = surtidores.filter(s => s.zona === this.zonaSeleccionada);
+    }
 
     const lista = document.getElementById('lista-surtidores');
     lista.innerHTML = '';
 
-    const titulo = document.getElementById('titulo');
-    titulo.textContent = this.mostrarTodos
-      ? 'Todos los surtidores'
-      : 'Surtidores disponibles';
-
-    if (filtrados.length === 0) {
+    surtidores.forEach(s => {
       const item = document.createElement('li');
-      item.textContent = 'No hay surtidores para mostrar.';
-      lista.appendChild(item);
-      return;
-    }
-
-    filtrados.forEach(s => {
-      const item = document.createElement('li');
-      item.textContent = `${s.nombre} - ${s.estado} - Autos en fila: ${s.fila}`;
+      item.textContent = `${s.nombre} - ${s.estado} - Autos en fila: ${s.fila} - Zona: ${s.zona}`;
       lista.appendChild(item);
     });
   }
@@ -41,15 +35,16 @@ export class Presenter {
       e.preventDefault();
 
       const nombre = form.querySelector('#nombre').value.trim();
-      const estado = form.querySelector('#estado').value.trim(); // aseguramos que no haya espacios
+      const estado = form.querySelector('#estado').value;
       const fila = form.querySelector('#fila').value;
+      const zona = form.querySelector('#zona').value;
 
-      if (!nombre || fila === '') {
+      if (!nombre || !fila || !zona) {
         alert('Por favor, completa todos los campos.');
         return;
       }
 
-      this.conductor.agregarSurtidor(nombre, estado, fila);
+      this.conductor.agregarSurtidor(nombre, estado, fila, zona);
       this.mostrarSurtidores();
       form.reset();
     });
@@ -64,5 +59,20 @@ export class Presenter {
         : 'Mostrar todos los surtidores';
       this.mostrarSurtidores();
     });
+  }
+
+  manejarFiltroZona() {
+    const select = document.getElementById('filtro-zona');
+    select.addEventListener('change', (e) => {
+      this.zonaSeleccionada = e.target.value;
+      this.mostrarSurtidores();
+    });
+  }
+
+  inicializar() {
+    this.mostrarSurtidores();
+    this.manejarFormulario();
+    this.manejarToggle();
+    this.manejarFiltroZona();
   }
 }

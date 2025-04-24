@@ -15,5 +15,22 @@
     },
     "coverage": 0,
     "test_count": 1
+  },
+  {
+    "sha": "a38c22ac86d24781a324317e98cf47afb0d0a51c",
+    "author": "chenaoh",
+    "commit": {
+      "date": "2025-04-24T02:42:01.000Z",
+      "message": "Filtrar por surtidores que tienen gasolina",
+      "url": "https://github.com/Alexvacan/ProyectoSurtidorYa/commit/a38c22ac86d24781a324317e98cf47afb0d0a51c"
+    },
+    "stats": {
+      "total": 4,
+      "additions": 3,
+      "deletions": 1,
+      "date": "2025-04-24"
+    },
+    "coverage": 0,
+    "test_count": 1
   }
 ]

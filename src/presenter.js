@@ -7,10 +7,12 @@ export class Presenter {
 
   mostrarSurtidores() {
     const surtidores = this.conductor.listaSurtidores();
+    const disponibles = surtidores.filter(s => s.estado === 'Disponible');
+
     const lista = document.getElementById('lista-surtidores');
     lista.innerHTML = '';
 
-    surtidores.forEach(s => {
+    disponibles.forEach(s => {
       const item = document.createElement('li');
       item.textContent = `${s.nombre} - ${s.estado} - Autos en fila: ${s.fila}`;
       lista.appendChild(item);

@@ -49,5 +49,22 @@
     },
     "coverage": 0,
     "test_count": 1
+  },
+  {
+    "sha": "5abe4799bfd049c5c53bbd6c084f9bb0b48d81d4",
+    "author": "chenaoh",
+    "commit": {
+      "date": "2025-04-24T07:33:31.000Z",
+      "message": "Guardar datos en local storage",
+      "url": "https://github.com/Alexvacan/ProyectoSurtidorYa/commit/5abe4799bfd049c5c53bbd6c084f9bb0b48d81d4"
+    },
+    "stats": {
+      "total": 18,
+      "additions": 13,
+      "deletions": 5,
+      "date": "2025-04-24"
+    },
+    "coverage": 0,
+    "test_count": 0
   }
 ]

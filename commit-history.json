@@ -151,5 +151,22 @@
     },
     "coverage": 0,
     "test_count": 6
+  },
+  {
+    "sha": "3f918aebd2247e45bc5754d404d2c6fb4c097dcb",
+    "author": "chenaoh",
+    "commit": {
+      "date": "2025-04-25T22:02:27.000Z",
+      "message": "Agregar funcion editar surtidores",
+      "url": "https://github.com/Alexvacan/ProyectoSurtidorYa/commit/3f918aebd2247e45bc5754d404d2c6fb4c097dcb"
+    },
+    "stats": {
+      "total": 63,
+      "additions": 61,
+      "deletions": 2,
+      "date": "2025-04-25"
+    },
+    "coverage": 0,
+    "test_count": 7
   }
 ]

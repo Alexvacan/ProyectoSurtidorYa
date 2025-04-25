@@ -70,6 +70,20 @@ describe('Conductor', () => {
         const resultado = conductor.listaSurtidores().filter(s => s.nombre === 'Temporal');
         expect(resultado.length).toBe(0);
       });
+
+      it('debería editar un surtidor existente', () => {
+        const conductor = new Conductor();
+      
+        conductor.agregarSurtidor('Estación X', 'Disponible', 2, 'Cercado');
+        conductor.editarSurtidor('Estación X', 'Estación Editada', 'Sin gasolina', 4, 'Pacata');
+      
+        const surtidor = conductor.listaSurtidores().find(s => s.nombre === 'Estación Editada');
+      
+        expect(surtidor).toBeDefined();
+        expect(surtidor.estado).toBe('Sin gasolina');
+        expect(surtidor.fila).toBe(4);
+        expect(surtidor.zona).toBe('Pacata');
+      });      
       
       
   });

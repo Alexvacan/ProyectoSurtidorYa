@@ -32,6 +32,17 @@ export class Conductor {
         this.surtidores = this.surtidores.filter(s => s.nombre !== nombre);
         localStorage.setItem('surtidores', JSON.stringify(this.surtidores));
       }
+
+      editarSurtidor(nombreOriginal, nuevoNombre, nuevoEstado, nuevaFila, nuevaZona) {
+        const surtidor = this.surtidores.find(s => s.nombre === nombreOriginal);
+        if (surtidor) {
+          surtidor.nombre = nuevoNombre;
+          surtidor.estado = nuevoEstado;
+          surtidor.fila = parseInt(nuevaFila);
+          surtidor.zona = nuevaZona;
+          localStorage.setItem('surtidores', JSON.stringify(this.surtidores));
+        }
+      }
       
   }
   

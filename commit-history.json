@@ -134,5 +134,22 @@
     },
     "coverage": 0,
     "test_count": 5
+  },
+  {
+    "sha": "898ce42a696a4875fc5c294830e8feafd78b7623",
+    "author": "chenaoh",
+    "commit": {
+      "date": "2025-04-25T03:54:29.000Z",
+      "message": "Eliminar Surtidores",
+      "url": "https://github.com/Alexvacan/ProyectoSurtidorYa/commit/898ce42a696a4875fc5c294830e8feafd78b7623"
+    },
+    "stats": {
+      "total": 41,
+      "additions": 34,
+      "deletions": 7,
+      "date": "2025-04-25"
+    },
+    "coverage": 0,
+    "test_count": 6
   }
 ]

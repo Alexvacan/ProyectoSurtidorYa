@@ -8,25 +8,37 @@ export class Presenter {
   }
 
   mostrarSurtidores() {
+    const lista = document.getElementById('lista-surtidores');
+    lista.innerHTML = '';
+  
     let surtidores = this.conductor.listaSurtidores();
-
+  
     if (!this.mostrarTodos) {
       surtidores = surtidores.filter(s => s.estado === 'Disponible');
     }
-
+  
     if (this.zonaSeleccionada) {
       surtidores = surtidores.filter(s => s.zona === this.zonaSeleccionada);
     }
-
-    const lista = document.getElementById('lista-surtidores');
-    lista.innerHTML = '';
-
+  
     surtidores.forEach(s => {
       const item = document.createElement('li');
-      item.textContent = `${s.nombre} - ${s.estado} - Autos en fila: ${s.fila} - Zona: ${s.zona}`;
+      item.textContent = `${s.nombre} - ${s.estado} - Autos en fila: ${s.fila} - Zona: ${s.zona} `;
+  
+      // botón eliminar
+      const btnEliminar = document.createElement('button');
+      btnEliminar.textContent = 'Eliminar';
+      btnEliminar.style.marginLeft = '10px';
+      btnEliminar.onclick = () => {
+        this.conductor.eliminarSurtidor(s.nombre);
+        this.mostrarSurtidores();
+      };
+  
+      item.appendChild(btnEliminar);
       lista.appendChild(item);
     });
   }
+  
 
   manejarFormulario() {
     const form = document.getElementById('form-surtidor');

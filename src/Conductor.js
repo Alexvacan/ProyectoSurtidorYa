@@ -27,5 +27,11 @@ export class Conductor {
     guardarEnLocalStorage() {
       localStorage.setItem('surtidores', JSON.stringify(this.surtidores));
     }
+
+    eliminarSurtidor(nombre) {
+        this.surtidores = this.surtidores.filter(s => s.nombre !== nombre);
+        localStorage.setItem('surtidores', JSON.stringify(this.surtidores));
+      }
+      
   }
   

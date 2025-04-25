@@ -62,6 +62,15 @@ describe('Conductor', () => {
         expect(resultado.length).toBeGreaterThan(0);
         expect(resultado[0].nombre).toContain('Especial');
       });
+
+      it('debería eliminar un surtidor por nombre', () => {
+        const conductor = new Conductor();
+        conductor.agregarSurtidor('Temporal', 'Disponible', 0, 'Cercado');
+        conductor.eliminarSurtidor('Temporal');
+        const resultado = conductor.listaSurtidores().filter(s => s.nombre === 'Temporal');
+        expect(resultado.length).toBe(0);
+      });
+      
       
   });
 });

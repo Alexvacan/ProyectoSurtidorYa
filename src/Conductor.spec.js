@@ -54,5 +54,14 @@ describe('Conductor', () => {
         expect(ultimo.fila).toBe(3);
         expect(ultimo.zona).toBe('Tiquipaya');
       });
+
+      it('debería filtrar surtidores por nombre', () => {
+        const conductor = new Conductor();
+        conductor.agregarSurtidor('Mi Surtidor Especial', 'Disponible', 1, 'Cercado');
+        const resultado = conductor.listaSurtidores().filter(s => s.nombre.includes('Especial'));
+        expect(resultado.length).toBeGreaterThan(0);
+        expect(resultado[0].nombre).toContain('Especial');
+      });
+      
   });
 });

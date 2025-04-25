@@ -117,5 +117,22 @@
     },
     "coverage": 0,
     "test_count": 4
+  },
+  {
+    "sha": "ce683017cc35f40ce64e909a1b624dd1077f7f5e",
+    "author": "chenaoh",
+    "commit": {
+      "date": "2025-04-25T03:09:29.000Z",
+      "message": "Buscar surtidor por nombre",
+      "url": "https://github.com/Alexvacan/ProyectoSurtidorYa/commit/ce683017cc35f40ce64e909a1b624dd1077f7f5e"
+    },
+    "stats": {
+      "total": 43,
+      "additions": 43,
+      "deletions": 0,
+      "date": "2025-04-25"
+    },
+    "coverage": 0,
+    "test_count": 5
   }
 ]

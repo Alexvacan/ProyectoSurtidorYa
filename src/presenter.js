@@ -69,10 +69,41 @@ export class Presenter {
     });
   }
 
+  manejarBusquedaNombre() {
+    const inputBusqueda = document.getElementById('busqueda-nombre');
+  
+    inputBusqueda.addEventListener('input', (e) => {
+      const texto = e.target.value.toLowerCase();
+      let surtidores = this.conductor.listaSurtidores();
+  
+      if (!this.mostrarTodos) {
+        surtidores = surtidores.filter(s => s.estado === 'Disponible');
+      }
+  
+      if (this.zonaSeleccionada) {
+        surtidores = surtidores.filter(s => s.zona === this.zonaSeleccionada);
+      }
+  
+      surtidores = surtidores.filter(s =>
+        s.nombre.toLowerCase().includes(texto)
+      );
+  
+      const lista = document.getElementById('lista-surtidores');
+      lista.innerHTML = '';
+  
+      surtidores.forEach(s => {
+        const item = document.createElement('li');
+        item.textContent = `${s.nombre} - ${s.estado} - Autos en fila: ${s.fila} - Zona: ${s.zona}`;
+        lista.appendChild(item);
+      });
+    });
+  }
+
   inicializar() {
     this.mostrarSurtidores();
     this.manejarFormulario();
     this.manejarToggle();
     this.manejarFiltroZona();
+    this.manejarBusquedaNombre();
   }
 }

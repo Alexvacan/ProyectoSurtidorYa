@@ -168,5 +168,22 @@
     },
     "coverage": 0,
     "test_count": 7
+  },
+  {
+    "sha": "6fed6df5d7d8b6685ece8da6db4e0459f9ab1177",
+    "author": "chenaoh",
+    "commit": {
+      "date": "2025-04-25T23:16:25.000Z",
+      "message": "Refactorizacion de la funcion editar",
+      "url": "https://github.com/Alexvacan/ProyectoSurtidorYa/commit/6fed6df5d7d8b6685ece8da6db4e0459f9ab1177"
+    },
+    "stats": {
+      "total": 26208,
+      "additions": 3553,
+      "deletions": 22655,
+      "date": "2025-04-25"
+    },
+    "coverage": 0,
+    "test_count": 7
   }
 ]

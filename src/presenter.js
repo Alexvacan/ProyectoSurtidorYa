@@ -5,32 +5,38 @@ export class Presenter {
     this.conductor = new Conductor();
     this.mostrarTodos = false;
     this.zonaSeleccionada = '';
+    this.nombreEditando = null;
+
+    this.modalEdicion = document.getElementById('modal-edicion');
+    this.editarNombre = document.getElementById('editar-nombre');
+    this.editarEstado = document.getElementById('editar-estado');
+    this.editarFila = document.getElementById('editar-fila');
+    this.editarZona = document.getElementById('editar-zona');
+    this.btnGuardarEdicion = document.getElementById('guardar-edicion');
   }
 
   mostrarSurtidores() {
     const lista = document.getElementById('lista-surtidores');
     lista.innerHTML = '';
-  
+
     let surtidores = this.conductor.listaSurtidores();
-  
+
     if (!this.mostrarTodos) {
       surtidores = surtidores.filter(s => s.estado === 'Disponible');
     }
-  
+
     if (this.zonaSeleccionada) {
       surtidores = surtidores.filter(s => s.zona === this.zonaSeleccionada);
     }
-  
+
     surtidores.forEach(s => {
       const item = document.createElement('li');
       item.textContent = `${s.nombre} - ${s.estado} - Autos en fila: ${s.fila} - Zona: ${s.zona}`;
-  
-      // Cambiar color si no hay gasolina
+
       if (s.estado === 'Sin gasolina') {
         item.style.color = 'red';
       }
-  
-      // Botón eliminar
+
       const btnEliminar = document.createElement('button');
       btnEliminar.textContent = 'Eliminar';
       btnEliminar.style.marginLeft = '10px';
@@ -38,41 +44,24 @@ export class Presenter {
         this.conductor.eliminarSurtidor(s.nombre);
         this.mostrarSurtidores();
       };
-  
-      // Botón editar
+
       const btnEditar = document.createElement('button');
-btnEditar.textContent = 'Editar';
-btnEditar.style.marginLeft = '5px';
-btnEditar.onclick = () => {
-  const nuevoNombre = prompt('Nuevo nombre:', s.nombre);
-  const nuevoEstado = prompt('Nuevo estado (Disponible o Sin gasolina):', s.estado);
-  const nuevaFila = prompt('Nueva cantidad de autos en fila:', s.fila);
-
-  const zonasDisponibles = ['Cercado', 'Pacata', 'Quillacollo', 'Tiquipaya'];
-  const zonaPrompt = zonasDisponibles.map((z, i) => `${i + 1}. ${z}`).join('\n');
-  const zonaSeleccion = prompt(`Seleccione nueva zona:\n${zonaPrompt}`, zonasDisponibles.indexOf(s.zona) + 1);
-  const nuevaZona = zonasDisponibles[parseInt(zonaSeleccion) - 1];
-
-  if (
-    nuevoNombre &&
-    (nuevoEstado === 'Disponible' || nuevoEstado === 'Sin gasolina') &&
-    !isNaN(nuevaFila) &&
-    nuevaZona
-  ) {
-    this.conductor.editarSurtidor(s.nombre, nuevoNombre, nuevoEstado, nuevaFila, nuevaZona);
-    this.mostrarSurtidores();
-  } else {
-    alert('Entrada no válida');
-  }
+      btnEditar.textContent = 'Editar';
+      btnEditar.style.marginLeft = '10px';
+      btnEditar.onclick = () => {
+        this.nombreEditando = s.nombre;
+        this.editarNombre.value = s.nombre;
+        this.editarEstado.value = s.estado;
+        this.editarFila.value = s.fila;
+        this.editarZona.value = s.zona;
+        this.modalEdicion.classList.remove('oculto');
       };
-  
+
       item.appendChild(btnEliminar);
       item.appendChild(btnEditar);
       lista.appendChild(item);
     });
   }
-  
-  
 
   manejarFormulario() {
     const form = document.getElementById('form-surtidor');
@@ -117,31 +106,50 @@ btnEditar.onclick = () => {
 
   manejarBusquedaNombre() {
     const inputBusqueda = document.getElementById('busqueda-nombre');
-  
     inputBusqueda.addEventListener('input', (e) => {
       const texto = e.target.value.toLowerCase();
       let surtidores = this.conductor.listaSurtidores();
-  
+
       if (!this.mostrarTodos) {
         surtidores = surtidores.filter(s => s.estado === 'Disponible');
       }
-  
+
       if (this.zonaSeleccionada) {
         surtidores = surtidores.filter(s => s.zona === this.zonaSeleccionada);
       }
-  
+
       surtidores = surtidores.filter(s =>
         s.nombre.toLowerCase().includes(texto)
       );
-  
+
       const lista = document.getElementById('lista-surtidores');
       lista.innerHTML = '';
-  
+
       surtidores.forEach(s => {
         const item = document.createElement('li');
         item.textContent = `${s.nombre} - ${s.estado} - Autos en fila: ${s.fila} - Zona: ${s.zona}`;
         lista.appendChild(item);
       });
+    });
+  }
+
+  manejarEdicion() {
+    this.btnGuardarEdicion.addEventListener('click', () => {
+      this.conductor.editarSurtidor(
+        this.nombreEditando,
+        this.editarNombre.value,
+        this.editarEstado.value,
+        this.editarFila.value,
+        this.editarZona.value
+      );
+
+      this.modalEdicion.classList.add('oculto');
+      this.mostrarSurtidores();
+    });
+
+    const btnCancelar = document.getElementById('cancelar-edicion');
+    btnCancelar.addEventListener('click', () => {
+      this.modalEdicion.classList.add('oculto');
     });
   }
 
@@ -151,5 +159,6 @@ btnEditar.onclick = () => {
     this.manejarToggle();
     this.manejarFiltroZona();
     this.manejarBusquedaNombre();
+    this.manejarEdicion();
   }
 }

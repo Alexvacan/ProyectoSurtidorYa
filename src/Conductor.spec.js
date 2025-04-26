@@ -84,6 +84,17 @@ describe('Conductor', () => {
         expect(surtidor.fila).toBe(4);
         expect(surtidor.zona).toBe('Pacata');
       });      
+
+      it('debería retornar el nivel correcto de gasolina', () => {
+        const conductor = new Conductor();
+    
+        expect(conductor.nivelGasolina(10200)).toBe('Alto');
+        expect(conductor.nivelGasolina(7000)).toBe('Medio');
+        expect(conductor.nivelGasolina(6500)).toBe('Medio');
+        expect(conductor.nivelGasolina(3000)).toBe('Bajo');
+        expect(conductor.nivelGasolina(15)).toBe('Bajo');
+        expect(conductor.nivelGasolina(0)).toBe('Sin gasolina');
+      });    
       
       
   });

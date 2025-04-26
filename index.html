@@ -31,8 +31,10 @@
       <option value="Quillacollo">Quillacollo</option>
       <option value="Tiquipaya">Tiquipaya</option>
     </select>
+    <input type="number" id="litros" placeholder="Litros" required min="0" /> 
     <button type="submit">Agregar surtidor</button>
   </form>
+  
 
   <label for="filtro-zona">Filtrar por zona:</label>
   <select id="filtro-zona">
@@ -63,8 +65,13 @@
       <option value="Quillacollo">Quillacollo</option>
       <option value="Tiquipaya">Tiquipaya</option>
     </select><br><br>
+    <label>Litros:</label>
+    <input type="number" id="editar-litros" placeholder="Litros" required min="0" />
+  </select><br><br>
     <button id="guardar-edicion">Guardar</button>
     <button id="cancelar-edicion">Cancelar</button>
+
+
   </div>
 </body>
 </html>

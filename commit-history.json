@@ -185,5 +185,22 @@
     },
     "coverage": 0,
     "test_count": 7
+  },
+  {
+    "sha": "d549d2f493b62a98a4a96b6f4f6f5ff328232e8a",
+    "author": "chenaoh",
+    "commit": {
+      "date": "2025-04-26T01:45:46.000Z",
+      "message": "Litros de gasolina",
+      "url": "https://github.com/Alexvacan/ProyectoSurtidorYa/commit/d549d2f493b62a98a4a96b6f4f6f5ff328232e8a"
+    },
+    "stats": {
+      "total": 68,
+      "additions": 56,
+      "deletions": 12,
+      "date": "2025-04-26"
+    },
+    "coverage": 0,
+    "test_count": 8
   }
 ]

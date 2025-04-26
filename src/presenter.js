@@ -12,6 +12,7 @@ export class Presenter {
     this.editarEstado = document.getElementById('editar-estado');
     this.editarFila = document.getElementById('editar-fila');
     this.editarZona = document.getElementById('editar-zona');
+    this.editarLitros = document.getElementById('editar-litros');
     this.btnGuardarEdicion = document.getElementById('guardar-edicion');
   }
 
@@ -30,12 +31,22 @@ export class Presenter {
     }
 
     surtidores.forEach(s => {
+      const nivel = this.conductor.nivelGasolina(s.litros);
       const item = document.createElement('li');
-      item.textContent = `${s.nombre} - ${s.estado} - Autos en fila: ${s.fila} - Zona: ${s.zona}`;
+      item.textContent = `${s.nombre} - ${s.estado} - Autos en fila: ${s.fila} - Zona: ${s.zona} - Nivel de gasolina: ${nivel} (${s.litros} litros)`;
 
       if (s.estado === 'Sin gasolina') {
         item.style.color = 'red';
-      }
+      } else {
+        const nivel = this.conductor.nivelGasolina(s.litros);
+        if (nivel === 'Alto') {
+          item.style.color = 'green';
+        } else if (nivel === 'Medio') {
+          item.style.color = 'orange';
+        } else if (nivel === 'Bajo') {
+          item.style.color = 'blue';
+        }
+      }      
 
       const btnEliminar = document.createElement('button');
       btnEliminar.textContent = 'Eliminar';
@@ -54,6 +65,7 @@ export class Presenter {
         this.editarEstado.value = s.estado;
         this.editarFila.value = s.fila;
         this.editarZona.value = s.zona;
+        this.editarLitros.value = s.litros;
         this.modalEdicion.classList.remove('oculto');
       };
 
@@ -73,13 +85,14 @@ export class Presenter {
       const estado = form.querySelector('#estado').value;
       const fila = form.querySelector('#fila').value;
       const zona = form.querySelector('#zona').value;
+      const litros = form.querySelector('#litros').value;
 
       if (!nombre || !fila || !zona) {
         alert('Por favor, completa todos los campos.');
         return;
       }
 
-      this.conductor.agregarSurtidor(nombre, estado, fila, zona);
+      this.conductor.agregarSurtidor(nombre, estado, fila, zona, parseInt(litros));
       this.mostrarSurtidores();
       form.reset();
     });
@@ -110,7 +123,7 @@ export class Presenter {
       const texto = e.target.value.toLowerCase();
       let surtidores = this.conductor.listaSurtidores();
 
-      if (!this.mostrarTodos) {
+      if (!this.mostrarTodos) { 
         surtidores = surtidores.filter(s => s.estado === 'Disponible');
       }
 
@@ -127,7 +140,7 @@ export class Presenter {
 
       surtidores.forEach(s => {
         const item = document.createElement('li');
-        item.textContent = `${s.nombre} - ${s.estado} - Autos en fila: ${s.fila} - Zona: ${s.zona}`;
+        item.textContent = `${s.nombre} - ${s.estado} - Autos en fila: ${s.fila} - Zona: ${s.zona} - Litros: ${s.litros}`;
         lista.appendChild(item);
       });
     });
@@ -140,7 +153,8 @@ export class Presenter {
         this.editarNombre.value,
         this.editarEstado.value,
         this.editarFila.value,
-        this.editarZona.value
+        this.editarZona.value,
+        this.editarLitros.value
       );
 
       this.modalEdicion.classList.add('oculto');

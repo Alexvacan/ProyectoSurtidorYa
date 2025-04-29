@@ -1,4 +1,6 @@
 import { Conductor } from './Conductor.js';
+import { calcularProbabilidadCarga } from './probabilidadCargaService';
+
 
 export class Presenter {
   constructor() {
@@ -6,6 +8,7 @@ export class Presenter {
     this.mostrarTodos = false;
     this.zonaSeleccionada = '';
     this.nombreEditando = null;
+    this.modelo = this.conductor;
 
     this.modalEdicion = document.getElementById('modal-edicion');
     this.editarNombre = document.getElementById('editar-nombre');
@@ -167,6 +170,30 @@ export class Presenter {
     });
   }
 
+  obtenerProbabilidadCarga(nombreSurtidor) {
+    const surtidor = this.conductor.obtenerSurtidorPorNombre(nombreSurtidor);
+  
+    if (!surtidor) {
+      return {
+        porcentaje: 0,
+        autosQuePodranCargar: 0
+      };
+    }
+  
+    const datos = {
+      combustibleDisponible: surtidor.litros,
+      autosEsperando: surtidor.fila,
+      consumoPromedioPorAuto: 10
+    };
+  
+    return calcularProbabilidadCarga(datos);
+  }
+
+  obtenerSurtidorPorNombre(nombre) {
+    return this.surtidores.find(s => s.nombre === nombre);
+  }
+
+
   inicializar() {
     this.mostrarSurtidores();
     this.manejarFormulario();
@@ -175,4 +202,6 @@ export class Presenter {
     this.manejarBusquedaNombre();
     this.manejarEdicion();
   }
+
+  
 }

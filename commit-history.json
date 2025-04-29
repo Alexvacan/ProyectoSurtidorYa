@@ -202,5 +202,22 @@
     },
     "coverage": 0,
     "test_count": 8
+  },
+  {
+    "sha": "9ad414c1b63676b0f69c57bae9ffe0911268f7ca",
+    "author": "Fernando Belmonte",
+    "commit": {
+      "date": "2025-04-29T04:58:35.000Z",
+      "message": "Feat:agregar método para buscar surtidor por nombre",
+      "url": "https://github.com/Alexvacan/ProyectoSurtidorYa/commit/9ad414c1b63676b0f69c57bae9ffe0911268f7ca"
+    },
+    "stats": {
+      "total": 63,
+      "additions": 63,
+      "deletions": 0,
+      "date": "2025-04-29"
+    },
+    "coverage": 0,
+    "test_count": 9
   }
 ]

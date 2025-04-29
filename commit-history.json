@@ -304,5 +304,22 @@
     },
     "coverage": 0,
     "test_count": 14
+  },
+  {
+    "sha": "6e19aa1c0b3c8acbbad57f15f44121073f8affd5",
+    "author": "Jorge Vargas",
+    "commit": {
+      "date": "2025-04-29T12:47:50.000Z",
+      "message": "feat: Gestión inteligente de reabastecimiento",
+      "url": "https://github.com/Alexvacan/ProyectoSurtidorYa/commit/6e19aa1c0b3c8acbbad57f15f44121073f8affd5"
+    },
+    "stats": {
+      "total": 102,
+      "additions": 102,
+      "deletions": 0,
+      "date": "2025-04-29"
+    },
+    "coverage": 0,
+    "test_count": 14
   }
 ]

@@ -14,4 +14,16 @@ describe('Servicio de Probabilidad de Carga', () => {
       expect(resultado).toHaveProperty('porcentaje');
       expect(resultado).toHaveProperty('autosQuePodranCargar');
     });
+    
+    it('debería retornar porcentaje menor si hay más autos que gasolina', () => {
+        const datos = {
+          combustibleDisponible: 30,
+          autosEsperando: 4,
+          consumoPromedioPorAuto: 10
+        };
+    
+        const resultado = calcularProbabilidadCarga(datos);
+        expect(resultado.autosQuePodranCargar).toBe(3);
+        expect(resultado.porcentaje).toBe(75);
+      });
 });

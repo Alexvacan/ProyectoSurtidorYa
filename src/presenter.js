@@ -38,6 +38,17 @@ export class Presenter {
       const item = document.createElement('li');
       item.textContent = `${s.nombre} - ${s.estado} - Autos en fila: ${s.fila} - Zona: ${s.zona} - Nivel de gasolina: ${nivel} (${s.litros} litros)`;
 
+      const probabilidad = calcularProbabilidadCarga({
+        combustibleDisponible: s.litros,
+        autosEsperando: s.fila,
+        consumoPromedioPorAuto: 10
+      });
+      
+      const infoProbabilidad = document.createElement('p');
+      infoProbabilidad.textContent = `Probabilidad de carga: ${probabilidad.porcentaje}% (${probabilidad.autosQuePodranCargar} autos podrán cargar)`;
+      infoProbabilidad.style.margin = '5px 0';
+      item.appendChild(infoProbabilidad);
+
       if (s.estado === 'Sin gasolina') {
         item.style.color = 'red';
       } else {

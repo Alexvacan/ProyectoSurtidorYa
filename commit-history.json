@@ -219,5 +219,22 @@
     },
     "coverage": 0,
     "test_count": 9
+  },
+  {
+    "sha": "2a6770c41305f143f7eded930b9eedf54e909922",
+    "author": "Fernando Belmonte",
+    "commit": {
+      "date": "2025-04-29T05:32:30.000Z",
+      "message": "Feat:Mostrar probabilidad de carga para cada surtidor en la lista",
+      "url": "https://github.com/Alexvacan/ProyectoSurtidorYa/commit/2a6770c41305f143f7eded930b9eedf54e909922"
+    },
+    "stats": {
+      "total": 31,
+      "additions": 28,
+      "deletions": 3,
+      "date": "2025-04-29"
+    },
+    "coverage": 0,
+    "test_count": 10
   }
 ]

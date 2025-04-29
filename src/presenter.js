@@ -43,6 +43,10 @@ export class Presenter {
         autosEsperando: s.fila,
         consumoPromedioPorAuto: 10
       });
+
+      const item_conductor = document.createElement('li');
+      item_conductor.textContent = `${s.nombre} - ${s.estado} - Autos en fila: ${s.fila} - Zona: ${s.zona} - Nivel de gasolina: ${nivel} (${s.litros} litros)
+      | Probabilidad de carga: ${probabilidad.porcentaje}% | Autos que podrán cargar: ${probabilidad.autosQuePodranCargar}`;
       
       const infoProbabilidad = document.createElement('p');
       infoProbabilidad.textContent = `Probabilidad de carga: ${probabilidad.porcentaje}% (${probabilidad.autosQuePodranCargar} autos podrán cargar)`;

@@ -236,5 +236,22 @@
     },
     "coverage": 0,
     "test_count": 10
+  },
+  {
+    "sha": "b47c5f57cab842b86bc727cad9d1bd38e02cdedd",
+    "author": "Fernando Belmonte",
+    "commit": {
+      "date": "2025-04-29T06:06:20.000Z",
+      "message": "Feat:Agregar detalles de probabilidad de carga por surtidor (porcentaje y autos posibles)",
+      "url": "https://github.com/Alexvacan/ProyectoSurtidorYa/commit/b47c5f57cab842b86bc727cad9d1bd38e02cdedd"
+    },
+    "stats": {
+      "total": 20,
+      "additions": 18,
+      "deletions": 2,
+      "date": "2025-04-29"
+    },
+    "coverage": 0,
+    "test_count": 11
   }
 ]

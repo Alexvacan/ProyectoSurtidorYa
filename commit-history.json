@@ -202,5 +202,22 @@
     },
     "coverage": 0,
     "test_count": 8
+  },
+  {
+    "sha": "939b88787fd3269304c85eab30bbbdb6a4797148",
+    "author": "“Wendy",
+    "commit": {
+      "date": "2025-04-29T07:05:10.000Z",
+      "message": "feat: Registrar Horario de atencion",
+      "url": "https://github.com/Alexvacan/ProyectoSurtidorYa/commit/939b88787fd3269304c85eab30bbbdb6a4797148"
+    },
+    "stats": {
+      "total": 82,
+      "additions": 70,
+      "deletions": 12,
+      "date": "2025-04-29"
+    },
+    "coverage": 0,
+    "test_count": 11
   }
 ]

@@ -14,6 +14,9 @@ export class Presenter {
     this.editarZona = document.getElementById('editar-zona');
     this.editarLitros = document.getElementById('editar-litros');
     this.btnGuardarEdicion = document.getElementById('guardar-edicion');
+    this.horarioAperturaInput = document.getElementById('horario-apertura');
+    this.horarioCierreInput = document.getElementById('horario-cierre');
+    this.contactoInput = document.getElementById('contacto');
   }
 
   mostrarSurtidores() {
@@ -33,8 +36,13 @@ export class Presenter {
     surtidores.forEach(s => {
       const nivel = this.conductor.nivelGasolina(s.litros);
       const item = document.createElement('li');
-      item.textContent = `${s.nombre} - ${s.estado} - Autos en fila: ${s.fila} - Zona: ${s.zona} - Nivel de gasolina: ${nivel} (${s.litros} litros)`;
-
+      item.innerHTML = `
+      <strong>${s.nombre}</strong> - ${s.estado}<br>
+      Autos en fila: ${s.fila} - Zona: ${s.zona}<br>
+      Nivel de gasolina: ${nivel} (${s.litros} litros)<br>
+      Horario de atención: ${s.horarioApertura} - ${s.horarioCierre}<br>
+      Contacto: ${s.contacto}
+    `;
       if (s.estado === 'Sin gasolina') {
         item.style.color = 'red';
       } else {
@@ -86,13 +94,17 @@ export class Presenter {
       const fila = form.querySelector('#fila').value;
       const zona = form.querySelector('#zona').value;
       const litros = form.querySelector('#litros').value;
+      const horarioApertura = form.querySelector('#horario-apertura').value;
+      const horarioCierre = form.querySelector('#horario-cierre').value;
+      const contacto = form.querySelector('#contacto').value;
+
 
       if (!nombre || !fila || !zona) {
         alert('Por favor, completa todos los campos.');
         return;
       }
 
-      this.conductor.agregarSurtidor(nombre, estado, fila, zona, parseInt(litros));
+      this.conductor.agregarSurtidor(nombre, estado, fila, zona, parseInt(litros),horarioApertura, horarioCierre, contacto);
       this.mostrarSurtidores();
       form.reset();
     });
@@ -154,7 +166,10 @@ export class Presenter {
         this.editarEstado.value,
         this.editarFila.value,
         this.editarZona.value,
-        this.editarLitros.value
+        this.editarLitros.value,
+        this.horarioAperturaInput.value,
+        this.horarioCierreInput.value,
+        this.contactoInput.value
       );
 
       this.modalEdicion.classList.add('oculto');

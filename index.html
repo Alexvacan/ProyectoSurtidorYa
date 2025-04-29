@@ -32,6 +32,9 @@
       <option value="Tiquipaya">Tiquipaya</option>
     </select>
     <input type="number" id="litros" placeholder="Litros" required min="0" /> 
+    <!-- Nuevo campo añadido -->
+    <label for="hora-reabastecimiento">Hora de reabastecimiento:</label>
+    <input type="time" id="hora-reabastecimiento" required />
     <button type="submit">Agregar surtidor</button>
   </form>
   
@@ -78,14 +81,15 @@
     </select><br><br>
     <label>Litros:</label>
     <input type="number" id="editar-litros" placeholder="Litros" required min="0" />
-  </select><br><br>
+    <!-- Nuevo campo añadido en el modal -->
+    <label for="editar-hora-reabastecimiento">Hora reabastecimiento:</label>
+    <input type="time" id="editar-hora-reabastecimiento" required /><br><br>
     <button id="guardar-edicion">Guardar</button>
     <button id="cancelar-edicion">Cancelar</button>
     <label>Horario de Atencion</label>
     <input type="time" id="horario-apertura" required />
     <input type="time" id="horario-cierre" required />
     <input type="text" id="contacto" placeholder="Número de contacto" required />
-
   </div>
 </body>
 </html>

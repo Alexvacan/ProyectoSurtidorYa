@@ -287,5 +287,22 @@
     },
     "coverage": 0,
     "test_count": 14
+  },
+  {
+    "sha": "f8d181cc48b2d292243cec17343ac52eab69d598",
+    "author": "Jorge Vargas",
+    "commit": {
+      "date": "2025-04-29T12:44:34.000Z",
+      "message": "feat: funcionalidad que solicita el horario de reavastecimiento del surtidor",
+      "url": "https://github.com/Alexvacan/ProyectoSurtidorYa/commit/f8d181cc48b2d292243cec17343ac52eab69d598"
+    },
+    "stats": {
+      "total": 10,
+      "additions": 7,
+      "deletions": 3,
+      "date": "2025-04-29"
+    },
+    "coverage": 0,
+    "test_count": 14
   }
 ]

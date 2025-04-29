@@ -19,7 +19,8 @@ describe('Conductor', () => {
 
   it('debería guardar en localStorage al agregar un surtidor', () => {
     const conductor = new Conductor();
-    conductor.agregarSurtidor('Nuevo', 'Disponible', 3);
+    conductor.agregarSurtidor('Nuevo', 'Disponible', 3, 'Cercado', 1000, '06:00', '22:00', '77777777');
+
     
     expect(localStorage.setItem).toHaveBeenCalled();
     expect(localStorage.setItem).toHaveBeenCalledWith(
@@ -95,6 +96,39 @@ describe('Conductor', () => {
         expect(conductor.nivelGasolina(15)).toBe('Bajo');
         expect(conductor.nivelGasolina(0)).toBe('Sin gasolina');
       });    
+      
+      it('debería agregar un surtidor incluyendo horario y contacto', () => {
+        const conductor = new Conductor();
+        conductor.agregarSurtidor('Surtidor Test', 'Disponible', 5, 'Pacata', 9000, '06:00', '22:00', '71112222');
+        
+        const surtidor = conductor.listaSurtidores().find(s => s.nombre === 'Surtidor Test');
+        expect(surtidor).toBeDefined();
+        expect(surtidor.horarioApertura).toBe('06:00');
+        expect(surtidor.horarioCierre).toBe('22:00');
+        expect(surtidor.contacto).toBe('71112222');
+      });
+
+      it('debería editar horario y contacto de un surtidor existente', () => {
+        const conductor = new Conductor();
+        conductor.agregarSurtidor('Surtidor Edit', 'Disponible', 2, 'Quillacollo', 8000, '07:00', '21:00', '70000000');
+      
+        conductor.editarSurtidor('Surtidor Edit', 'Surtidor Editado', 'Sin gasolina', 3, 'Cercado', 5000, '08:00', '20:00', '73333333');
+      
+        const surtidor = conductor.listaSurtidores().find(s => s.nombre === 'Surtidor Editado');
+        expect(surtidor).toBeDefined();
+        expect(surtidor.horarioApertura).toBe('08:00');
+        expect(surtidor.horarioCierre).toBe('20:00');
+        expect(surtidor.contacto).toBe('73333333');
+      });
+
+      
+      it('debería guardar en localStorage después de eliminar un surtidor', () => {
+        const conductor = new Conductor();
+        conductor.agregarSurtidor('Surtidor Temporal', 'Disponible', 0, 'Pacata', 4000, '05:00', '18:00', '72222222');
+        conductor.eliminarSurtidor('Surtidor Temporal');
+        
+        expect(localStorage.setItem).toHaveBeenCalled();
+      });
       
       
   });

@@ -389,5 +389,22 @@
     },
     "coverage": 0,
     "test_count": 14
+  },
+  {
+    "sha": "29ca129173cc991d4594773800a0d0ef68b147f4",
+    "author": "Jorge Vargas",
+    "commit": {
+      "date": "2025-05-04T14:59:06.000Z",
+      "message": "fix: correccion del index.js para una correcta ejecucion",
+      "url": "https://github.com/Alexvacan/ProyectoSurtidorYa/commit/29ca129173cc991d4594773800a0d0ef68b147f4"
+    },
+    "stats": {
+      "total": 10,
+      "additions": 0,
+      "deletions": 10,
+      "date": "2025-05-04"
+    },
+    "coverage": 0,
+    "test_count": 14
   }
 ]

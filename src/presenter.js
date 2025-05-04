@@ -1,5 +1,5 @@
 import { Conductor } from './Conductor.js';
-import { calcularProbabilidadCarga } from './probabilidadCargaService';
+import { calcularProbabilidadCarga } from './probabilidadCargaService.js';
 
 export class Presenter {
   constructor() {
@@ -7,7 +7,6 @@ export class Presenter {
     this.mostrarTodos = false;
     this.zonaSeleccionada = '';
     this.nombreEditando = null;
-    this.modelo = this.conductor;
 
     // Referencias al DOM para edición
     this.modalEdicion = document.getElementById('modal-edicion');
@@ -21,35 +20,37 @@ export class Presenter {
     this.horarioCierreInput = document.getElementById('horario-cierre');
     this.contactoInput = document.getElementById('contacto');
 
-    // Criterio y control de ordenación
+    // Ordenación
     this.sortCriteria = 'nombre';
-    this.sortSelect   = document.getElementById('sort-criteria');
+    this.sortSelect = document.getElementById('sort-criteria');
   }
 
-  // Ordena una copia de la lista según el criterio actual
+  // Ordena strings o números según el criterio actual
   sortList(list) {
     return [...list].sort((a, b) => {
       const key = this.sortCriteria;
-      if (a[key] < b[key]) return -1;
-      if (a[key] > b[key]) return 1;
+      const valA = isNaN(a[key]) ? a[key].toString().toLowerCase() : Number(a[key]);
+      const valB = isNaN(b[key]) ? b[key].toString().toLowerCase() : Number(b[key]);
+      if (valA < valB) return -1;
+      if (valA > valB) return 1;
       return 0;
     });
   }
 
-  // Maneja el evento de cambio en el selector de ordenación
+  // Escucha cambios en el selector de ordenación
   manejarOrdenacion() {
+    if (!this.sortSelect) return;
     this.sortSelect.addEventListener('change', e => {
       this.sortCriteria = e.target.value;
       this.mostrarSurtidores();
     });
   }
 
-  // Renderiza la lista de surtidores con filtros y ordenación
+  // Renderiza la lista aplicando orden, filtros y búsqueda
   mostrarSurtidores() {
-    const lista = document.getElementById('lista-surtidores');
-    lista.innerHTML = '';
+    const listaEl = document.getElementById('lista-surtidores');
+    listaEl.innerHTML = '';
 
-    // Obtener y ordenar
     let surtidores = this.sortList(this.conductor.listaSurtidores());
 
     if (!this.mostrarTodos) {
@@ -61,12 +62,12 @@ export class Presenter {
 
     surtidores.forEach(s => {
       const nivel = this.conductor.nivelGasolina(s.litros);
-      const item = document.createElement('li');
-      item.innerHTML = `
+      const li = document.createElement('li');
+      li.innerHTML = `
         <strong>${s.nombre}</strong> - ${s.estado}<br>
         Autos en fila: ${s.fila} - Zona: ${s.zona}<br>
         Nivel de gasolina: ${nivel} (${s.litros} litros)<br>
-        Horario de atención: ${s.horarioApertura} - ${s.horarioCierre}<br>
+        Horario: ${s.horarioApertura} - ${s.horarioCierre}<br>
         Contacto: ${s.contacto}
       `;
 
@@ -76,48 +77,49 @@ export class Presenter {
         autosEsperando: s.fila,
         consumoPromedioPorAuto: 10
       });
-      const infoProb = document.createElement('p');
-      infoProb.textContent = `Probabilidad de carga: ${prob.porcentaje}% (${prob.autosQuePodranCargar} autos podrán cargar)`;
-      infoProb.style.margin = '5px 0';
-      item.appendChild(infoProb);
+      const p = document.createElement('p');
+      p.textContent = `Probabilidad de carga: ${prob.porcentaje}% (${prob.autosQuePodranCargar} autos)`;
+      li.appendChild(p);
 
-      // Colorear según estado
+      // Color según estado/nivel
       if (s.estado === 'Sin gasolina') {
-        item.style.color = 'red';
+        li.style.color = 'red';
       } else if (nivel === 'Alto') {
-        item.style.color = 'green';
+        li.style.color = 'green';
       } else if (nivel === 'Medio') {
-        item.style.color = 'orange';
+        li.style.color = 'orange';
       } else {
-        item.style.color = 'blue';
+        li.style.color = 'blue';
       }
 
-      // Botón Eliminar
-      const btnEliminar = document.createElement('button');
-      btnEliminar.textContent = 'Eliminar';
-      btnEliminar.style.marginLeft = '10px';
-      btnEliminar.onclick = () => {
+      // Botones
+      const btnDel = document.createElement('button');
+      btnDel.textContent = 'Eliminar';
+      btnDel.style.marginLeft = '10px';
+      btnDel.onclick = () => {
         this.conductor.eliminarSurtidor(s.nombre);
         this.mostrarSurtidores();
       };
 
-      // Botón Editar
-      const btnEditar = document.createElement('button');
-      btnEditar.textContent = 'Editar';
-      btnEditar.style.marginLeft = '10px';
-      btnEditar.onclick = () => {
+      const btnEdit = document.createElement('button');
+      btnEdit.textContent = 'Editar';
+      btnEdit.style.marginLeft = '10px';
+      btnEdit.onclick = () => {
         this.nombreEditando = s.nombre;
         this.editarNombre.value = s.nombre;
         this.editarEstado.value = s.estado;
         this.editarFila.value = s.fila;
         this.editarZona.value = s.zona;
         this.editarLitros.value = s.litros;
+        this.horarioAperturaInput.value = s.horarioApertura;
+        this.horarioCierreInput.value = s.horarioCierre;
+        this.contactoInput.value = s.contacto;
         this.modalEdicion.classList.remove('oculto');
       };
 
-      item.appendChild(btnEliminar);
-      item.appendChild(btnEditar);
-      lista.appendChild(item);
+      li.appendChild(btnDel);
+      li.appendChild(btnEdit);
+      listaEl.appendChild(li);
     });
   }
 
@@ -130,8 +132,8 @@ export class Presenter {
       const fila = form.querySelector('#fila').value;
       const zona = form.querySelector('#zona').value;
       const litros = form.querySelector('#litros').value;
-      const horarioApertura = form.querySelector('#hora-reabastecimiento').value;
-      const horarioCierre = form.querySelector('#horario-cierre').value;
+      const horA = form.querySelector('#hora-reabastecimiento').value;
+      const horC = form.querySelector('#horario-cierre').value;
       const contacto = form.querySelector('#contacto').value;
 
       if (!nombre || !fila || !zona) {
@@ -144,9 +146,9 @@ export class Presenter {
         estado,
         fila,
         zona,
-        parseInt(litros),
-        horarioApertura,
-        horarioCierre,
+        litros,
+        horA,
+        horC,
         contacto
       );
       this.mostrarSurtidores();
@@ -155,10 +157,10 @@ export class Presenter {
   }
 
   manejarToggle() {
-    const boton = document.getElementById('toggle-estado');
-    boton.addEventListener('click', () => {
+    const btn = document.getElementById('toggle-estado');
+    btn.addEventListener('click', () => {
       this.mostrarTodos = !this.mostrarTodos;
-      boton.textContent = this.mostrarTodos
+      btn.textContent = this.mostrarTodos
         ? 'Mostrar solo disponibles'
         : 'Mostrar todos los surtidores';
       this.mostrarSurtidores();
@@ -178,7 +180,6 @@ export class Presenter {
     input.addEventListener('input', e => {
       const texto = e.target.value.toLowerCase();
       let lista = this.sortList(this.conductor.listaSurtidores());
-
       if (!this.mostrarTodos) {
         lista = lista.filter(s => s.estado === 'Disponible');
       }
@@ -191,7 +192,7 @@ export class Presenter {
       ul.innerHTML = '';
       lista.forEach(s => {
         const li = document.createElement('li');
-        li.textContent = `${s.nombre} - ${s.estado} - Autos en fila: ${s.fila} - Zona: ${s.zona} - Litros: ${s.litros}`;
+        li.textContent = `${s.nombre} - ${s.estado} - fila: ${s.fila} - zona: ${s.zona} - litros: ${s.litros}`;
         ul.appendChild(li);
       });
     });
@@ -213,24 +214,19 @@ export class Presenter {
       this.modalEdicion.classList.add('oculto');
       this.mostrarSurtidores();
     });
-    document
-      .getElementById('cancelar-edicion')
+
+    document.getElementById('cancelar-edicion')
       .addEventListener('click', () => this.modalEdicion.classList.add('oculto'));
   }
 
-  obtenerProbabilidadCarga(nombreSurtidor) {
-    const surtidor = this.conductor.obtenerSurtidorPorNombre(nombreSurtidor);
-    if (!surtidor) return { porcentaje: 0, autosQuePodranCargar: 0 };
-
+  obtenerProbabilidadCarga(nombre) {
+    const s = this.conductor.obtenerSurtidorPorNombre(nombre);
+    if (!s) return { porcentaje: 0, autosQuePodranCargar: 0 };
     return calcularProbabilidadCarga({
-      combustibleDisponible: surtidor.litros,
-      autosEsperando: surtidor.fila,
+      combustibleDisponible: s.litros,
+      autosEsperando: s.fila,
       consumoPromedioPorAuto: 10
     });
-  }
-
-  obtenerSurtidorPorNombre(nombre) {
-    return this.surtidores.find(s => s.nombre === nombre);
   }
 
   inicializar() {

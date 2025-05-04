@@ -321,5 +321,22 @@
     },
     "coverage": 0,
     "test_count": 14
+  },
+  {
+    "sha": "f2d13e240deeb018a557a2476e33103dace1e24e",
+    "author": "Jorge Vargas",
+    "commit": {
+      "date": "2025-05-04T03:12:30.000Z",
+      "message": "feat: añadir selector de ordenacion",
+      "url": "https://github.com/Alexvacan/ProyectoSurtidorYa/commit/f2d13e240deeb018a557a2476e33103dace1e24e"
+    },
+    "stats": {
+      "total": 6,
+      "additions": 6,
+      "deletions": 0,
+      "date": "2025-05-04"
+    },
+    "coverage": 0,
+    "test_count": 14
   }
 ]

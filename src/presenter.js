@@ -1,7 +1,6 @@
 import { Conductor } from './Conductor.js';
 import { calcularProbabilidadCarga } from './probabilidadCargaService';
 
-
 export class Presenter {
   constructor() {
     this.conductor = new Conductor();
@@ -10,6 +9,7 @@ export class Presenter {
     this.nombreEditando = null;
     this.modelo = this.conductor;
 
+    // Referencias al DOM para edición
     this.modalEdicion = document.getElementById('modal-edicion');
     this.editarNombre = document.getElementById('editar-nombre');
     this.editarEstado = document.getElementById('editar-estado');
@@ -20,18 +20,41 @@ export class Presenter {
     this.horarioAperturaInput = document.getElementById('horario-apertura');
     this.horarioCierreInput = document.getElementById('horario-cierre');
     this.contactoInput = document.getElementById('contacto');
+
+    // Criterio y control de ordenación
+    this.sortCriteria = 'nombre';
+    this.sortSelect   = document.getElementById('sort-criteria');
   }
 
+  // Ordena una copia de la lista según el criterio actual
+  sortList(list) {
+    return [...list].sort((a, b) => {
+      const key = this.sortCriteria;
+      if (a[key] < b[key]) return -1;
+      if (a[key] > b[key]) return 1;
+      return 0;
+    });
+  }
+
+  // Maneja el evento de cambio en el selector de ordenación
+  manejarOrdenacion() {
+    this.sortSelect.addEventListener('change', e => {
+      this.sortCriteria = e.target.value;
+      this.mostrarSurtidores();
+    });
+  }
+
+  // Renderiza la lista de surtidores con filtros y ordenación
   mostrarSurtidores() {
     const lista = document.getElementById('lista-surtidores');
     lista.innerHTML = '';
 
-    let surtidores = this.conductor.listaSurtidores();
+    // Obtener y ordenar
+    let surtidores = this.sortList(this.conductor.listaSurtidores());
 
     if (!this.mostrarTodos) {
       surtidores = surtidores.filter(s => s.estado === 'Disponible');
     }
-
     if (this.zonaSeleccionada) {
       surtidores = surtidores.filter(s => s.zona === this.zonaSeleccionada);
     }
@@ -40,41 +63,36 @@ export class Presenter {
       const nivel = this.conductor.nivelGasolina(s.litros);
       const item = document.createElement('li');
       item.innerHTML = `
-      <strong>${s.nombre}</strong> - ${s.estado}<br>
-      Autos en fila: ${s.fila} - Zona: ${s.zona}<br>
-      Nivel de gasolina: ${nivel} (${s.litros} litros)<br>
-      Horario de atención: ${s.horarioApertura} - ${s.horarioCierre}<br>
-      Contacto: ${s.contacto}
-    `;
-const probabilidad = calcularProbabilidadCarga({
+        <strong>${s.nombre}</strong> - ${s.estado}<br>
+        Autos en fila: ${s.fila} - Zona: ${s.zona}<br>
+        Nivel de gasolina: ${nivel} (${s.litros} litros)<br>
+        Horario de atención: ${s.horarioApertura} - ${s.horarioCierre}<br>
+        Contacto: ${s.contacto}
+      `;
+
+      // Probabilidad de carga
+      const prob = calcularProbabilidadCarga({
         combustibleDisponible: s.litros,
         autosEsperando: s.fila,
         consumoPromedioPorAuto: 10
       });
+      const infoProb = document.createElement('p');
+      infoProb.textContent = `Probabilidad de carga: ${prob.porcentaje}% (${prob.autosQuePodranCargar} autos podrán cargar)`;
+      infoProb.style.margin = '5px 0';
+      item.appendChild(infoProb);
 
-      const item_conductor = document.createElement('li');
-      item_conductor.textContent = `${s.nombre} - ${s.estado} - Autos en fila: ${s.fila} - Zona: ${s.zona} - Nivel de gasolina: ${nivel} (${s.litros} litros)
-      | Probabilidad de carga: ${probabilidad.porcentaje}% | Autos que podrán cargar: ${probabilidad.autosQuePodranCargar}`;
-      
-      const infoProbabilidad = document.createElement('p');
-      infoProbabilidad.textContent = `Probabilidad de carga: ${probabilidad.porcentaje}% (${probabilidad.autosQuePodranCargar} autos podrán cargar)`;
-      infoProbabilidad.style.margin = '5px 0';
-      item.appendChild(infoProbabilidad);
-
-
+      // Colorear según estado
       if (s.estado === 'Sin gasolina') {
         item.style.color = 'red';
+      } else if (nivel === 'Alto') {
+        item.style.color = 'green';
+      } else if (nivel === 'Medio') {
+        item.style.color = 'orange';
       } else {
-        const nivel = this.conductor.nivelGasolina(s.litros);
-        if (nivel === 'Alto') {
-          item.style.color = 'green';
-        } else if (nivel === 'Medio') {
-          item.style.color = 'orange';
-        } else if (nivel === 'Bajo') {
-          item.style.color = 'blue';
-        }
-      }      
+        item.style.color = 'blue';
+      }
 
+      // Botón Eliminar
       const btnEliminar = document.createElement('button');
       btnEliminar.textContent = 'Eliminar';
       btnEliminar.style.marginLeft = '10px';
@@ -83,6 +101,7 @@ const probabilidad = calcularProbabilidadCarga({
         this.mostrarSurtidores();
       };
 
+      // Botón Editar
       const btnEditar = document.createElement('button');
       btnEditar.textContent = 'Editar';
       btnEditar.style.marginLeft = '10px';
@@ -104,26 +123,32 @@ const probabilidad = calcularProbabilidadCarga({
 
   manejarFormulario() {
     const form = document.getElementById('form-surtidor');
-
-    form.addEventListener('submit', (e) => {
+    form.addEventListener('submit', e => {
       e.preventDefault();
-
       const nombre = form.querySelector('#nombre').value.trim();
       const estado = form.querySelector('#estado').value;
       const fila = form.querySelector('#fila').value;
       const zona = form.querySelector('#zona').value;
       const litros = form.querySelector('#litros').value;
-      const horarioApertura = form.querySelector('#horario-apertura').value;
+      const horarioApertura = form.querySelector('#hora-reabastecimiento').value;
       const horarioCierre = form.querySelector('#horario-cierre').value;
       const contacto = form.querySelector('#contacto').value;
-
 
       if (!nombre || !fila || !zona) {
         alert('Por favor, completa todos los campos.');
         return;
       }
 
-      this.conductor.agregarSurtidor(nombre, estado, fila, zona, parseInt(litros),horarioApertura, horarioCierre, contacto);
+      this.conductor.agregarSurtidor(
+        nombre,
+        estado,
+        fila,
+        zona,
+        parseInt(litros),
+        horarioApertura,
+        horarioCierre,
+        contacto
+      );
       this.mostrarSurtidores();
       form.reset();
     });
@@ -142,37 +167,32 @@ const probabilidad = calcularProbabilidadCarga({
 
   manejarFiltroZona() {
     const select = document.getElementById('filtro-zona');
-    select.addEventListener('change', (e) => {
+    select.addEventListener('change', e => {
       this.zonaSeleccionada = e.target.value;
       this.mostrarSurtidores();
     });
   }
 
   manejarBusquedaNombre() {
-    const inputBusqueda = document.getElementById('busqueda-nombre');
-    inputBusqueda.addEventListener('input', (e) => {
+    const input = document.getElementById('busqueda-nombre');
+    input.addEventListener('input', e => {
       const texto = e.target.value.toLowerCase();
-      let surtidores = this.conductor.listaSurtidores();
+      let lista = this.sortList(this.conductor.listaSurtidores());
 
-      if (!this.mostrarTodos) { 
-        surtidores = surtidores.filter(s => s.estado === 'Disponible');
+      if (!this.mostrarTodos) {
+        lista = lista.filter(s => s.estado === 'Disponible');
       }
-
       if (this.zonaSeleccionada) {
-        surtidores = surtidores.filter(s => s.zona === this.zonaSeleccionada);
+        lista = lista.filter(s => s.zona === this.zonaSeleccionada);
       }
+      lista = lista.filter(s => s.nombre.toLowerCase().includes(texto));
 
-      surtidores = surtidores.filter(s =>
-        s.nombre.toLowerCase().includes(texto)
-      );
-
-      const lista = document.getElementById('lista-surtidores');
-      lista.innerHTML = '';
-
-      surtidores.forEach(s => {
-        const item = document.createElement('li');
-        item.textContent = `${s.nombre} - ${s.estado} - Autos en fila: ${s.fila} - Zona: ${s.zona} - Litros: ${s.litros}`;
-        lista.appendChild(item);
+      const ul = document.getElementById('lista-surtidores');
+      ul.innerHTML = '';
+      lista.forEach(s => {
+        const li = document.createElement('li');
+        li.textContent = `${s.nombre} - ${s.estado} - Autos en fila: ${s.fila} - Zona: ${s.zona} - Litros: ${s.litros}`;
+        ul.appendChild(li);
       });
     });
   }
@@ -190,40 +210,28 @@ const probabilidad = calcularProbabilidadCarga({
         this.horarioCierreInput.value,
         this.contactoInput.value
       );
-
       this.modalEdicion.classList.add('oculto');
       this.mostrarSurtidores();
     });
-
-    const btnCancelar = document.getElementById('cancelar-edicion');
-    btnCancelar.addEventListener('click', () => {
-      this.modalEdicion.classList.add('oculto');
-    });
+    document
+      .getElementById('cancelar-edicion')
+      .addEventListener('click', () => this.modalEdicion.classList.add('oculto'));
   }
 
   obtenerProbabilidadCarga(nombreSurtidor) {
     const surtidor = this.conductor.obtenerSurtidorPorNombre(nombreSurtidor);
-  
-    if (!surtidor) {
-      return {
-        porcentaje: 0,
-        autosQuePodranCargar: 0
-      };
-    }
-  
-    const datos = {
+    if (!surtidor) return { porcentaje: 0, autosQuePodranCargar: 0 };
+
+    return calcularProbabilidadCarga({
       combustibleDisponible: surtidor.litros,
       autosEsperando: surtidor.fila,
       consumoPromedioPorAuto: 10
-    };
-  
-    return calcularProbabilidadCarga(datos);
+    });
   }
 
   obtenerSurtidorPorNombre(nombre) {
     return this.surtidores.find(s => s.nombre === nombre);
   }
-
 
   inicializar() {
     this.mostrarSurtidores();
@@ -232,7 +240,6 @@ const probabilidad = calcularProbabilidadCarga({
     this.manejarFiltroZona();
     this.manejarBusquedaNombre();
     this.manejarEdicion();
+    this.manejarOrdenacion();
   }
-
-  
 }

@@ -4,19 +4,18 @@
   <title>Parcel App</title>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Lista de Surtidores</title>
   <script type="module" defer src="./src/index.js"></script>
   <link rel="stylesheet" href="./src/estilos.css">
 </head>
 
 <body>
   <h1>Surtidores</h1>
-  <label for="sort-criteria">Ordenar por:</label>
-<select id="sort-criteria">
-  <option value="nombre">Nombre</option>
-  <option value="zona">Zona</option>
-</select>
 
+  <label for="sort-criteria">Ordenar por:</label>
+  <select id="sort-criteria">
+    <option value="nombre">Nombre</option>
+    <option value="zona">Zona</option>
+  </select>
 
   <button id="toggle-estado">Mostrar todos los surtidores</button>
 
@@ -25,11 +24,14 @@
 
   <form id="form-surtidor">
     <input type="text" id="nombre" placeholder="Nombre del surtidor" required />
+
     <select id="estado">
       <option value="Disponible">Disponible</option>
       <option value="Sin gasolina">Sin gasolina</option>
     </select>
+
     <input type="number" id="fila" placeholder="Autos en fila" required min="0" />
+
     <select id="zona" required>
       <option value="">Seleccionar zona</option>
       <option value="Cercado">Cercado</option>
@@ -37,13 +39,20 @@
       <option value="Quillacollo">Quillacollo</option>
       <option value="Tiquipaya">Tiquipaya</option>
     </select>
-    <input type="number" id="litros" placeholder="Litros" required min="0" /> 
-    <!-- Nuevo campo añadido -->
-    <label for="hora-reabastecimiento">Hora de reabastecimiento:</label>
+
+    <input type="number" id="litros" placeholder="Litros" required min="0" />
+
+    <label for="hora-reabastecimiento">Horario de apertura:</label>
     <input type="time" id="hora-reabastecimiento" required />
+
+    <label for="horario-cierre">Horario de cierre:</label>
+    <input type="time" id="horario-cierre" required />
+
+    <label for="contacto">Contacto:</label>
+    <input type="text" id="contacto" placeholder="Número de contacto" required />
+
     <button type="submit">Agregar surtidor</button>
   </form>
-  
 
   <label for="filtro-zona">Filtrar por zona:</label>
   <select id="filtro-zona">
@@ -60,9 +69,9 @@
 
   <label for="surtidor-seleccionado">Selecciona un surtidor:</label>
   <select id="surtidor-seleccionado"></select>
-  
+
   <button id="calcular-probabilidad">Calcular Probabilidad</button>
-  
+
   <div id="resultado-probabilidad">
     <p id="texto-probabilidad">Aquí aparecerá la probabilidad.</p>
   </div>
@@ -86,16 +95,17 @@
       <option value="Tiquipaya">Tiquipaya</option>
     </select><br><br>
     <label>Litros:</label>
-    <input type="number" id="editar-litros" placeholder="Litros" required min="0" />
-    <!-- Nuevo campo añadido en el modal -->
+    <input type="number" id="editar-litros" placeholder="Litros" required min="0" /><br><br>
     <label for="editar-hora-reabastecimiento">Hora reabastecimiento:</label>
     <input type="time" id="editar-hora-reabastecimiento" required /><br><br>
+    <label for="horario-apertura">Horario de apertura:</label>
+    <input type="time" id="horario-apertura" required /><br><br>
+    <label for="horario-cierre">Horario de cierre:</label>
+    <input type="time" id="horario-cierre" required /><br><br>
+    <label for="contacto">Contacto:</label>
+    <input type="text" id="contacto" placeholder="Número de contacto" required /><br><br>
     <button id="guardar-edicion">Guardar</button>
     <button id="cancelar-edicion">Cancelar</button>
-    <label>Horario de Atencion</label>
-    <input type="time" id="horario-apertura" required />
-    <input type="time" id="horario-cierre" required />
-    <input type="text" id="contacto" placeholder="Número de contacto" required />
   </div>
 </body>
 </html>

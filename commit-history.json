@@ -338,5 +338,22 @@
     },
     "coverage": 0,
     "test_count": 14
+  },
+  {
+    "sha": "e9b4596f9083b08203db75d073857f790200ae22",
+    "author": "Jorge Vargas",
+    "commit": {
+      "date": "2025-05-04T14:52:26.000Z",
+      "message": "refactor: mejora del codigo html",
+      "url": "https://github.com/Alexvacan/ProyectoSurtidorYa/commit/e9b4596f9083b08203db75d073857f790200ae22"
+    },
+    "stats": {
+      "total": 315,
+      "additions": 118,
+      "deletions": 197,
+      "date": "2025-05-04"
+    },
+    "coverage": 0,
+    "test_count": 14
   }
 ]

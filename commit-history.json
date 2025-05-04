@@ -355,5 +355,22 @@
     },
     "coverage": 0,
     "test_count": 14
+  },
+  {
+    "sha": "556f2c367d5b40a02c72e6d455b38f18d793aef1",
+    "author": "Jorge Vargas",
+    "commit": {
+      "date": "2025-05-04T14:55:04.000Z",
+      "message": "refactor: optimizacion del archivo conductor y conductor.spect",
+      "url": "https://github.com/Alexvacan/ProyectoSurtidorYa/commit/556f2c367d5b40a02c72e6d455b38f18d793aef1"
+    },
+    "stats": {
+      "total": 446,
+      "additions": 274,
+      "deletions": 172,
+      "date": "2025-05-04"
+    },
+    "coverage": 0,
+    "test_count": 14
   }
 ]

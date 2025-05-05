@@ -406,5 +406,22 @@
     },
     "coverage": 0,
     "test_count": 14
+  },
+  {
+    "sha": "1368829c3bc5aa54846a192564f0288751910a14",
+    "author": "Jorge Vargas",
+    "commit": {
+      "date": "2025-05-05T01:11:11.000Z",
+      "message": "test: TimeSlotService expone listarSlots y agregar stub de TimeSlotService",
+      "url": "https://github.com/Alexvacan/ProyectoSurtidorYa/commit/1368829c3bc5aa54846a192564f0288751910a14"
+    },
+    "stats": {
+      "total": 17,
+      "additions": 15,
+      "deletions": 2,
+      "date": "2025-05-05"
+    },
+    "coverage": 0,
+    "test_count": 15
   }
 ]

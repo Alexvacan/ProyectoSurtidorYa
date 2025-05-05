@@ -423,5 +423,22 @@
     },
     "coverage": 0,
     "test_count": 15
+  },
+  {
+    "sha": "a03344a3373c0023ad595014d029a78a2a650a12",
+    "author": "Jorge Vargas",
+    "commit": {
+      "date": "2025-05-05T01:16:02.000Z",
+      "message": "feat: funcionalidad para las franjas horarias, esto para un futuro implementar reservas de tikets",
+      "url": "https://github.com/Alexvacan/ProyectoSurtidorYa/commit/a03344a3373c0023ad595014d029a78a2a650a12"
+    },
+    "stats": {
+      "total": 63,
+      "additions": 62,
+      "deletions": 1,
+      "date": "2025-05-05"
+    },
+    "coverage": 0,
+    "test_count": 18
   }
 ]

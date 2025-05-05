@@ -1,5 +1,6 @@
 import { Conductor } from './Conductor.js';
 import { calcularProbabilidadCarga } from './probabilidadCargaService.js';
+import { TimeSlotService } from './timeSlotService.js';
 
 export class Presenter {
   constructor() {
@@ -23,6 +24,9 @@ export class Presenter {
     // Ordenación
     this.sortCriteria = 'nombre';
     this.sortSelect = document.getElementById('sort-criteria');
+
+    // Selección de surtidor para franjas
+    this.selectSurtidorFranja = document.getElementById('surtidor-seleccionado');
   }
 
   // Ordena strings o números según el criterio actual
@@ -37,7 +41,7 @@ export class Presenter {
     });
   }
 
-  // Escucha cambios en el selector de ordenación
+  // Maneja cambios en el selector de ordenación
   manejarOrdenacion() {
     if (!this.sortSelect) return;
     this.sortSelect.addEventListener('change', e => {
@@ -46,13 +50,12 @@ export class Presenter {
     });
   }
 
-  // Renderiza la lista aplicando orden, filtros y búsqueda
+  // Renderiza la lista de surtidores
   mostrarSurtidores() {
     const listaEl = document.getElementById('lista-surtidores');
     listaEl.innerHTML = '';
 
     let surtidores = this.sortList(this.conductor.listaSurtidores());
-
     if (!this.mostrarTodos) {
       surtidores = surtidores.filter(s => s.estado === 'Disponible');
     }
@@ -82,15 +85,10 @@ export class Presenter {
       li.appendChild(p);
 
       // Color según estado/nivel
-      if (s.estado === 'Sin gasolina') {
-        li.style.color = 'red';
-      } else if (nivel === 'Alto') {
-        li.style.color = 'green';
-      } else if (nivel === 'Medio') {
-        li.style.color = 'orange';
-      } else {
-        li.style.color = 'blue';
-      }
+      if (s.estado === 'Sin gasolina') li.style.color = 'red';
+      else if (nivel === 'Alto') li.style.color = 'green';
+      else if (nivel === 'Medio') li.style.color = 'orange';
+      else li.style.color = 'blue';
 
       // Botones
       const btnDel = document.createElement('button');
@@ -180,22 +178,39 @@ export class Presenter {
     input.addEventListener('input', e => {
       const texto = e.target.value.toLowerCase();
       let lista = this.sortList(this.conductor.listaSurtidores());
-      if (!this.mostrarTodos) {
-        lista = lista.filter(s => s.estado === 'Disponible');
-      }
-      if (this.zonaSeleccionada) {
-        lista = lista.filter(s => s.zona === this.zonaSeleccionada);
-      }
+      if (!this.mostrarTodos) lista = lista.filter(s => s.estado === 'Disponible');
+      if (this.zonaSeleccionada) lista = lista.filter(s => s.zona === this.zonaSeleccionada);
       lista = lista.filter(s => s.nombre.toLowerCase().includes(texto));
 
       const ul = document.getElementById('lista-surtidores');
       ul.innerHTML = '';
-      lista.forEach(s => {
-        const li = document.createElement('li');
-        li.textContent = `${s.nombre} - ${s.estado} - fila: ${s.fila} - zona: ${s.zona} - litros: ${s.litros}`;
-        ul.appendChild(li);
-      });
+      lista.forEach(s => { const li = document.createElement('li'); li.textContent = `${s.nombre} - ${s.estado} - fila: ${s.fila} - zona: ${s.zona} - litros: ${s.litros}`; ul.appendChild(li); });
     });
+  }
+
+  // Muestra las franjas horarias para un surtidor
+  mostrarFranjas(surtidorNombre) {
+    const slots = TimeSlotService.listarSlots(surtidorNombre);
+    const ul = document.getElementById('lista-franjas');
+    ul.innerHTML = '';
+    slots.forEach(slot => {
+      const li = document.createElement('li');
+      li.textContent = `${slot.horaInicio} - ${slot.horaFin}`;
+      li.classList.add(slot.disponible ? 'disponible' : 'ocupado');
+      ul.appendChild(li);
+    });
+  }
+
+  // Pone opciones en el select de surtidor y maneja cambio
+  manejarSeleccionSurtidor() {
+    const surtidores = this.conductor.listaSurtidores();
+    if (this.selectSurtidorFranja) {
+      this.selectSurtidorFranja.innerHTML = surtidores.map(s => `<option value="${s.nombre}">${s.nombre}</option>`).join('');
+      this.selectSurtidorFranja.addEventListener('change', e => {
+        this.mostrarFranjas(e.target.value);
+      });
+      if (surtidores.length) this.mostrarFranjas(surtidores[0].nombre);
+    }
   }
 
   manejarEdicion() {
@@ -214,19 +229,13 @@ export class Presenter {
       this.modalEdicion.classList.add('oculto');
       this.mostrarSurtidores();
     });
-
-    document.getElementById('cancelar-edicion')
-      .addEventListener('click', () => this.modalEdicion.classList.add('oculto'));
+    document.getElementById('cancelar-edicion').addEventListener('click', () => this.modalEdicion.classList.add('oculto'));
   }
 
   obtenerProbabilidadCarga(nombre) {
     const s = this.conductor.obtenerSurtidorPorNombre(nombre);
     if (!s) return { porcentaje: 0, autosQuePodranCargar: 0 };
-    return calcularProbabilidadCarga({
-      combustibleDisponible: s.litros,
-      autosEsperando: s.fila,
-      consumoPromedioPorAuto: 10
-    });
+    return calcularProbabilidadCarga({ combustibleDisponible: s.litros, autosEsperando: s.fila, consumoPromedioPorAuto: 10 });
   }
 
   inicializar() {
@@ -237,5 +246,6 @@ export class Presenter {
     this.manejarBusquedaNombre();
     this.manejarEdicion();
     this.manejarOrdenacion();
+    this.manejarSeleccionSurtidor();
   }
 }

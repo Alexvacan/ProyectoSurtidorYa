@@ -440,5 +440,22 @@
     },
     "coverage": 0,
     "test_count": 18
+  },
+  {
+    "sha": "9237bf46e3572bc1a46f5f80b9f7c4bcff5449cf",
+    "author": "Jorge Vargas",
+    "commit": {
+      "date": "2025-05-05T01:35:38.000Z",
+      "message": "feat: nueva funcionalidad agregaga en presenter para trabajar con las franjas horarias",
+      "url": "https://github.com/Alexvacan/ProyectoSurtidorYa/commit/9237bf46e3572bc1a46f5f80b9f7c4bcff5449cf"
+    },
+    "stats": {
+      "total": 102,
+      "additions": 70,
+      "deletions": 32,
+      "date": "2025-05-05"
+    },
+    "coverage": 0,
+    "test_count": 20
   }
 ]

@@ -457,5 +457,22 @@
     },
     "coverage": 0,
     "test_count": 20
+  },
+  {
+    "sha": "e06874799c62f8c3c8d6eb1e92687baa6ad9f528",
+    "author": "Jorge Vargas",
+    "commit": {
+      "date": "2025-05-05T01:39:40.000Z",
+      "message": "refactor: refactorizacion del index.html para observar la funcionalid nueva",
+      "url": "https://github.com/Alexvacan/ProyectoSurtidorYa/commit/e06874799c62f8c3c8d6eb1e92687baa6ad9f528"
+    },
+    "stats": {
+      "total": 4,
+      "additions": 4,
+      "deletions": 0,
+      "date": "2025-05-05"
+    },
+    "coverage": 0,
+    "test_count": 20
   }
 ]

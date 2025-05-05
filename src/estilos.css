@@ -1,4 +1,162 @@
-.oculto {
-    display: none;
-  }
-  
+input[type="text"],
+input[type="number"],
+input[type="time"],
+select {
+  display: inline-block;
+  width: auto;
+  min-width: 200px;
+  max-width: 100%;
+  padding: 0.5rem;
+  margin-bottom: 1rem;
+  border: 1px solid var(--color-gris);
+  border-radius: var(--borde-radio);
+  box-sizing: border-box;
+}
+
+:root {
+  --color-primario: #002b5b;
+  --color-secundario: #00b7ff;
+  --color-acento: #a3ff8f;
+  --color-fondo: #f4f6fa;
+  --color-blanco: #ffffff;
+  --color-texto: #1e1e1e;
+  --color-gris: #cbd5e1;
+  --sombra-suave: 0 4px 12px rgba(0, 0, 0, 0.08);
+  --borde-radio: 12px;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: var(--color-fondo);
+  margin: 0;
+  padding: 0;
+  color: var(--color-texto);
+}
+
+/* NAVBAR */
+header {
+  background-color: var(--color-primario);
+  color: var(--color-blanco);
+  padding: 1rem 2rem;
+  text-align: center;
+  box-shadow: var(--sombra-suave);
+}
+
+header h1 {
+  margin: 0;
+  font-size: 2rem;
+  letter-spacing: 1px;
+}
+
+/* CONTENEDOR PRINCIPAL */
+main {
+  padding: 2rem;
+  max-width: 1000px;
+  margin: auto;
+}
+
+/* FORMULARIOS */
+form, .bloque, #modal-edicion {
+  background-color: var(--color-blanco);
+  padding: 2rem;
+  border-radius: var(--borde-radio);
+  box-shadow: var(--sombra-suave);
+  margin-bottom: 2rem;
+  animation: fadeIn 0.4s ease-in;
+}
+
+label {
+  font-weight: 600;
+  display: block;
+  margin: 1rem 0 0.4rem;
+}
+
+input[type="text"],
+input[type="number"],
+input[type="time"],
+select {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid var(--color-gris);
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  font-size: 1rem;
+}
+
+input::placeholder {
+  color: #999;
+}
+
+button {
+  background-color: var(--color-primario);
+  color: var(--color-blanco);
+  padding: 0.8rem 1.5rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  margin-top: 1rem;
+}
+
+button:hover {
+  background-color: var(--color-secundario);
+  color: var(--color-primario);
+}
+
+/* LISTA DE SURTIDORES */
+#lista-surtidores,
+#lista-franjas {
+  list-style: none;
+  padding: 0;
+  margin: 2rem auto;
+}
+
+#lista-surtidores li,
+#lista-franjas li {
+  background-color: var(--color-blanco);
+  padding: 1.2rem;
+  margin-bottom: 1rem;
+  border-left: 6px solid var(--color-secundario);
+  box-shadow: var(--sombra-suave);
+  border-radius: var(--borde-radio);
+  transition: transform 0.2s;
+}
+
+#lista-surtidores li:hover {
+  transform: translateY(-4px);
+}
+
+/* SECCIÓN DE PROBABILIDAD */
+#resultado-probabilidad {
+  text-align: center;
+  font-size: 1.1rem;
+  color: var(--color-primario);
+  background-color: #e8f4ff;
+  border-left: 4px solid var(--color-secundario);
+  padding: 1rem;
+  border-radius: var(--borde-radio);
+  margin-top: 1rem;
+  box-shadow: var(--sombra-suave);
+}
+
+/* MODAL */
+#modal-edicion.oculto {
+  display: none;
+}
+
+#modal-edicion {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: var(--color-blanco);
+  padding: 2rem;
+  z-index: 1000;
+  border-radius: var(--borde-radio);
+  box-shadow: var(--sombra-suave);
+  max-width: 500px;
+  max-height: 90vh;
+  overflow-y: auto;
+}

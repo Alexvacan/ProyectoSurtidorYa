@@ -6,6 +6,7 @@ export class Conductor {
       : [
           { 
             nombre: 'Surtidor A',
+            direccion: 'Av. República 1234, Cercado',
             estado: 'Disponible',
             fila: 5,
             zona: 'Cercado',
@@ -18,6 +19,7 @@ export class Conductor {
           },
           {
             nombre: 'Surtidor B',
+            direccion: 'Calle Cochabamba 5678, Pacata',
             estado: 'Sin gasolina',
             fila: 0,
             zona: 'Pacata',
@@ -30,6 +32,7 @@ export class Conductor {
           },
           {
             nombre: 'Surtidor C',
+            direccion: 'Av. libertad 9012, Quillacollo',
             estado: 'Disponible',
             fila: 2,
             zona: 'Quillacollo',

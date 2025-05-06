@@ -491,5 +491,22 @@
     },
     "coverage": 0,
     "test_count": 20
+  },
+  {
+    "sha": "a409c6b771927fd475e92027c5f92ae65fd84946",
+    "author": "Jorge Vargas",
+    "commit": {
+      "date": "2025-05-06T02:53:49.000Z",
+      "message": "feat: agregar la funcionalidad para ver la direccion del surtidor",
+      "url": "https://github.com/Alexvacan/ProyectoSurtidorYa/commit/a409c6b771927fd475e92027c5f92ae65fd84946"
+    },
+    "stats": {
+      "total": 12,
+      "additions": 12,
+      "deletions": 0,
+      "date": "2025-05-06"
+    },
+    "coverage": 0,
+    "test_count": 21
   }
 ]

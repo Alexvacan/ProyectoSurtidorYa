@@ -182,3 +182,12 @@ describe('Conductor', () => {
     expect(resultado.nombre).toBe('Único');
   });
 });
+
+describe('Conductor', () => {
+  it('debería retornar una lista de surtidores con propiedad direccion', () => {
+    const conductor = new Conductor();
+    const surtidores = conductor.listaSurtidores();
+    expect(surtidores[0]).toHaveProperty('direccion');
+    expect(typeof surtidores[0].direccion).toBe('string');
+  });
+});

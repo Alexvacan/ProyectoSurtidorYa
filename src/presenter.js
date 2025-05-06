@@ -12,19 +12,27 @@ export class Presenter {
 
     this.modalEdicion = document.getElementById('modal-edicion');
     this.editarNombre = document.getElementById('editar-nombre');
+    this.editarDireccionInput = document.getElementById('editar-direccion');
     this.editarEstado = document.getElementById('editar-estado');
     this.editarFila = document.getElementById('editar-fila');
     this.editarZona = document.getElementById('editar-zona');
     this.editarLitros = document.getElementById('editar-litros');
     this.btnGuardarEdicion = document.getElementById('guardar-edicion');
-    this.horarioAperturaInput = document.getElementById('horario-apertura');
-    this.horarioCierreInput = document.getElementById('horario-cierre');
-    this.contactoInput = document.getElementById('contacto');
-
+    this.apertura = document.getElementById('apertura');
+    this.cierre = document.getElementById('cierre');
+    this.contacto = document.getElementById('contacto');
+    this.editarApertura = document.getElementById('editar-apertura');
+    this.editarCierre = document.getElementById('editar-cierre');
+    this.editarContacto = document.getElementById('editar-contacto')
     this.sortCriteria = 'nombre';
     this.sortSelect = document.getElementById('sort-criteria');
 
     this.selectSurtidorFranja = document.getElementById('surtidor-seleccionado');
+    this.btnCalcularProb       = document.getElementById('calcular-probabilidad');
+    this.textoProbabilidad     = document.getElementById('texto-probabilidad');
+    // ← Aquí añades:
+    this.direccionInput        = document.getElementById('direccion');
+    this.sortCriteria = 'nombre';
   }
 
   sortList(list) {
@@ -49,7 +57,6 @@ export class Presenter {
   mostrarSurtidores() {
     const listaEl = document.getElementById('lista-surtidores');
     listaEl.innerHTML = '';
-
     let surtidores = this.sortList(this.conductor.listaSurtidores());
     if (!this.mostrarTodos) {
       surtidores = surtidores.filter(s => s.estado === 'Disponible');
@@ -59,20 +66,21 @@ export class Presenter {
     }
 
     surtidores.forEach(s => {
-      const nivel = this.conductor.nivelGasolina(s.litros);
+      const nivel = this.conductor.nivelGasolina(s.litros); // Asegúrate de que esta línea esté presente
       const li = document.createElement('li');
       li.innerHTML = `
         <strong>${s.nombre}</strong> - ${s.estado}<br>
+        <em>Dirección:</em> ${s.direccion}<br>
         Autos en fila: ${s.fila} - Zona: ${s.zona}<br>
         Nivel de gasolina: ${nivel} (${s.litros} litros)<br>
-        Horario: ${s.horarioApertura} - ${s.horarioCierre}<br>
+        Horario: ${s.apertura} - ${s.cierre}<br>
         Contacto: ${s.contacto}
       `;
 
       const tipoAuto = s.tipoAuto || 'pequeno'; 
     const prob = calcularProbabilidadCarga({
-      combustibleDisponible: s.litros,
-      autosEsperando: s.fila,
+      combustibleDisponible: Number(s.litros), // <--- aquí
+      autosEsperando: Number(s.fila),          // <--- y aquí
       tipoAuto: tipoAuto 
     });
     const p = document.createElement('p');
@@ -103,9 +111,10 @@ export class Presenter {
         this.editarFila.value = s.fila;
         this.editarZona.value = s.zona;
         this.editarLitros.value = s.litros;
-        this.horarioAperturaInput.value = s.horarioApertura;
-        this.horarioCierreInput.value = s.horarioCierre;
-        this.contactoInput.value = s.contacto;
+        this.editarApertura.value = s.apertura;
+        this.editarCierre.value = s.cierre;
+        this.editarContacto.value = s.contacto;
+        this.editarDireccionInput.value = s.direccion;
         this.modalEdicion.classList.remove('oculto');
       };
 
@@ -120,27 +129,30 @@ export class Presenter {
     form.addEventListener('submit', e => {
       e.preventDefault();
       const nombre = form.querySelector('#nombre').value.trim();
+      const direccion = form.querySelector('#direccion').value.trim();
       const estado = form.querySelector('#estado').value;
       const fila = form.querySelector('#fila').value;
       const zona = form.querySelector('#zona').value;
       const litros = form.querySelector('#litros').value;
-      const horA = form.querySelector('#hora-reabastecimiento').value;
-      const horC = form.querySelector('#horario-cierre').value;
+
+      const apertura = form.querySelector('#apertura').value;
+      const cierre = form.querySelector('#cierre').value;
       const contacto = form.querySelector('#contacto').value;
 
-      if (!nombre || !fila || !zona) {
+      if (!nombre || !direccion || !fila || !zona) {
         alert('Por favor, completa todos los campos.');
         return;
       }
 
       this.conductor.agregarSurtidor(
         nombre,
+        direccion,
         estado,
         fila,
         zona,
         litros,
-        horA,
-        horC,
+        apertura,
+        cierre,
         contacto
       );
       this.mostrarSurtidores();
@@ -206,19 +218,27 @@ export class Presenter {
       if (surtidores.length) this.mostrarFranjas(surtidores[0].nombre);
     }
   }
-
+  manejarCalculoProbabilidad() {
+    this.btnCalcularProb.addEventListener('click', () => {
+      const nombre = this.selectSurtidorFranja.value;
+      const { porcentaje, autosQuePodranCargar } = this.obtenerProbabilidadCarga(nombre);
+      this.textoProbabilidad.textContent = `Probabilidad de carga: ${porcentaje}% (${autosQuePodranCargar} autos podrán cargar)`;
+    });
+  }
+  
   manejarEdicion() {
     this.btnGuardarEdicion.addEventListener('click', () => {
       this.conductor.editarSurtidor(
         this.nombreEditando,
         this.editarNombre.value,
+        this.editarDireccionInput.value,
         this.editarEstado.value,
         parseInt(this.editarFila.value, 10),
         this.editarZona.value,
         parseFloat(this.editarLitros.value),
-        this.horarioAperturaInput.value,
-        this.horarioCierreInput.value,
-        this.contactoInput.value
+        this.editarApertura.value,
+        this.editarCierre.value,
+        this.editarContacto.value
       );
       this.modalEdicion.classList.add('oculto');
       this.mostrarSurtidores();
@@ -229,7 +249,11 @@ export class Presenter {
   obtenerProbabilidadCarga(nombre) {
     const s = this.conductor.obtenerSurtidorPorNombre(nombre);
     if (!s) return { porcentaje: 0, autosQuePodranCargar: 0 };
-    return calcularProbabilidadCarga({ combustibleDisponible: s.litros, autosEsperando: s.fila, consumoPromedioPorAuto: 10 });
+    return calcularProbabilidadCarga({
+      combustibleDisponible: Number(s.litros),
+      autosEsperando: Number(s.fila),
+      consumoPromedioPorAuto: 10
+    });
   }
 
   inicializar() {
@@ -241,6 +265,8 @@ export class Presenter {
     this.manejarEdicion();
     this.manejarOrdenacion();
     this.manejarSeleccionSurtidor();
+    this.manejarCalculoProbabilidad();
+
 
     const botonCalcular = document.getElementById('calcular-probabilidad');
 botonCalcular.addEventListener('click', () => {

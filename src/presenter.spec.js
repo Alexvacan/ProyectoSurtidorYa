@@ -1,5 +1,5 @@
 import { Presenter } from './presenter.js';
-
+import { Conductor } from './Conductor.js';
 // Simular un entorno DOM mínimo y localStorage
 beforeEach(() => {
   global.localStorage = { getItem: jest.fn(() => null), setItem: jest.fn() };
@@ -11,6 +11,14 @@ beforeEach(() => {
       appendChild: jest.fn(),
       classList: { add: jest.fn() },
       style: {}
+    })),
+    createElement: jest.fn().mockImplementation(() => ({
+        innerHTML: '',
+        textContent: '',
+        classList: { add: jest.fn() },
+        style: {},
+        appendChild: jest.fn(),
+        addEventListener: jest.fn()
     }))
   };
 });
@@ -26,3 +34,7 @@ describe('Presenter – franjas horarias', () => {
     expect(typeof p.manejarSeleccionSurtidor).toBe('function');
   });
 });
+
+  
+  
+  

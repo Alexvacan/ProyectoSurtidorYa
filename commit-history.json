@@ -510,21 +510,89 @@
     "test_count": 21
   },
   {
-    "sha": "033838de6742d060f259144993c42bad08ac2505",
-    "author": "chenaoh",
+    "sha": "18bdc08a9b8ee19c068a24fb34300c3dba58a299",
+    "author": "Jorge Vargas",
     "commit": {
-      "date": "2025-05-06T04:38:46.000Z",
-      "message": "Refactor boton editar",
-      "url": "https://github.com/Alexvacan/ProyectoSurtidorYa/commit/033838de6742d060f259144993c42bad08ac2505"
+      "date": "2025-05-06T05:07:18.000Z",
+      "message": "fix:correccion de errores en preseneter",
+      "url": "https://github.com/Alexvacan/ProyectoSurtidorYa/commit/18bdc08a9b8ee19c068a24fb34300c3dba58a299"
     },
     "stats": {
-      "total": 16,
-      "additions": 15,
+      "total": 135,
+      "additions": 94,
+      "deletions": 41,
+      "date": "2025-05-06"
+    },
+    "coverage": 0,
+    "test_count": 21
+  },
+  {
+    "sha": "ab746e17e2ad9797bc0132c4ce0c02189bdac5e0",
+    "author": "Jorge Vargas",
+    "commit": {
+      "date": "2025-05-06T05:17:09.000Z",
+      "message": "fix:correccion de errores en preseneter2",
+      "url": "https://github.com/Alexvacan/ProyectoSurtidorYa/commit/ab746e17e2ad9797bc0132c4ce0c02189bdac5e0"
+    },
+    "stats": {
+      "total": 17,
+      "additions": 16,
       "deletions": 1,
       "date": "2025-05-06"
     },
     "coverage": 0,
     "test_count": 21
+  },
+  {
+    "sha": "8d95d870158f6e94f05a31843a29901be60a4c4f",
+    "author": "Fernando Belmonte",
+    "commit": {
+      "date": "2025-05-06T05:58:51.000Z",
+      "message": "Fix:Probabilidad arreglada",
+      "url": "https://github.com/Alexvacan/ProyectoSurtidorYa/commit/8d95d870158f6e94f05a31843a29901be60a4c4f"
+    },
+    "stats": {
+      "total": 52,
+      "additions": 39,
+      "deletions": 13,
+      "date": "2025-05-06"
+    },
+    "coverage": 0,
+    "test_count": 21
+  },
+  {
+    "sha": "73b44743940bb8030379e22e83c62d7174c86690",
+    "author": "“Wendy",
+    "commit": {
+      "date": "2025-05-06T08:18:26.000Z",
+      "message": "Merge branch 'Horariodeatencionpt2'",
+      "url": "https://github.com/Alexvacan/ProyectoSurtidorYa/commit/73b44743940bb8030379e22e83c62d7174c86690"
+    },
+    "stats": {
+      "total": 10,
+      "additions": 6,
+      "deletions": 4,
+      "date": "2025-05-06"
+    },
+    "coverage": 0,
+    "test_count": 0
+  },
+  {
+    "sha": "b52c8309da90c3be33b36498e5f2d38e07533d73",
+    "author": "“Wendy",
+    "commit": {
+      "date": "2025-05-06T08:20:39.000Z",
+      "message": "\"Merge rama 'HorariodeAtencion pt2' a main - Integración de funcionalidades de horarios\"",
+      "url": "https://github.com/Alexvacan/ProyectoSurtidorYa/commit/b52c8309da90c3be33b36498e5f2d38e07533d73"
+    },
+    "stats": {
+      "total": 164,
+      "additions": 86,
+      "deletions": 78,
+      "date": "2025-05-06"
+    },
+    "coverage": 0,
+    "test_count": 0
   },
   {
     "sha": "3f0cc5e2918124e862293ed21b090aa3cfa0b3e3",
@@ -542,5 +610,22 @@
     },
     "coverage": 0,
     "test_count": 23
+  },
+  {
+    "sha": "548d663da7a6769818c724252ae76d6e203d1020",
+    "author": "chenaoh",
+    "commit": {
+      "date": "2025-05-06T08:48:19.000Z",
+      "message": "Merge y correcciones",
+      "url": "https://github.com/Alexvacan/ProyectoSurtidorYa/commit/548d663da7a6769818c724252ae76d6e203d1020"
+    },
+    "stats": {
+      "total": 357,
+      "additions": 246,
+      "deletions": 111,
+      "date": "2025-05-06"
+    },
+    "coverage": 0,
+    "test_count": 0
   }
 ]

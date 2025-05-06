@@ -44,18 +44,18 @@ export class Conductor {
     return this.surtidores;
   }
 
-  agregarSurtidor(...args) {
-    let nombre, direccion, estado, fila, zona, litros, apertura, cierre, contacto;
+  agregarSurtidor(data) {
+    if (typeof data !== 'object') {
+      throw new Error('agregarSurtidor: se esperaba un objeto');
+    }
   
-    if (args.length === 8) {
-      // Firma antigua sin dirección
-      [nombre, estado, fila, zona, litros, apertura, cierre, contacto] = args;
-      direccion = '';
-    } else if (args.length === 9) {
-      // Firma nueva con dirección
-      [nombre, direccion, estado, fila, zona, litros, apertura, cierre, contacto] = args;
-    } else {
-      throw new Error('agregarSurtidor: parámetros inválidos');
+    const {
+      nombre, direccion, estado, fila, zona,
+      litros, apertura, cierre, contacto
+    } = data;
+  
+    if (!nombre || !zona || !litros || !apertura || !cierre || !contacto) {
+      throw new Error('agregarSurtidor: datos incompletos');
     }
   
     const surtidor = {
@@ -74,7 +74,7 @@ export class Conductor {
   }
   
 
-  eliminarSurtidor(nombre) {
+  eliminarSurtidor(nombre) {  
     this.surtidores = this.surtidores.filter(s => s.nombre !== nombre);
     this.guardarEnLocalStorage();
   }

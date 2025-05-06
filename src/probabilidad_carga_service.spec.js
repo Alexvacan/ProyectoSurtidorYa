@@ -3,14 +3,14 @@ const { calcularProbabilidadCarga } = require('././probabilidadCargaService');
 describe('Servicio de Probabilidad de Carga', () => {
   it('debería retornar porcentaje menor si hay más autos que gasolina', () => {
     const datos = {
-      combustibleDisponible: 30,
+      combustibleDisponible: 90,
       autosEsperando: 4,
-      consumoPromedioPorAuto: 10
+      consumoPromedioPorAuto: 30
     };
 
     const resultado = calcularProbabilidadCarga(datos);
-    expect(resultado.autosQuePodranCargar).toBe(1);
-    expect(resultado.porcentaje).toBe(38);
+    expect(resultado.autosQuePodranCargar).toBe(3);
+    expect(resultado.porcentaje).toBe(75);
   });
 
   it('debería manejar correctamente si no hay combustible', () => {

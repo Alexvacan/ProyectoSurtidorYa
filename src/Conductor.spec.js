@@ -1,7 +1,6 @@
 import { Conductor } from './Conductor.js';
 
 beforeEach(() => {
-  // Limpiar los mocks de localStorage antes de cada test
   global.localStorage = {
     getItem: jest.fn(() => null),
     setItem: jest.fn(),
@@ -22,16 +21,16 @@ describe('Conductor', () => {
 
   it('debería guardar en localStorage al agregar un surtidor', () => {
     const conductor = new Conductor();
-    conductor.agregarSurtidor(
-      'Nuevo',
-      'Disponible',
-      3,
-      'Cercado',
-      1000,
-      '06:00',
-      '22:00',
-      '77777777'
-    );
+    conductor.agregarSurtidor({
+      nombre: 'Nuevo',
+      estado: 'Disponible',
+      fila: 3,
+      zona: 'Cercado',
+      litros: 1000,
+      apertura: '06:00',
+      cierre: '22:00',
+      contacto: '77777777',
+    });
 
     expect(localStorage.setItem).toHaveBeenCalledWith(
       'surtidores',
@@ -52,16 +51,16 @@ describe('Conductor', () => {
     const conductor = new Conductor();
     const largoAnterior = conductor.listaSurtidores().length;
 
-    conductor.agregarSurtidor(
-      'Nuevo Surtidor',
-      'Disponible',
-      3,
-      'Tiquipaya',
-      5000,
-      '05:00',
-      '19:00',
-      '71112233'
-    );
+    conductor.agregarSurtidor({
+      nombre: 'Nuevo Surtidor',
+      estado: 'Disponible',
+      fila: 3,
+      zona: 'Tiquipaya',
+      litros: 5000,
+      apertura: '05:00',
+      cierre: '19:00',
+      contacto: '71112233',
+    });
 
     const surtidores = conductor.listaSurtidores();
     const ultimo = surtidores[surtidores.length - 1];
@@ -79,7 +78,17 @@ describe('Conductor', () => {
 
   it('debería filtrar surtidores por nombre', () => {
     const conductor = new Conductor();
-    conductor.agregarSurtidor('Especial', 'Disponible', 1, 'Cercado');
+    conductor.agregarSurtidor({
+      nombre: 'YPF Especial',
+      estado: 'activo',
+      fila: 5,
+      zona: 'zona A',
+      litros: 1000,
+      apertura: '08:00',
+      cierre: '20:00',
+      contacto: '123456789',
+    });
+
     const resultado = conductor.listaSurtidores().filter(s => s.nombre.includes('Especial'));
 
     expect(resultado.length).toBeGreaterThan(0);
@@ -88,7 +97,17 @@ describe('Conductor', () => {
 
   it('debería eliminar un surtidor por nombre', () => {
     const conductor = new Conductor();
-    conductor.agregarSurtidor('Temporal', 'Disponible', 0, 'Pacata');
+    conductor.agregarSurtidor({
+      nombre: 'Temporal',
+      estado: 'Disponible',
+      fila: 0,
+      zona: 'Pacata',
+      litros: 1000,
+      apertura: '08:00',
+      cierre: '20:00',
+      contacto: '12345678',
+    });
+
     conductor.eliminarSurtidor('Temporal');
     const resultado = conductor.listaSurtidores().filter(s => s.nombre === 'Temporal');
 
@@ -101,8 +120,28 @@ describe('Conductor', () => {
 
   it('debería editar un surtidor existente', () => {
     const conductor = new Conductor();
-    conductor.agregarSurtidor('Estación X', 'Disponible', 2, 'Cercado');
-    conductor.editarSurtidor('Estación X', 'Estación Editada', 'Sin gasolina', 4, 'Pacata');
+    conductor.agregarSurtidor({
+      nombre: 'Estación X',
+      estado: 'Disponible',
+      fila: 2,
+      zona: 'Cercado',
+      litros: 1000,
+      apertura: '08:00',
+      cierre: '20:00',
+      contacto: '12345678',
+    });
+
+    conductor.editarSurtidor(
+      'Estación X',
+      'Estación Editada',
+      'Sin gasolina',
+      4,
+      'Pacata',
+      2000,
+      '09:00',
+      '21:00',
+      '87654321'
+    );
 
     const surtidor = conductor.listaSurtidores().find(s => s.nombre === 'Estación Editada');
 
@@ -123,16 +162,16 @@ describe('Conductor', () => {
 
   it('debería agregar un surtidor incluyendo horario y contacto', () => {
     const conductor = new Conductor();
-    conductor.agregarSurtidor(
-      'Surtidor Test',
-      'Disponible',
-      5,
-      'Pacata',
-      9000,
-      '06:00',
-      '22:00',
-      '71112222'
-    );
+    conductor.agregarSurtidor({
+      nombre: 'Surtidor Test',
+      estado: 'Disponible',
+      fila: 5,
+      zona: 'Pacata',
+      litros: 9000,
+      apertura: '06:00',
+      cierre: '22:00',
+      contacto: '71112222',
+    });
 
     const surtidor = conductor.listaSurtidores().find(s => s.nombre === 'Surtidor Test');
     expect(surtidor).toBeDefined();
@@ -143,16 +182,16 @@ describe('Conductor', () => {
 
   it('debería editar horario y contacto de un surtidor existente', () => {
     const conductor = new Conductor();
-    conductor.agregarSurtidor(
-      'Surtidor Edit',
-      'Disponible',
-      2,
-      'Quillacollo',
-      8000,
-      '07:00',
-      '21:00',
-      '70000000'
-    );
+    conductor.agregarSurtidor({
+      nombre: 'Surtidor Edit',
+      estado: 'Disponible',
+      fila: 2,
+      zona: 'Quillacollo',
+      litros: 8000,
+      apertura: '07:00',
+      cierre: '21:00',
+      contacto: '70000000',
+    });
 
     conductor.editarSurtidor(
       'Surtidor Edit',
@@ -175,29 +214,39 @@ describe('Conductor', () => {
 
   it('debería obtener un surtidor por su nombre', () => {
     const conductor = new Conductor();
-    conductor.agregarSurtidor('Único', 'Disponible', 1, 'ZonaX');
-    const resultado = conductor.obtenerSurtidorPorNombre('Único');
-
-    expect(resultado).toBeDefined();
-    expect(resultado.nombre).toBe('Único');
-  });
-});
-
-describe('Conductor', () => {
-
-  
-  it('debería agregar un surtidor incluyendo horario y contacto', () => {
-    const conductor = new Conductor();
     conductor.agregarSurtidor({
-      nombre: "Surtidor A",
-      zona: "Centro",
+      nombre: 'Surtidorcito',
+      estado: 'Disponible',
+      fila: 1,
+      zona: 'ZonaX',
       litros: 4000,
-      apertura: "07:00",
-      cierre: "22:00",
-      contacto: "75432123"
+      apertura: '08:00',
+      cierre: '20:00',
+      contacto: '71112222',
     });
 
-})
+    const resultado = conductor.obtenerSurtidorPorNombre('Surtidorcito');
 
+    expect(resultado).toBeDefined();
+    expect(resultado.nombre).toBe('Surtidorcito');
+  });
 
+  it('debería agregar un surtidor incluyendo horario y contacto (versión alternativa)', () => {
+    const conductor = new Conductor();
+    conductor.agregarSurtidor({
+      nombre: 'Surtidor A',
+      estado: 'Disponible',
+      fila: 3,
+      zona: 'Centro',
+      litros: 4000,
+      apertura: '08:00',
+      cierre: '22:00',
+      contacto: '4444444',
+    });
+
+    const surtidor = conductor.listaSurtidores().find(s => s.nombre === 'Surtidor A');
+    expect(surtidor).toBeDefined();
+    expect(surtidor.apertura).toBe('08:00');
+    expect(surtidor.contacto).toBe('4444444');
+  });
 });

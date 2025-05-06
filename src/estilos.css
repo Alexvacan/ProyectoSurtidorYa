@@ -141,7 +141,6 @@ button:hover {
   box-shadow: var(--sombra-suave);
 }
 
-/* MODAL */
 #modal-edicion.oculto {
   display: none;
 }
@@ -160,3 +159,9 @@ button:hover {
   max-height: 90vh;
   overflow-y: auto;
 }
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+

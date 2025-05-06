@@ -2,6 +2,7 @@ import { Conductor } from './Conductor.js';
 import { calcularProbabilidadCarga } from './probabilidadCargaService.js';
 import { TimeSlotService } from './timeSlotService.js';
 
+
 export class Presenter {
   constructor() {
     this.conductor = new Conductor();
@@ -9,7 +10,6 @@ export class Presenter {
     this.zonaSeleccionada = '';
     this.nombreEditando = null;
 
-    // Referencias al DOM para edición
     this.modalEdicion = document.getElementById('modal-edicion');
     this.editarNombre = document.getElementById('editar-nombre');
     this.editarEstado = document.getElementById('editar-estado');
@@ -21,15 +21,12 @@ export class Presenter {
     this.horarioCierreInput = document.getElementById('horario-cierre');
     this.contactoInput = document.getElementById('contacto');
 
-    // Ordenación
     this.sortCriteria = 'nombre';
     this.sortSelect = document.getElementById('sort-criteria');
 
-    // Selección de surtidor para franjas
     this.selectSurtidorFranja = document.getElementById('surtidor-seleccionado');
   }
 
-  // Ordena strings o números según el criterio actual
   sortList(list) {
     return [...list].sort((a, b) => {
       const key = this.sortCriteria;
@@ -41,7 +38,6 @@ export class Presenter {
     });
   }
 
-  // Maneja cambios en el selector de ordenación
   manejarOrdenacion() {
     if (!this.sortSelect) return;
     this.sortSelect.addEventListener('change', e => {
@@ -50,7 +46,6 @@ export class Presenter {
     });
   }
 
-  // Renderiza la lista de surtidores
   mostrarSurtidores() {
     const listaEl = document.getElementById('lista-surtidores');
     listaEl.innerHTML = '';
@@ -74,17 +69,16 @@ export class Presenter {
         Contacto: ${s.contacto}
       `;
 
-      // Probabilidad de carga
-      const prob = calcularProbabilidadCarga({
-        combustibleDisponible: s.litros,
-        autosEsperando: s.fila,
-        consumoPromedioPorAuto: 10
-      });
-      const p = document.createElement('p');
-      p.textContent = `Probabilidad de carga: ${prob.porcentaje}% (${prob.autosQuePodranCargar} autos)`;
-      li.appendChild(p);
+      const tipoAuto = s.tipoAuto || 'pequeno'; 
+    const prob = calcularProbabilidadCarga({
+      combustibleDisponible: s.litros,
+      autosEsperando: s.fila,
+      tipoAuto: tipoAuto 
+    });
+    const p = document.createElement('p');
+    p.textContent = `Probabilidad de carga: ${prob.porcentaje}% (${prob.autosQuePodranCargar} autos)`;
+    li.appendChild(p);
 
-      // Color según estado/nivel
       if (s.estado === 'Sin gasolina') li.style.color = 'red';
       else if (nivel === 'Alto') li.style.color = 'green';
       else if (nivel === 'Medio') li.style.color = 'orange';
@@ -219,9 +213,9 @@ export class Presenter {
         this.nombreEditando,
         this.editarNombre.value,
         this.editarEstado.value,
-        this.editarFila.value,
+        parseInt(this.editarFila.value, 10),
         this.editarZona.value,
-        this.editarLitros.value,
+        parseFloat(this.editarLitros.value),
         this.horarioAperturaInput.value,
         this.horarioCierreInput.value,
         this.contactoInput.value
@@ -247,5 +241,39 @@ export class Presenter {
     this.manejarEdicion();
     this.manejarOrdenacion();
     this.manejarSeleccionSurtidor();
+
+    const botonCalcular = document.getElementById('calcular-probabilidad');
+botonCalcular.addEventListener('click', () => {
+  const select = document.getElementById('surtidor-seleccionado');
+  const nombreSeleccionado = select.value;
+
+  // Obtener la lista de surtidores de la clase conductor
+  const surtidor = this.conductor.listaSurtidores().find(s => s.nombre === nombreSeleccionado);
+
+  // Si no se encuentra el surtidor, mostramos un mensaje de error
+  if (!surtidor) {
+    alert('Surtidor no encontrado');
+    return;
+  }
+
+  // Ya no necesitamos litros y fila como campos de entrada. Los obtenemos directamente del surtidor.
+  const combustibleDisponible = surtidor.litros;  // Obtenemos litros del surtidor
+  const autosEsperando = surtidor.fila;           // Obtenemos la cantidad de autos esperando del surtidor
+  
+  // Suponiendo que el tipo de auto siempre es 'pequeno' (esto puede cambiar dinámicamente si lo necesitas)
+  const tipoAuto = 'pequeno'; 
+
+  // Llamamos a la función de cálculo de probabilidad
+  const resultado = calcularProbabilidadCarga({
+    combustibleDisponible,
+    autosEsperando,
+    tipoAuto
+  });
+
+  // Mostramos el resultado
+  document.getElementById('texto-probabilidad').innerText =
+    `Probabilidad: ${resultado.porcentaje.toFixed(2)}%. Autos que podrán cargar: ${resultado.autosQuePodranCargar}`;
+});
+
   }
 }

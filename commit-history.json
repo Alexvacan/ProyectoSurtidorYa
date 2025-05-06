@@ -525,5 +525,22 @@
     },
     "coverage": 0,
     "test_count": 21
+  },
+  {
+    "sha": "3f0cc5e2918124e862293ed21b090aa3cfa0b3e3",
+    "author": "chenaoh",
+    "commit": {
+      "date": "2025-05-06T08:32:35.000Z",
+      "message": "Refactor funcion calcular probabilidad de cargar",
+      "url": "https://github.com/Alexvacan/ProyectoSurtidorYa/commit/3f0cc5e2918124e862293ed21b090aa3cfa0b3e3"
+    },
+    "stats": {
+      "total": 455,
+      "additions": 277,
+      "deletions": 178,
+      "date": "2025-05-06"
+    },
+    "coverage": 0,
+    "test_count": 23
   }
 ]

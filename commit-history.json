@@ -525,5 +525,22 @@
     },
     "coverage": 0,
     "test_count": 21
+  },
+  {
+    "sha": "ab746e17e2ad9797bc0132c4ce0c02189bdac5e0",
+    "author": "Jorge Vargas",
+    "commit": {
+      "date": "2025-05-06T05:17:09.000Z",
+      "message": "fix:correccion de errores en preseneter2",
+      "url": "https://github.com/Alexvacan/ProyectoSurtidorYa/commit/ab746e17e2ad9797bc0132c4ce0c02189bdac5e0"
+    },
+    "stats": {
+      "total": 17,
+      "additions": 16,
+      "deletions": 1,
+      "date": "2025-05-06"
+    },
+    "coverage": 0,
+    "test_count": 21
   }
 ]

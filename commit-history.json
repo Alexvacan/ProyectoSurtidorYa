@@ -542,5 +542,22 @@
     },
     "coverage": 0,
     "test_count": 21
+  },
+  {
+    "sha": "8d95d870158f6e94f05a31843a29901be60a4c4f",
+    "author": "Fernando Belmonte",
+    "commit": {
+      "date": "2025-05-06T05:58:51.000Z",
+      "message": "Fix:Probabilidad arreglada",
+      "url": "https://github.com/Alexvacan/ProyectoSurtidorYa/commit/8d95d870158f6e94f05a31843a29901be60a4c4f"
+    },
+    "stats": {
+      "total": 52,
+      "additions": 39,
+      "deletions": 13,
+      "date": "2025-05-06"
+    },
+    "coverage": 0,
+    "test_count": 21
   }
 ]

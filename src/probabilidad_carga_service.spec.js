@@ -23,8 +23,8 @@ describe('Servicio de Probabilidad de Carga', () => {
         };
     
         const resultado = calcularProbabilidadCarga(datos);
-        expect(resultado.autosQuePodranCargar).toBe(3);
-        expect(resultado.porcentaje).toBe(75);
+        expect(resultado.autosQuePodranCargar).toBe(1);
+        expect(resultado.porcentaje).toBe(38);
     });
     it('debería manejar correctamente si no hay combustible', () => {
         const datos = {

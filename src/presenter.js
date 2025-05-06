@@ -82,8 +82,8 @@ export class Presenter {
 
       // Probabilidad de carga
       const prob = calcularProbabilidadCarga({
-        combustibleDisponible: s.litros,
-        autosEsperando: s.fila,
+        combustibleDisponible: Number(s.litros), // <--- aquí
+        autosEsperando: Number(s.fila),          // <--- y aquí
         consumoPromedioPorAuto: 10
       });
       const p = document.createElement('p');
@@ -253,7 +253,11 @@ export class Presenter {
   obtenerProbabilidadCarga(nombre) {
     const s = this.conductor.obtenerSurtidorPorNombre(nombre);
     if (!s) return { porcentaje: 0, autosQuePodranCargar: 0 };
-    return calcularProbabilidadCarga({ combustibleDisponible: s.litros, autosEsperando: s.fila, consumoPromedioPorAuto: 10 });
+    return calcularProbabilidadCarga({
+      combustibleDisponible: Number(s.litros),
+      autosEsperando: Number(s.fila),
+      consumoPromedioPorAuto: 10
+    });
   }
 
   inicializar() {

@@ -508,5 +508,22 @@
     },
     "coverage": 0,
     "test_count": 21
+  },
+  {
+    "sha": "033838de6742d060f259144993c42bad08ac2505",
+    "author": "chenaoh",
+    "commit": {
+      "date": "2025-05-06T04:38:46.000Z",
+      "message": "Refactor boton editar",
+      "url": "https://github.com/Alexvacan/ProyectoSurtidorYa/commit/033838de6742d060f259144993c42bad08ac2505"
+    },
+    "stats": {
+      "total": 16,
+      "additions": 15,
+      "deletions": 1,
+      "date": "2025-05-06"
+    },
+    "coverage": 0,
+    "test_count": 21
   }
 ]

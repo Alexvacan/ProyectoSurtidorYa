@@ -18,10 +18,12 @@ export class Presenter {
     this.editarZona = document.getElementById('editar-zona');
     this.editarLitros = document.getElementById('editar-litros');
     this.btnGuardarEdicion = document.getElementById('guardar-edicion');
-    this.horarioAperturaInput = document.getElementById('horario-apertura');
-    this.horarioCierreInput = document.getElementById('horario-cierre');
-    this.contactoInput = document.getElementById('contacto');
-
+    this.apertura = document.getElementById('apertura');
+    this.cierre = document.getElementById('cierre');
+    this.contacto = document.getElementById('contacto');
+    this.editarApertura = document.getElementById('editar-apertura');
+    this.editarCierre = document.getElementById('editar-cierre');
+    this.editarContacto = document.getElementById('editar-contacto')
     // Ordenación
     this.sortCriteria = 'nombre';
     this.sortSelect = document.getElementById('sort-criteria');

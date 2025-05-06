@@ -559,5 +559,22 @@
     },
     "coverage": 0,
     "test_count": 21
+  },
+  {
+    "sha": "73b44743940bb8030379e22e83c62d7174c86690",
+    "author": "“Wendy",
+    "commit": {
+      "date": "2025-05-06T08:18:26.000Z",
+      "message": "Merge branch 'Horariodeatencionpt2'",
+      "url": "https://github.com/Alexvacan/ProyectoSurtidorYa/commit/73b44743940bb8030379e22e83c62d7174c86690"
+    },
+    "stats": {
+      "total": 10,
+      "additions": 6,
+      "deletions": 4,
+      "date": "2025-05-06"
+    },
+    "coverage": 0,
+    "test_count": 0
   }
 ]

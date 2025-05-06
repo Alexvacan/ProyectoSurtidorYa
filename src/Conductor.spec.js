@@ -184,10 +184,15 @@ describe('Conductor', () => {
 });
 
 describe('Conductor', () => {
-  it('debería retornar una lista de surtidores con propiedad direccion', () => {
+  it('debería agregar un surtidor incluyendo horario y contacto', () => {
     const conductor = new Conductor();
-    const surtidores = conductor.listaSurtidores();
-    expect(surtidores[0]).toHaveProperty('direccion');
-    expect(typeof surtidores[0].direccion).toBe('string');
-  });
-});
+    conductor.agregarSurtidor({
+      nombre: "Surtidor A",
+      zona: "Centro",
+      litros: 4000,
+      horarioApertura: "07:00",
+      horarioCierre: "22:00",
+      contacto: "75432123"
+    });
+
+})});

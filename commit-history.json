@@ -576,5 +576,22 @@
     },
     "coverage": 0,
     "test_count": 0
+  },
+  {
+    "sha": "b52c8309da90c3be33b36498e5f2d38e07533d73",
+    "author": "“Wendy",
+    "commit": {
+      "date": "2025-05-06T08:20:39.000Z",
+      "message": "\"Merge rama 'HorariodeAtencion pt2' a main - Integración de funcionalidades de horarios\"",
+      "url": "https://github.com/Alexvacan/ProyectoSurtidorYa/commit/b52c8309da90c3be33b36498e5f2d38e07533d73"
+    },
+    "stats": {
+      "total": 164,
+      "additions": 86,
+      "deletions": 78,
+      "date": "2025-05-06"
+    },
+    "coverage": 0,
+    "test_count": 0
   }
 ]

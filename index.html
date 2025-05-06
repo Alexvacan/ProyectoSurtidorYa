@@ -43,15 +43,14 @@
 
     <input type="number" id="litros" placeholder="Litros" required min="0" />
 
-    <label for="hora-reabastecimiento">Horario de apertura:</label>
-    <input type="time" id="hora-reabastecimiento" required />
+    <label for="apertura">Hora de apertura:</label>
+    <input type="time" id="apertura" required>
 
-    <label for="horario-cierre">Horario de cierre:</label>
-    <input type="time" id="horario-cierre" required />
+    <label for="cierre">Hora de cierre:</label>
+    <input type="time" id="cierre" required>
 
-    <label for="contacto">Contacto:</label>
-    <input type="text" id="contacto" placeholder="Número de contacto" required />
-
+    <label for="contacto">Número de contacto:</label>
+    <input type="tel" id="contacto" required>
     <button type="submit">Agregar surtidor</button>
   </form>
 
@@ -117,14 +116,14 @@
     <input type="number" id="editar-litros" placeholder="Litros" required min="0" /><br><br>
     <label for="editar-hora-reabastecimiento">Hora reabastecimiento:</label>
     <input type="time" id="editar-hora-reabastecimiento" required /><br><br>
-    <label for="horario-apertura">Horario de apertura:</label>
-    <input type="time" id="horario-apertura" required /><br><br>
-    <label for="horario-cierre">Horario de cierre:</label>
-    <input type="time" id="horario-cierre" required /><br><br>
-    <label for="contacto">Contacto:</label>
-    <input type="text" id="contacto" placeholder="Número de contacto" required /><br><br>
+    <label for="editar-apertura">Hora de apertura:</label>
+    <input type="time" id="editar-apertura">
+    <label for="editar-cierre">Hora de cierre:</label>
+    <input type="time" id="editar-cierre">
+    <label for="editar-contacto">Número de contacto:</label>
+    <input type="tel" id="editar-contacto"placeholder="Número de contacto" required>
     <label for="editar-direccion">Dirección:</label>
-<input type="text" id="editar-direccion" required /><br><br>
+    <input type="text" id="editar-direccion" required /><br><br>
     <button id="guardar-edicion">Guardar</button>
     <button id="cancelar-edicion">Cancelar</button>
   </div>

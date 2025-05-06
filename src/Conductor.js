@@ -11,11 +11,9 @@ export class Conductor {
             fila: 5,
             zona: 'Cercado',
             litros: 12000,
-            horarioApertura: '06:00',
-            horarioCierre: '22:00',
-            contacto: '77711122',
-            horarioEspecial: '',
-            festivo: false
+            apertura: '08:00',
+            cierre: '20:00',
+            contacto: '4444444'
           },
           {
             nombre: 'Surtidor B',
@@ -24,11 +22,9 @@ export class Conductor {
             fila: 0,
             zona: 'Pacata',
             litros: 0,
-            horarioApertura: '07:00',
-            horarioCierre: '21:00',
-            contacto: '78889999',
-            horarioEspecial: '',
-            festivo: false
+            apertura: '07:30',
+            cierre: '19:00',
+            contacto: '7777777'
           },
           {
             nombre: 'Surtidor C',
@@ -37,11 +33,9 @@ export class Conductor {
             fila: 2,
             zona: 'Quillacollo',
             litros: 8000,
-            horarioApertura: '05:30',
-            horarioCierre: '20:30',
-            contacto: '79998877',
-            horarioEspecial: '',
-            festivo: false
+            apertura: '06:00',
+            cierre: '18:00',
+            contacto: '6666666'
           }
         ];
   }
@@ -51,28 +45,31 @@ export class Conductor {
   }
 
   agregarSurtidor(...args) {
-    let nombre, direccion, estado, fila, zona, litros, horarioApertura, horarioCierre, contacto;
+    let nombre, direccion, estado, fila, zona, litros, apertura, cierre, contacto;
   
     if (args.length === 8) {
-      // Firma antigua: nombre, estado, fila, zona, litros, horarioApertura, horarioCierre, contacto
-      [nombre, estado, fila, zona, litros, horarioApertura, horarioCierre, contacto] = args;
+      // Firma antigua sin dirección
+      [nombre, estado, fila, zona, litros, apertura, cierre, contacto] = args;
       direccion = '';
+    } else if (args.length === 9) {
+      // Firma nueva con dirección
+      [nombre, direccion, estado, fila, zona, litros, apertura, cierre, contacto] = args;
     } else {
-      // Firma nueva: nombre, direccion, estado, fila, zona, litros, horarioApertura, horarioCierre, contacto
-      [nombre, direccion, estado, fila, zona, litros, horarioApertura, horarioCierre, contacto] = args;
+      throw new Error('agregarSurtidor: parámetros inválidos');
     }
   
-    this.surtidores.push({
+    const surtidor = {
       nombre,
       direccion,
       estado: String(estado).trim(),
       fila: parseInt(fila, 10),
       zona,
       litros: parseInt(litros, 10),
-      horarioApertura,
-      horarioCierre,
+      apertura,
+      cierre,
       contacto
-    });
+    };
+    this.surtidores.push(surtidor);
     this.guardarEnLocalStorage();
   }
   
@@ -86,40 +83,42 @@ export class Conductor {
     const s = this.surtidores.find(x => x.nombre === nombreOriginal);
     if (!s) return;
   
-    let [nuevoNombre, nuevaDireccion, nuevoEstado, nuevaFila, nuevaZona, nuevosLitros, nuevoHorA, nuevoHorC, nuevoContacto] = [];
+    let [nuevoNombre, nuevaDireccion, nuevoEstado, nuevaFila, nuevaZona, nuevosLitros, nuevaApertura, nuevoCierre, nuevoContacto] = [];
   
     if (args.length === 4) {
-      // tests básicos: nombre, estado, fila, zona
+      // Firma simple: nombre, estado, fila, zona
       [nuevoNombre, nuevoEstado, nuevaFila, nuevaZona] = args;
       nuevaDireccion = s.direccion;
       nuevosLitros   = s.litros;
-      nuevoHorA      = s.horarioApertura;
-      nuevoHorC      = s.horarioCierre;
+      nuevaApertura  = s.apertura;
+      nuevoCierre    = s.cierre;
       nuevoContacto  = s.contacto;
     }
     else if (args.length === 8) {
-      // tests con litros/horarios/contacto (8 args)
-      [nuevoNombre, nuevoEstado, nuevaFila, nuevaZona, nuevosLitros, nuevoHorA, nuevoHorC, nuevoContacto] = args;
+      // Firma intermedia sin dirección
+      [nuevoNombre, nuevoEstado, nuevaFila, nuevaZona, nuevosLitros, nuevaApertura, nuevoCierre, nuevoContacto] = args;
       nuevaDireccion = s.direccion;
     }
     else if (args.length === 9) {
-      // firma completa con dirección (9 args)
-      [nuevoNombre, nuevaDireccion, nuevoEstado, nuevaFila, nuevaZona, nuevosLitros, nuevoHorA, nuevoHorC, nuevoContacto] = args;
+      // Firma completa con dirección
+      [nuevoNombre, nuevaDireccion, nuevoEstado, nuevaFila, nuevaZona, nuevosLitros, nuevaApertura, nuevoCierre, nuevoContacto] = args;
     } else {
       throw new Error('editarSurtidor: parámetros inválidos');
     }
   
-    s.nombre          = nuevoNombre;
-    s.direccion       = nuevaDireccion;
-    s.estado          = String(nuevoEstado).trim();
-    s.fila            = parseInt(nuevaFila, 10);
-    s.zona            = nuevaZona;
-    s.litros          = parseInt(nuevosLitros, 10);
-    s.horarioApertura = nuevoHorA;
-    s.horarioCierre   = nuevoHorC;
-    s.contacto        = nuevoContacto;
+    s.nombre    = nuevoNombre;
+    s.direccion = nuevaDireccion;
+    s.estado    = String(nuevoEstado).trim();
+    s.fila      = parseInt(nuevaFila, 10);
+    s.zona      = nuevaZona;
+    s.litros    = parseInt(nuevosLitros, 10);
+    s.apertura  = nuevaApertura;
+    s.cierre    = nuevoCierre;
+    s.contacto  = nuevoContacto;
+  
     this.guardarEnLocalStorage();
   }
+  
   
 
   nivelGasolina(litros) {

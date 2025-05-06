@@ -78,7 +78,7 @@ export class Presenter {
         <em>Dirección:</em> ${s.direccion}<br>
         Autos en fila: ${s.fila} - Zona: ${s.zona}<br>
         Nivel de gasolina: ${nivel} (${s.litros} litros)<br>
-        Horario: ${s.horarioApertura} - ${s.horarioCierre}<br>
+        Horario: ${s.apertura} - ${s.cierre}<br>
         Contacto: ${s.contacto}
       `;
 
@@ -117,9 +117,9 @@ export class Presenter {
         this.editarFila.value = s.fila;
         this.editarZona.value = s.zona;
         this.editarLitros.value = s.litros;
-        this.horarioAperturaInput.value = s.horarioApertura;
-        this.horarioCierreInput.value = s.horarioCierre;
-        this.contactoInput.value = s.contacto;
+        this.editarApertura.value = s.apertura;
+        this.editarCierre.value = s.cierre;
+        this.editarContacto.value = s.contacto;
         this.editarDireccionInput.value = s.direccion;
         this.modalEdicion.classList.remove('oculto');
       };
@@ -140,8 +140,9 @@ export class Presenter {
       const fila = form.querySelector('#fila').value;
       const zona = form.querySelector('#zona').value;
       const litros = form.querySelector('#litros').value;
-      const horA = form.querySelector('#hora-reabastecimiento').value;
-      const horC = form.querySelector('#horario-cierre').value;
+
+      const apertura = form.querySelector('#apertura').value;
+      const cierre = form.querySelector('#cierre').value;
       const contacto = form.querySelector('#contacto').value;
 
       if (!nombre || !direccion || !fila || !zona) {
@@ -156,8 +157,8 @@ export class Presenter {
         fila,
         zona,
         litros,
-        horA,
-        horC,
+        apertura,
+        cierre,
         contacto
       );
       this.mostrarSurtidores();
@@ -241,10 +242,9 @@ export class Presenter {
         this.editarFila.value,
         this.editarZona.value,
         this.editarLitros.value,
-        this.horarioAperturaInput.value,
-        this.horarioCierreInput.value,
-        this.contactoInput.value
-        
+        this.editarApertura.value,
+        this.editarCierre.value,
+        this.editarContacto.value
       );
       this.modalEdicion.classList.add('oculto');
       this.mostrarSurtidores();

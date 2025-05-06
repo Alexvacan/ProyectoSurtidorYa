@@ -12,6 +12,7 @@ export class Presenter {
     // Referencias al DOM para edición
     this.modalEdicion = document.getElementById('modal-edicion');
     this.editarNombre = document.getElementById('editar-nombre');
+    this.editarDireccionInput = document.getElementById('editar-direccion');
     this.editarEstado = document.getElementById('editar-estado');
     this.editarFila = document.getElementById('editar-fila');
     this.editarZona = document.getElementById('editar-zona');
@@ -27,6 +28,11 @@ export class Presenter {
 
     // Selección de surtidor para franjas
     this.selectSurtidorFranja = document.getElementById('surtidor-seleccionado');
+    this.btnCalcularProb       = document.getElementById('calcular-probabilidad');
+    this.textoProbabilidad     = document.getElementById('texto-probabilidad');
+    // ← Aquí añades:
+    this.direccionInput        = document.getElementById('direccion');
+    this.sortCriteria = 'nombre';
   }
 
   // Ordena strings o números según el criterio actual
@@ -54,7 +60,6 @@ export class Presenter {
   mostrarSurtidores() {
     const listaEl = document.getElementById('lista-surtidores');
     listaEl.innerHTML = '';
-
     let surtidores = this.sortList(this.conductor.listaSurtidores());
     if (!this.mostrarTodos) {
       surtidores = surtidores.filter(s => s.estado === 'Disponible');
@@ -64,10 +69,11 @@ export class Presenter {
     }
 
     surtidores.forEach(s => {
-      const nivel = this.conductor.nivelGasolina(s.litros);
+      const nivel = this.conductor.nivelGasolina(s.litros); // Asegúrate de que esta línea esté presente
       const li = document.createElement('li');
       li.innerHTML = `
         <strong>${s.nombre}</strong> - ${s.estado}<br>
+        <em>Dirección:</em> ${s.direccion}<br>
         Autos en fila: ${s.fila} - Zona: ${s.zona}<br>
         Nivel de gasolina: ${nivel} (${s.litros} litros)<br>
         Horario: ${s.horarioApertura} - ${s.horarioCierre}<br>
@@ -112,6 +118,7 @@ export class Presenter {
         this.horarioAperturaInput.value = s.horarioApertura;
         this.horarioCierreInput.value = s.horarioCierre;
         this.contactoInput.value = s.contacto;
+        this.editarDireccionInput.value = s.direccion;
         this.modalEdicion.classList.remove('oculto');
       };
 
@@ -126,6 +133,7 @@ export class Presenter {
     form.addEventListener('submit', e => {
       e.preventDefault();
       const nombre = form.querySelector('#nombre').value.trim();
+      const direccion = form.querySelector('#direccion').value.trim();
       const estado = form.querySelector('#estado').value;
       const fila = form.querySelector('#fila').value;
       const zona = form.querySelector('#zona').value;
@@ -134,13 +142,14 @@ export class Presenter {
       const horC = form.querySelector('#horario-cierre').value;
       const contacto = form.querySelector('#contacto').value;
 
-      if (!nombre || !fila || !zona) {
+      if (!nombre || !direccion || !fila || !zona) {
         alert('Por favor, completa todos los campos.');
         return;
       }
 
       this.conductor.agregarSurtidor(
         nombre,
+        direccion,
         estado,
         fila,
         zona,
@@ -212,12 +221,20 @@ export class Presenter {
       if (surtidores.length) this.mostrarFranjas(surtidores[0].nombre);
     }
   }
-
+  manejarCalculoProbabilidad() {
+    this.btnCalcularProb.addEventListener('click', () => {
+      const nombre = this.selectSurtidorFranja.value;
+      const { porcentaje, autosQuePodranCargar } = this.obtenerProbabilidadCarga(nombre);
+      this.textoProbabilidad.textContent = `Probabilidad de carga: ${porcentaje}% (${autosQuePodranCargar} autos podrán cargar)`;
+    });
+  }
+  
   manejarEdicion() {
     this.btnGuardarEdicion.addEventListener('click', () => {
       this.conductor.editarSurtidor(
         this.nombreEditando,
         this.editarNombre.value,
+        this.editarDireccionInput.value,
         this.editarEstado.value,
         this.editarFila.value,
         this.editarZona.value,
@@ -225,6 +242,7 @@ export class Presenter {
         this.horarioAperturaInput.value,
         this.horarioCierreInput.value,
         this.contactoInput.value
+        
       );
       this.modalEdicion.classList.add('oculto');
       this.mostrarSurtidores();
@@ -247,5 +265,7 @@ export class Presenter {
     this.manejarEdicion();
     this.manejarOrdenacion();
     this.manejarSeleccionSurtidor();
+    this.manejarCalculoProbabilidad();
+
   }
 }

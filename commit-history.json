@@ -508,5 +508,22 @@
     },
     "coverage": 0,
     "test_count": 21
+  },
+  {
+    "sha": "18bdc08a9b8ee19c068a24fb34300c3dba58a299",
+    "author": "Jorge Vargas",
+    "commit": {
+      "date": "2025-05-06T05:07:18.000Z",
+      "message": "fix:correccion de errores en preseneter",
+      "url": "https://github.com/Alexvacan/ProyectoSurtidorYa/commit/18bdc08a9b8ee19c068a24fb34300c3dba58a299"
+    },
+    "stats": {
+      "total": 135,
+      "additions": 94,
+      "deletions": 41,
+      "date": "2025-05-06"
+    },
+    "coverage": 0,
+    "test_count": 21
   }
 ]

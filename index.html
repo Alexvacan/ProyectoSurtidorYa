@@ -24,7 +24,8 @@
 
   <form id="form-surtidor">
     <input type="text" id="nombre" placeholder="Nombre del surtidor" required />
-
+    <label for="direccion">Dirección:</label>
+    <input type="text" id="direccion" placeholder="Ej. Av. Siempre Viva 742" required />
     <select id="estado">
       <option value="Disponible">Disponible</option>
       <option value="Sin gasolina">Sin gasolina</option>
@@ -108,6 +109,8 @@
     <input type="time" id="horario-cierre" required /><br><br>
     <label for="contacto">Contacto:</label>
     <input type="text" id="contacto" placeholder="Número de contacto" required /><br><br>
+    <label for="editar-direccion">Dirección:</label>
+<input type="text" id="editar-direccion" required /><br><br>
     <button id="guardar-edicion">Guardar</button>
     <button id="cancelar-edicion">Cancelar</button>
   </div>

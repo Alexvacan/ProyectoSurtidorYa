@@ -50,19 +50,22 @@ export class Conductor {
     return this.surtidores;
   }
 
-  agregarSurtidor(
-    nombre,
-    estado,
-    fila,
-    zona,
-    litros,
-    horarioApertura,
-    horarioCierre,
-    contacto
-  ) {
+  agregarSurtidor(...args) {
+    let nombre, direccion, estado, fila, zona, litros, horarioApertura, horarioCierre, contacto;
+  
+    if (args.length === 8) {
+      // Firma antigua: nombre, estado, fila, zona, litros, horarioApertura, horarioCierre, contacto
+      [nombre, estado, fila, zona, litros, horarioApertura, horarioCierre, contacto] = args;
+      direccion = '';
+    } else {
+      // Firma nueva: nombre, direccion, estado, fila, zona, litros, horarioApertura, horarioCierre, contacto
+      [nombre, direccion, estado, fila, zona, litros, horarioApertura, horarioCierre, contacto] = args;
+    }
+  
     this.surtidores.push({
       nombre,
-      estado: estado.trim(),
+      direccion,
+      estado: String(estado).trim(),
       fila: parseInt(fila, 10),
       zona,
       litros: parseInt(litros, 10),
@@ -72,37 +75,52 @@ export class Conductor {
     });
     this.guardarEnLocalStorage();
   }
+  
 
   eliminarSurtidor(nombre) {
     this.surtidores = this.surtidores.filter(s => s.nombre !== nombre);
     this.guardarEnLocalStorage();
   }
 
-  editarSurtidor(
-    nombreOriginal,
-    nuevoNombre,
-    nuevoEstado,
-    nuevaFila,
-    nuevaZona,
-    nuevosLitros,
-    nuevoHorarioApertura,
-    nuevoHorarioCierre,
-    nuevoContacto
-  ) {
-    const surtidor = this.surtidores.find(s => s.nombre === nombreOriginal);
-    if (!surtidor) return;
-
-    surtidor.nombre = nuevoNombre;
-    surtidor.estado = nuevoEstado;
-    surtidor.fila = parseInt(nuevaFila, 10);
-    surtidor.zona = nuevaZona;
-    surtidor.litros = parseInt(nuevosLitros, 10);
-    surtidor.horarioApertura = nuevoHorarioApertura;
-    surtidor.horarioCierre = nuevoHorarioCierre;
-    surtidor.contacto = nuevoContacto;
-
+  editarSurtidor(nombreOriginal, ...args) {
+    const s = this.surtidores.find(x => x.nombre === nombreOriginal);
+    if (!s) return;
+  
+    let [nuevoNombre, nuevaDireccion, nuevoEstado, nuevaFila, nuevaZona, nuevosLitros, nuevoHorA, nuevoHorC, nuevoContacto] = [];
+  
+    if (args.length === 4) {
+      // tests básicos: nombre, estado, fila, zona
+      [nuevoNombre, nuevoEstado, nuevaFila, nuevaZona] = args;
+      nuevaDireccion = s.direccion;
+      nuevosLitros   = s.litros;
+      nuevoHorA      = s.horarioApertura;
+      nuevoHorC      = s.horarioCierre;
+      nuevoContacto  = s.contacto;
+    }
+    else if (args.length === 8) {
+      // tests con litros/horarios/contacto (8 args)
+      [nuevoNombre, nuevoEstado, nuevaFila, nuevaZona, nuevosLitros, nuevoHorA, nuevoHorC, nuevoContacto] = args;
+      nuevaDireccion = s.direccion;
+    }
+    else if (args.length === 9) {
+      // firma completa con dirección (9 args)
+      [nuevoNombre, nuevaDireccion, nuevoEstado, nuevaFila, nuevaZona, nuevosLitros, nuevoHorA, nuevoHorC, nuevoContacto] = args;
+    } else {
+      throw new Error('editarSurtidor: parámetros inválidos');
+    }
+  
+    s.nombre          = nuevoNombre;
+    s.direccion       = nuevaDireccion;
+    s.estado          = String(nuevoEstado).trim();
+    s.fila            = parseInt(nuevaFila, 10);
+    s.zona            = nuevaZona;
+    s.litros          = parseInt(nuevosLitros, 10);
+    s.horarioApertura = nuevoHorA;
+    s.horarioCierre   = nuevoHorC;
+    s.contacto        = nuevoContacto;
     this.guardarEnLocalStorage();
   }
+  
 
   nivelGasolina(litros) {
     if (litros > 10000) return 'Alto';

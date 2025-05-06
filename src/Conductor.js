@@ -11,11 +11,9 @@ export class Conductor {
             fila: 5,
             zona: 'Cercado',
             litros: 12000,
-            horarioApertura: '06:00',
-            horarioCierre: '22:00',
-            contacto: '77711122',
-            horarioEspecial: '',
-            festivo: false
+            apertura: '08:00',
+            cierre: '20:00',
+            contacto: '4444444'
           },
           {
             nombre: 'Surtidor B',
@@ -24,11 +22,9 @@ export class Conductor {
             fila: 0,
             zona: 'Pacata',
             litros: 0,
-            horarioApertura: '07:00',
-            horarioCierre: '21:00',
-            contacto: '78889999',
-            horarioEspecial: '',
-            festivo: false
+            apertura: '07:30',
+            cierre: '19:00',
+            contacto: '7777777'
           },
           {
             nombre: 'Surtidor C',
@@ -37,11 +33,9 @@ export class Conductor {
             fila: 2,
             zona: 'Quillacollo',
             litros: 8000,
-            horarioApertura: '05:30',
-            horarioCierre: '20:30',
-            contacto: '79998877',
-            horarioEspecial: '',
-            festivo: false
+            apertura: '06:00',
+            cierre: '18:00',
+            contacto: '6666666'
           }
         ];
   }
@@ -50,24 +44,15 @@ export class Conductor {
     return this.surtidores;
   }
 
-  agregarSurtidor(
-    nombre,
-    estado,
-    fila,
-    zona,
-    litros,
-    horarioApertura,
-    horarioCierre,
-    contacto
-  ) {
+  agregarSurtidor(nombre, estado, fila, zona, litros, apertura, cierre, contacto) {
     this.surtidores.push({
       nombre,
       estado: estado.trim(),
-      fila: parseInt(fila, 10),
+      fila: parseInt(fila),
       zona,
-      litros: parseInt(litros, 10),
-      horarioApertura,
-      horarioCierre,
+      litros: parseInt(litros),
+      apertura,
+      cierre,
       contacto
     });
     this.guardarEnLocalStorage();
@@ -78,30 +63,19 @@ export class Conductor {
     this.guardarEnLocalStorage();
   }
 
-  editarSurtidor(
-    nombreOriginal,
-    nuevoNombre,
-    nuevoEstado,
-    nuevaFila,
-    nuevaZona,
-    nuevosLitros,
-    nuevoHorarioApertura,
-    nuevoHorarioCierre,
-    nuevoContacto
-  ) {
+  editarSurtidor(nombreOriginal, nuevoNombre, nuevoEstado, nuevaFila, nuevaZona, nuevosLitros, nuevaApertura, nuevoCierre, nuevoContacto)  {
     const surtidor = this.surtidores.find(s => s.nombre === nombreOriginal);
-    if (!surtidor) return;
-
-    surtidor.nombre = nuevoNombre;
-    surtidor.estado = nuevoEstado;
-    surtidor.fila = parseInt(nuevaFila, 10);
-    surtidor.zona = nuevaZona;
-    surtidor.litros = parseInt(nuevosLitros, 10);
-    surtidor.horarioApertura = nuevoHorarioApertura;
-    surtidor.horarioCierre = nuevoHorarioCierre;
-    surtidor.contacto = nuevoContacto;
-
-    this.guardarEnLocalStorage();
+    if (surtidor) {
+      surtidor.nombre = nuevoNombre;
+      surtidor.estado = nuevoEstado;
+      surtidor.fila = parseInt(nuevaFila);
+      surtidor.zona = nuevaZona;
+      surtidor.litros = parseInt(nuevosLitros);
+      surtidor.apertura = nuevaApertura;
+      surtidor.cierre = nuevoCierre;
+      surtidor.contacto = nuevoContacto;
+      this.guardarEnLocalStorage();
+      }
   }
 
   nivelGasolina(litros) {

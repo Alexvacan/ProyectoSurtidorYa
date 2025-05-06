@@ -525,5 +525,22 @@
     },
     "coverage": 0,
     "test_count": 0
+  },
+  {
+    "sha": "34289dad06fa9f6e2c09cedc6237ff6a6a117606",
+    "author": "“Wendy",
+    "commit": {
+      "date": "2025-05-06T04:55:39.000Z",
+      "message": "fix: Correcciones de errores",
+      "url": "https://github.com/Alexvacan/ProyectoSurtidorYa/commit/34289dad06fa9f6e2c09cedc6237ff6a6a117606"
+    },
+    "stats": {
+      "total": 78,
+      "additions": 26,
+      "deletions": 52,
+      "date": "2025-05-06"
+    },
+    "coverage": 0,
+    "test_count": 0
   }
 ]

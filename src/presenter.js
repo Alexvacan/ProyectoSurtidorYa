@@ -17,9 +17,14 @@ export class Presenter {
     this.editarZona = document.getElementById('editar-zona');
     this.editarLitros = document.getElementById('editar-litros');
     this.btnGuardarEdicion = document.getElementById('guardar-edicion');
-    this.horarioAperturaInput = document.getElementById('horario-apertura');
-    this.horarioCierreInput = document.getElementById('horario-cierre');
-    this.contactoInput = document.getElementById('contacto');
+
+    this.apertura = document.getElementById('apertura');
+    this.cierre = document.getElementById('cierre');
+    this.contacto = document.getElementById('contacto');
+    this.editarApertura = document.getElementById('editar-apertura');
+    this.editarCierre = document.getElementById('editar-cierre');
+    this.editarContacto = document.getElementById('editar-contacto');
+
 
     // Ordenación
     this.sortCriteria = 'nombre';
@@ -70,7 +75,7 @@ export class Presenter {
         <strong>${s.nombre}</strong> - ${s.estado}<br>
         Autos en fila: ${s.fila} - Zona: ${s.zona}<br>
         Nivel de gasolina: ${nivel} (${s.litros} litros)<br>
-        Horario: ${s.horarioApertura} - ${s.horarioCierre}<br>
+        Horario: ${s.apertura} - ${s.cierre}<br>
         Contacto: ${s.contacto}
       `;
 
@@ -109,9 +114,9 @@ export class Presenter {
         this.editarFila.value = s.fila;
         this.editarZona.value = s.zona;
         this.editarLitros.value = s.litros;
-        this.horarioAperturaInput.value = s.horarioApertura;
-        this.horarioCierreInput.value = s.horarioCierre;
-        this.contactoInput.value = s.contacto;
+        this.editarApertura.value = s.apertura;
+        this.editarCierre.value = s.cierre;
+        this.editarContacto.value = s.contacto;
         this.modalEdicion.classList.remove('oculto');
       };
 
@@ -130,8 +135,9 @@ export class Presenter {
       const fila = form.querySelector('#fila').value;
       const zona = form.querySelector('#zona').value;
       const litros = form.querySelector('#litros').value;
-      const horA = form.querySelector('#hora-reabastecimiento').value;
-      const horC = form.querySelector('#horario-cierre').value;
+
+      const apertura = form.querySelector('#apertura').value;
+      const cierre = form.querySelector('#cierre').value;
       const contacto = form.querySelector('#contacto').value;
 
       if (!nombre || !fila || !zona) {
@@ -139,16 +145,8 @@ export class Presenter {
         return;
       }
 
-      this.conductor.agregarSurtidor(
-        nombre,
-        estado,
-        fila,
-        zona,
-        litros,
-        horA,
-        horC,
-        contacto
-      );
+      
+      this.conductor.agregarSurtidor(nombre, estado, fila, zona, parseInt(litros), apertura, cierre, contacto);
       this.mostrarSurtidores();
       form.reset();
     });
@@ -221,10 +219,10 @@ export class Presenter {
         this.editarEstado.value,
         this.editarFila.value,
         this.editarZona.value,
-        this.editarLitros.value,
-        this.horarioAperturaInput.value,
-        this.horarioCierreInput.value,
-        this.contactoInput.value
+        parseInt(this.editarLitros.value),
+        this.editarApertura.value,
+        this.editarCierre.value,
+        this.editarContacto.value
       );
       this.modalEdicion.classList.add('oculto');
       this.mostrarSurtidores();

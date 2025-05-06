@@ -72,8 +72,8 @@ describe('Conductor', () => {
     expect(ultimo.fila).toBe(3);
     expect(ultimo.zona).toBe('Tiquipaya');
     expect(ultimo.litros).toBe(5000);
-    expect(ultimo.horarioApertura).toBe('05:00');
-    expect(ultimo.horarioCierre).toBe('19:00');
+    expect(ultimo.apertura).toBe('05:00');
+    expect(ultimo.cierre).toBe('19:00');
     expect(ultimo.contacto).toBe('71112233');
   });
 
@@ -136,8 +136,8 @@ describe('Conductor', () => {
 
     const surtidor = conductor.listaSurtidores().find(s => s.nombre === 'Surtidor Test');
     expect(surtidor).toBeDefined();
-    expect(surtidor.horarioApertura).toBe('06:00');
-    expect(surtidor.horarioCierre).toBe('22:00');
+    expect(surtidor.apertura).toBe('06:00');
+    expect(surtidor.cierre).toBe('22:00');
     expect(surtidor.contacto).toBe('71112222');
   });
 
@@ -168,8 +168,8 @@ describe('Conductor', () => {
 
     const surtidor = conductor.listaSurtidores().find(s => s.nombre === 'Surtidor Editado');
     expect(surtidor).toBeDefined();
-    expect(surtidor.horarioApertura).toBe('08:00');
-    expect(surtidor.horarioCierre).toBe('20:00');
+    expect(surtidor.apertura).toBe('08:00');
+    expect(surtidor.cierre).toBe('20:00');
     expect(surtidor.contacto).toBe('73333333');
   });
 
@@ -184,15 +184,20 @@ describe('Conductor', () => {
 });
 
 describe('Conductor', () => {
+
+  
   it('debería agregar un surtidor incluyendo horario y contacto', () => {
     const conductor = new Conductor();
     conductor.agregarSurtidor({
       nombre: "Surtidor A",
       zona: "Centro",
       litros: 4000,
-      horarioApertura: "07:00",
-      horarioCierre: "22:00",
+      apertura: "07:00",
+      cierre: "22:00",
       contacto: "75432123"
     });
 
-})});
+})
+
+
+});

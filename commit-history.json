@@ -559,5 +559,22 @@
     },
     "coverage": 0,
     "test_count": 0
+  },
+  {
+    "sha": "a2b0f3fa4551eded241bb68720066806754fa05f",
+    "author": "“Wendy",
+    "commit": {
+      "date": "2025-05-06T06:33:16.000Z",
+      "message": "Fix: Correcion de errores en Horarios de atencion",
+      "url": "https://github.com/Alexvacan/ProyectoSurtidorYa/commit/a2b0f3fa4551eded241bb68720066806754fa05f"
+    },
+    "stats": {
+      "total": 102,
+      "additions": 54,
+      "deletions": 48,
+      "date": "2025-05-06"
+    },
+    "coverage": 0,
+    "test_count": 21
   }
 ]

@@ -134,31 +134,38 @@ export class Presenter {
       const fila = form.querySelector('#fila').value;
       const zona = form.querySelector('#zona').value;
       const litros = form.querySelector('#litros').value;
-
       const apertura = form.querySelector('#apertura').value;
       const cierre = form.querySelector('#cierre').value;
       const contacto = form.querySelector('#contacto').value;
-
+  
       if (!nombre || !direccion || !fila || !zona) {
         alert('Por favor, completa todos los campos.');
         return;
       }
-
-      this.conductor.agregarSurtidor(
-        nombre,
-        direccion,
-        estado,
-        fila,
-        zona,
-        litros,
-        apertura,
-        cierre,
-        contacto
-      );
-      this.mostrarSurtidores();
-      form.reset();
+  
+      try {
+        const data = {
+          nombre,
+          direccion,
+          estado,
+          fila,
+          zona,
+          litros,
+          apertura,
+          cierre,
+          contacto
+        };
+  
+        this.conductor.agregarSurtidor(data);
+        alert("Surtidor agregado correctamente.");
+        form.reset();
+        this.mostrarSurtidores();
+      } catch (error) {
+        console.error(error.message);
+        alert("Error al agregar surtidor: " + error.message);
+      }
     });
-  }
+  }  
 
   manejarToggle() {
     const btn = document.getElementById('toggle-estado');
@@ -273,30 +280,25 @@ botonCalcular.addEventListener('click', () => {
   const select = document.getElementById('surtidor-seleccionado');
   const nombreSeleccionado = select.value;
 
-  // Obtener la lista de surtidores de la clase conductor
   const surtidor = this.conductor.listaSurtidores().find(s => s.nombre === nombreSeleccionado);
 
-  // Si no se encuentra el surtidor, mostramos un mensaje de error
   if (!surtidor) {
     alert('Surtidor no encontrado');
     return;
   }
 
-  // Ya no necesitamos litros y fila como campos de entrada. Los obtenemos directamente del surtidor.
-  const combustibleDisponible = surtidor.litros;  // Obtenemos litros del surtidor
-  const autosEsperando = surtidor.fila;           // Obtenemos la cantidad de autos esperando del surtidor
+  const combustibleDisponible = surtidor.litros;  
+  const autosEsperando = surtidor.fila;           
   
   // Suponiendo que el tipo de auto siempre es 'pequeno' (esto puede cambiar dinámicamente si lo necesitas)
   const tipoAuto = 'pequeno'; 
 
-  // Llamamos a la función de cálculo de probabilidad
   const resultado = calcularProbabilidadCarga({
     combustibleDisponible,
     autosEsperando,
     tipoAuto
   });
 
-  // Mostramos el resultado
   document.getElementById('texto-probabilidad').innerText =
     `Probabilidad: ${resultado.porcentaje.toFixed(2)}%. Autos que podrán cargar: ${resultado.autosQuePodranCargar}`;
 });

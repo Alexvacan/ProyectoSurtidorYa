@@ -644,5 +644,22 @@
     },
     "coverage": 0,
     "test_count": 23
+  },
+  {
+    "sha": "a698d2a6c32f0523cb69ae5f3680576db85c188d",
+    "author": "chenaoh",
+    "commit": {
+      "date": "2025-05-07T05:21:25.000Z",
+      "message": "Refactor funcion agregar",
+      "url": "https://github.com/Alexvacan/ProyectoSurtidorYa/commit/a698d2a6c32f0523cb69ae5f3680576db85c188d"
+    },
+    "stats": {
+      "total": 50,
+      "additions": 26,
+      "deletions": 24,
+      "date": "2025-05-07"
+    },
+    "coverage": 0,
+    "test_count": 23
   }
 ]

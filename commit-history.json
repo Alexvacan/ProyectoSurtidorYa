@@ -695,5 +695,22 @@
     },
     "coverage": 0,
     "test_count": 26
+  },
+  {
+    "sha": "5ae11e54a314e6c4e77a04fdff07afa4c1922d15",
+    "author": "Wenba1",
+    "commit": {
+      "date": "2025-05-20T07:41:47.000Z",
+      "message": "Feat: Pruebas Cypress relacionadas con Mostrar tickets",
+      "url": "https://github.com/Alexvacan/ProyectoSurtidorYa/commit/5ae11e54a314e6c4e77a04fdff07afa4c1922d15"
+    },
+    "stats": {
+      "total": 21,
+      "additions": 20,
+      "deletions": 1,
+      "date": "2025-05-20"
+    },
+    "coverage": 0,
+    "test_count": 26
   }
 ]

@@ -143,7 +143,7 @@ export class Conductor {
     *** TICKET DE SURTIDOR ***
     Nombre: ${surtidor.nombre}
     Zona: ${surtidor.zona}
-    Litros disponibles: ${surtidor.litros}
+    Litros disponibles: ${surtidor.litros} litros
     Horario: ${surtidor.apertura} - ${surtidor.cierre}
     Fecha emisión: ${fecha}
     ----------------------------

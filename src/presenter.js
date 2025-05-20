@@ -263,6 +263,41 @@ export class Presenter {
     });
   }
 
+  generarTicket() {
+    const estacion = document.getElementById('inputEstacion').value.trim();
+    const tipoCombustible = document.getElementById('inputCombustible').value.trim();
+  
+    if (!estacion || !tipoCombustible) {
+      alert('Por favor, ingresa estación y tipo de combustible.');
+      return;
+    }
+  
+    // Elegimos un surtidor cualquiera para mostrar info (por ejemplo el primero disponible)
+    const surtidor = this.conductor.listaSurtidores().find(s => s.estado === 'Disponible');
+    if (!surtidor) {
+      alert('No hay surtidores disponibles.');
+      return;
+    }
+  
+    const fecha = new Date().toLocaleString();
+  
+    const ticket = `
+  *** TICKET DE SURTIDOR ***
+  Estación: ${estacion}
+  Surtidor: ${surtidor.nombre}
+  Tipo de combustible: ${tipoCombustible}
+  Zona: ${surtidor.zona}
+  Litros disponibles: ${surtidor.litros}
+  Horario: ${surtidor.apertura} - ${surtidor.cierre}
+  Fecha emisión: ${fecha}
+  ----------------------------
+    `;
+  
+    // Mostrar en textarea o pre
+    const salida = document.getElementById('ticketOutput');
+    if (salida) salida.textContent = ticket;
+  }
+
   inicializar() {
     this.mostrarSurtidores();
     this.manejarFormulario();

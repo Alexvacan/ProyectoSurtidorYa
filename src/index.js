@@ -1,9 +1,11 @@
+import { Conductor } from './Conductor.js';
 import { Presenter } from './presenter.js';
 import { calcularProbabilidadCarga } from './probabilidadCargaService.js';
 
 let presenter;
 window.addEventListener('DOMContentLoaded', () => {
   const presenter = new Presenter();
+  const conductor = new Conductor();
   presenter.inicializar();
 
   const select = document.getElementById('surtidor-seleccionado');
@@ -30,18 +32,38 @@ window.addEventListener('DOMContentLoaded', () => {
       `Probabilidad: ${resultado.porcentaje.toFixed(2)}%. Autos que podrán cargar: ${resultado.autosQuePodranCargar}`;
   });
 
-  btnGenerarTicket.addEventListener('click', () => {
-    const ahora = new Date();
-    const fecha = ahora.toLocaleDateString();
-    const hora = ahora.toLocaleTimeString();
+ btnGenerarTicket.addEventListener('click', () => {
+  const surtidores = presenter.conductor.listaSurtidores();
 
-    const ticket = `🎫 Ticket generado
+  if (surtidores.length === 0) {
+    ticketTextarea.value += 'No hay surtidores para generar ticket.\n';
+    return;
+  }
+
+  const ahora = new Date();
+  const fecha = ahora.toLocaleDateString();
+  const hora = ahora.toLocaleTimeString();
+
+  const surtidor = surtidores[0]; // O puedes usar otro criterio
+  const estacion = "Mi Estación";
+  const tipoCombustible = "Gasolina";
+
+  const ticket = `
+    🎫 Ticket generado
+    Estación: ${estacion}
+    Surtidor: ${surtidor.nombre}
+    Zona: ${surtidor.zona}
+    Tipo de combustible: ${tipoCombustible}
+    Horario: ${surtidor.apertura} - ${surtidor.cierre}
+    Litros disponibles: ${surtidor.litros}
     Fecha: ${fecha}
     Hora: ${hora}
-    -----------------------------\n`;
+-----------------------------\n`;
 
-    ticketTextarea.value += ticket;
-  });
+  ticketTextarea.value += ticket;
+});
+
+
   document.getElementById('btn-ver-ticket').addEventListener('click', () => {
   const nombreSeleccionado = document.getElementById('surtidor-seleccionado').value;
   const surtidor = presenter.conductor.obtenerSurtidorPorNombre(nombreSeleccionado);
@@ -52,7 +74,9 @@ window.addEventListener('DOMContentLoaded', () => {
   }
 
   try {
-    const ticket = presenter.conductor.generarTicket(surtidor);
+    const estacion = "Mi Estación";
+    const tipoCombustible = "Gasolina";
+    const ticket = presenter.conductor.generarTicket(estacion, surtidor, tipoCombustible);
     document.getElementById('ticket-textarea').value = ticket;
   } catch (e) {
     alert('Error al generar el ticket: ' + e.message);

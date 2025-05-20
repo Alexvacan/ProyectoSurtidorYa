@@ -133,21 +133,30 @@ export class Conductor {
     localStorage.setItem('surtidores', JSON.stringify(this.surtidores));
   }
 
-  generarTicket(surtidor) {
-  if (typeof surtidor !== 'object' || !surtidor.nombre || !surtidor.litros) {
-    throw new Error('generarTicket: datos inválidos');
-  }
+generarTicket(estacion, surtidor, tipoCombustible) {
+  if (
+  !surtidor ||                  // cubre null y undefined
+  typeof surtidor !== 'object' ||    
+  !surtidor.nombre ||
+  surtidor.litros == null
+) {
+  throw new Error('generarTicket: datos inválidos');
+}
+
 
   const fecha = new Date().toLocaleString();
   return `
     *** TICKET DE SURTIDOR ***
+    Estación: ${estacion}
     Nombre: ${surtidor.nombre}
+    Tipo combustible: ${tipoCombustible}
     Zona: ${surtidor.zona}
-    Litros disponibles: ${surtidor.litros} litros
+    Litros disponibles: ${surtidor.litros}
     Horario: ${surtidor.apertura} - ${surtidor.cierre}
     Fecha emisión: ${fecha}
     ----------------------------
   `;
 }
+
 
 }

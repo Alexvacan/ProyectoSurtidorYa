@@ -4,25 +4,41 @@ import { calcularProbabilidadCarga } from './probabilidadCargaService.js';
 window.addEventListener('DOMContentLoaded', () => {
   const presenter = new Presenter();
   presenter.inicializar();
-});
 
-document.getElementById('calcular-probabilidad').addEventListener('click', () => {
   const select = document.getElementById('surtidor-seleccionado');
-  const nombreSeleccionado = select.value;
+  const btnGenerarTicket = document.getElementById('btn-generar-ticket');
+  const ticketTextarea = document.getElementById('ticket-textarea');
 
-  const surtidor = surtidores.find(s => s.nombre === nombreSeleccionado);
-  if (!surtidor) {
-    alert('Surtidor no encontrado');
-    return;
-  }
+  document.getElementById('calcular-probabilidad').addEventListener('click', () => {
+    const nombreSeleccionado = select.value;
 
-  const tipoAuto = 'pequeno'; // Puedes hacerlo dinámico si quieres más adelante
-  const resultado = calcularProbabilidadCarga({
-    combustibleDisponible: surtidor.litros,
-    autosEsperando: surtidor.fila,
-    tipoAuto
+    const surtidor = surtidores.find(s => s.nombre === nombreSeleccionado);
+    if (!surtidor) {
+      alert('Surtidor no encontrado');
+      return;
+    }
+
+    const tipoAuto = 'pequeno'; // Puedes hacerlo dinámico si quieres más adelante
+    const resultado = calcularProbabilidadCarga({
+      combustibleDisponible: surtidor.litros,
+      autosEsperando: surtidor.fila,
+      tipoAuto
+    });
+
+    document.getElementById('texto-probabilidad').innerText =
+      `Probabilidad: ${resultado.porcentaje.toFixed(2)}%. Autos que podrán cargar: ${resultado.autosQuePodranCargar}`;
   });
 
-  document.getElementById('texto-probabilidad').innerText =
-    `Probabilidad: ${resultado.porcentaje.toFixed(2)}%. Autos que podrán cargar: ${resultado.autosQuePodranCargar}`;
+  btnGenerarTicket.addEventListener('click', () => {
+    const ahora = new Date();
+    const fecha = ahora.toLocaleDateString();
+    const hora = ahora.toLocaleTimeString();
+
+    const ticket = `🎫 Ticket generado
+Fecha: ${fecha}
+Hora: ${hora}
+-----------------------------\n`;
+
+    ticketTextarea.value += ticket;
+  });
 });

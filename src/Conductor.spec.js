@@ -249,4 +249,41 @@ describe('Conductor', () => {
     expect(surtidor.apertura).toBe('08:00');
     expect(surtidor.contacto).toBe('4444444');
   });
+
+  describe('Conductor - generarTicket', () => {
+  let conductor;
+
+  beforeEach(() => {
+    conductor = new Conductor();
+  });
+
+  it('debería generar un ticket válido con datos del surtidor', () => {
+    const surtidor = {
+      nombre: 'Surtidor Test',
+      zona: 'Zona Test',
+      litros: 8000,
+      apertura: '07:00',
+      cierre: '19:00'
+    };
+
+    const ticket = conductor.generarTicket(surtidor);
+
+    expect(ticket).toContain('*** TICKET DE SURTIDOR ***');
+    expect(ticket).toContain('Nombre: Surtidor Test');
+    expect(ticket).toContain('Zona: Zona Test');
+    expect(ticket).toContain('Litros disponibles: 8000');
+    expect(ticket).toContain('Horario: 07:00 - 19:00');
+    expect(ticket).toMatch(/Fecha emisión: .+/);
+  });
+
+  it('debería lanzar error si los datos son inválidos', () => {
+    const surtidorInvalido = {
+      nombre: '',
+      litros: null
+    };
+
+    expect(() => conductor.generarTicket(surtidorInvalido))
+      .toThrow('generarTicket: datos inválidos');
+  });
+});
 });

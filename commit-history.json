@@ -661,5 +661,22 @@
     },
     "coverage": 0,
     "test_count": 23
+  },
+  {
+    "sha": "167ed30dddc1af392c8e094449a3a05c029b61cf",
+    "author": "chenaoh",
+    "commit": {
+      "date": "2025-05-20T01:54:11.000Z",
+      "message": "Generar ticket",
+      "url": "https://github.com/Alexvacan/ProyectoSurtidorYa/commit/167ed30dddc1af392c8e094449a3a05c029b61cf"
+    },
+    "stats": {
+      "total": 115,
+      "additions": 94,
+      "deletions": 21,
+      "date": "2025-05-20"
+    },
+    "coverage": 0,
+    "test_count": 25
   }
 ]

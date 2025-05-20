@@ -72,7 +72,6 @@ export class Conductor {
     this.surtidores.push(surtidor);
     this.guardarEnLocalStorage();
   }
-  
 
   eliminarSurtidor(nombre) {  
     this.surtidores = this.surtidores.filter(s => s.nombre !== nombre);
@@ -118,8 +117,6 @@ export class Conductor {
   
     this.guardarEnLocalStorage();
   }
-  
-  
 
   nivelGasolina(litros) {
     if (litros > 10000) return 'Alto';
@@ -135,4 +132,22 @@ export class Conductor {
   guardarEnLocalStorage() {
     localStorage.setItem('surtidores', JSON.stringify(this.surtidores));
   }
+
+  generarTicket(surtidor) {
+  if (typeof surtidor !== 'object' || !surtidor.nombre || !surtidor.litros) {
+    throw new Error('generarTicket: datos inválidos');
+  }
+
+  const fecha = new Date().toLocaleString();
+  return `
+    *** TICKET DE SURTIDOR ***
+    Nombre: ${surtidor.nombre}
+    Zona: ${surtidor.zona}
+    Litros disponibles: ${surtidor.litros}
+    Horario: ${surtidor.apertura} - ${surtidor.cierre}
+    Fecha emisión: ${fecha}
+    ----------------------------
+  `;
+}
+
 }

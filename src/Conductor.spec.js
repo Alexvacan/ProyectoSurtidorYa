@@ -250,40 +250,40 @@ describe('Conductor', () => {
     expect(surtidor.contacto).toBe('4444444');
   });
 
-  describe('Conductor - generarTicket', () => {
-  let conductor;
-
-  beforeEach(() => {
-    conductor = new Conductor();
-  });
-
-  it('debería generar un ticket válido con datos del surtidor', () => {
-    const surtidor = {
-      nombre: 'Surtidor Test',
-      zona: 'Zona Test',
-      litros: 8000,
-      apertura: '07:00',
-      cierre: '19:00'
-    };
-
-    const ticket = conductor.generarTicket(surtidor);
-
-    expect(ticket).toContain('*** TICKET DE SURTIDOR ***');
-    expect(ticket).toContain('Nombre: Surtidor Test');
-    expect(ticket).toContain('Zona: Zona Test');
-    expect(ticket).toContain('Litros disponibles: 8000');
-    expect(ticket).toContain('Horario: 07:00 - 19:00');
-    expect(ticket).toMatch(/Fecha emisión: .+/);
-  });
-
-  it('debería lanzar error si los datos son inválidos', () => {
-    const surtidorInvalido = {
-      nombre: '',
-      litros: null
-    };
-
-    expect(() => conductor.generarTicket(surtidorInvalido))
-      .toThrow('generarTicket: datos inválidos');
-  });
-});
+  describe('Conductor - generarTicket con estación y tipo combustible', () => {
+    let conductor;
+  
+    beforeEach(() => {
+      conductor = new Conductor();
+    });
+  
+    it('debería generar un ticket válido con estación, surtidor y tipo combustible', () => {
+      const surtidor = {
+        nombre: 'Surtidor Test',
+        zona: 'Zona Test',
+        litros: 8000,
+        apertura: '07:00',
+        cierre: '19:00'
+      };
+  
+      const ticket = conductor.generarTicket('Estación Central', surtidor, 'Gasolina 95');
+  
+      expect(ticket).toContain('*** TICKET DE SURTIDOR ***');
+      expect(ticket).toContain('Estación: Estación Central');
+      expect(ticket).toContain('Nombre: Surtidor Test');
+      expect(ticket).toContain('Tipo combustible: Gasolina 95');
+      expect(ticket).toContain('Zona: Zona Test');
+      expect(ticket).toContain('Litros disponibles: 8000');
+      expect(ticket).toContain('Horario: 07:00 - 19:00');
+      expect(ticket).toMatch(/Fecha emisión: .+/);
+    });
+  
+    it('debería lanzar error si estación o surtidor son inválidos', () => {
+      const surtidorInvalido = { nombre: '', litros: null };
+      expect(() => conductor.generarTicket('', surtidorInvalido, 'Gasolina'))
+        .toThrow('generarTicket: datos inválidos');
+      expect(() => conductor.generarTicket('', { nombre: 'Test', litros: 1000 }, 'Gasolina'))
+        .toThrow('generarTicket: datos inválidos');
+    });
+  });  
 });

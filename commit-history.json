@@ -678,5 +678,22 @@
     },
     "coverage": 0,
     "test_count": 25
+  },
+  {
+    "sha": "a72d16e46000fb6b034277e8c50210d330b558d7",
+    "author": "Fernando Belmonte",
+    "commit": {
+      "date": "2025-05-20T04:43:45.000Z",
+      "message": "Feat:Se agrego datos de la gasolinera al ticket seleccionado",
+      "url": "https://github.com/Alexvacan/ProyectoSurtidorYa/commit/a72d16e46000fb6b034277e8c50210d330b558d7"
+    },
+    "stats": {
+      "total": 167,
+      "additions": 107,
+      "deletions": 60,
+      "date": "2025-05-20"
+    },
+    "coverage": 0,
+    "test_count": 25
   }
 ]

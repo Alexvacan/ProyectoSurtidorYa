@@ -1,8 +1,10 @@
+import { Conductor } from './Conductor.js';
 import { Presenter } from './presenter.js';
 import { calcularProbabilidadCarga } from './probabilidadCargaService.js';
 
 window.addEventListener('DOMContentLoaded', () => {
   const presenter = new Presenter();
+  const conductor = new Conductor();
   presenter.inicializar();
 
   const select = document.getElementById('surtidor-seleccionado');
@@ -33,12 +35,15 @@ window.addEventListener('DOMContentLoaded', () => {
     const ahora = new Date();
     const fecha = ahora.toLocaleDateString();
     const hora = ahora.toLocaleTimeString();
-
-    const ticket = `🎫 Ticket generado
-Fecha: ${fecha}
-Hora: ${hora}
------------------------------\n`;
-
-    ticketTextarea.value += ticket;
+    const surtidores = conductor.listaSurtidores();
+    if (surtidores.length === 0) {
+      ticketTextarea.value += 'No hay surtidores para generar ticket.\n';
+      return;
+    }
+    const surtidor = surtidores[0];
+    const estacion = "Mi Estación";
+    const tipoCombustible = "Gasolina";
+    const ticket = conductor.generarTicket(estacion, surtidor, tipoCombustible);
+    ticketTextarea.value += ticket + '\n';
   });
 });

@@ -678,5 +678,22 @@
     },
     "coverage": 0,
     "test_count": 25
+  },
+  {
+    "sha": "3cb3dee6d2e9f62675c04ee382c9727f7cc371c4",
+    "author": "Wenba1",
+    "commit": {
+      "date": "2025-05-20T07:28:55.000Z",
+      "message": "Feat: Pruebas relacionadas con Mostrar tickets",
+      "url": "https://github.com/Alexvacan/ProyectoSurtidorYa/commit/3cb3dee6d2e9f62675c04ee382c9727f7cc371c4"
+    },
+    "stats": {
+      "total": 19,
+      "additions": 19,
+      "deletions": 0,
+      "date": "2025-05-20"
+    },
+    "coverage": 0,
+    "test_count": 26
   }
 ]

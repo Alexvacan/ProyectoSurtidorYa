@@ -285,5 +285,24 @@ describe('Conductor', () => {
     expect(() => conductor.generarTicket(surtidorInvalido))
       .toThrow('generarTicket: datos inválidos');
   });
+
+  it('debería mostrar los detalles de los tickets', () => {
+    const surtidor = {
+      nombre: 'Surtidor Test',
+      zona: 'Zona Test',
+      litros: 8000,
+      apertura: '07:00',
+      cierre: '19:00'
+    };
+
+    const ticket = conductor.generarTicket(surtidor);
+
+    expect(ticket).toContain('*** TICKET DE SURTIDOR ***');
+    expect(ticket).toContain('Nombre: Surtidor Test');
+    expect(ticket).toContain('Zona: Zona Test');
+    expect(ticket).toContain('Litros disponibles: 8000');
+    expect(ticket).toContain('Horario: 07:00 - 19:00');
+    expect(ticket).toMatch(/Fecha emisión: .+/);
+  });
 });
 });

@@ -712,5 +712,22 @@
     },
     "coverage": 0,
     "test_count": 26
+  },
+  {
+    "sha": "47d04d15f038aa5f56d8e5072a9f58f3cf17c11d",
+    "author": "Wenba1",
+    "commit": {
+      "date": "2025-05-20T08:00:19.000Z",
+      "message": "Feat: Aumento de diseño relacionadas con Mostrar tickets",
+      "url": "https://github.com/Alexvacan/ProyectoSurtidorYa/commit/47d04d15f038aa5f56d8e5072a9f58f3cf17c11d"
+    },
+    "stats": {
+      "total": 26,
+      "additions": 23,
+      "deletions": 3,
+      "date": "2025-05-20"
+    },
+    "coverage": 0,
+    "test_count": 26
   }
 ]

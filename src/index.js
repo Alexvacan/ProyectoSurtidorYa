@@ -1,6 +1,7 @@
 import { Presenter } from './presenter.js';
 import { calcularProbabilidadCarga } from './probabilidadCargaService.js';
 
+let presenter;
 window.addEventListener('DOMContentLoaded', () => {
   const presenter = new Presenter();
   presenter.inicializar();
@@ -35,10 +36,28 @@ window.addEventListener('DOMContentLoaded', () => {
     const hora = ahora.toLocaleTimeString();
 
     const ticket = `🎫 Ticket generado
-Fecha: ${fecha}
-Hora: ${hora}
------------------------------\n`;
+    Fecha: ${fecha}
+    Hora: ${hora}
+    -----------------------------\n`;
 
     ticketTextarea.value += ticket;
   });
+  document.getElementById('btn-ver-ticket').addEventListener('click', () => {
+  const nombreSeleccionado = document.getElementById('surtidor-seleccionado').value;
+  const surtidor = presenter.conductor.obtenerSurtidorPorNombre(nombreSeleccionado);
+
+  if (!surtidor) {
+    alert('No se encontró el surtidor');
+    return;
+  }
+
+  try {
+    const ticket = presenter.conductor.generarTicket(surtidor);
+    document.getElementById('ticket-textarea').value = ticket;
+  } catch (e) {
+    alert('Error al generar el ticket: ' + e.message);
+  }
+});
+
+
 });

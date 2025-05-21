@@ -9,6 +9,7 @@ export class Presenter {
     this.mostrarTodos = false;
     this.zonaSeleccionada = '';
     this.nombreEditando = null;
+    this.ticketsPorSurtidor = {};
 
     this.modalEdicion = document.getElementById('modal-edicion');
     this.editarNombre = document.getElementById('editar-nombre');
@@ -66,62 +67,105 @@ export class Presenter {
     }
 
     surtidores.forEach(s => {
-      const nivel = this.conductor.nivelGasolina(s.litros); // Asegúrate de que esta línea esté presente
-      const li = document.createElement('li');
-      li.innerHTML = `
-        <strong>${s.nombre}</strong> - ${s.estado}<br>
-        <em>Dirección:</em> ${s.direccion}<br>
-        Autos en fila: ${s.fila} - Zona: ${s.zona}<br>
-        Nivel de gasolina: ${nivel} (${s.litros} litros)<br>
-        Horario: ${s.apertura} - ${s.cierre}<br>
-        Contacto: ${s.contacto}
-      `;
+  const nivel = this.conductor.nivelGasolina(s.litros);
+  const li = document.createElement('li');
+  li.innerHTML = `
+    <strong>${s.nombre}</strong> - ${s.estado}<br>
+    <em>Dirección:</em> ${s.direccion}<br>
+    Autos en fila: ${s.fila} - Zona: ${s.zona}<br>
+    Nivel de gasolina: ${nivel} (${s.litros} litros)<br>
+    Horario: ${s.apertura} - ${s.cierre}<br>
+    Contacto: ${s.contacto}
+  `;
 
-      const tipoAuto = s.tipoAuto || 'pequeno'; 
-    const prob = calcularProbabilidadCarga({
-      combustibleDisponible: Number(s.litros), // <--- aquí
-      autosEsperando: Number(s.fila),          // <--- y aquí
-      tipoAuto: tipoAuto 
-    });
-    const p = document.createElement('p');
-    p.textContent = `Probabilidad de carga: ${prob.porcentaje}% (${prob.autosQuePodranCargar} autos)`;
-    li.appendChild(p);
+  const tipoAuto = s.tipoAuto || 'pequeno'; 
+  const prob = calcularProbabilidadCarga({
+    combustibleDisponible: Number(s.litros),
+    autosEsperando: Number(s.fila),
+    tipoAuto: tipoAuto 
+  });
 
-      if (s.estado === 'Sin gasolina') li.style.color = 'red';
-      else if (nivel === 'Alto') li.style.color = 'green';
-      else if (nivel === 'Medio') li.style.color = 'orange';
-      else li.style.color = 'blue';
+  const p = document.createElement('p');
+  p.textContent = `Probabilidad de carga: ${prob.porcentaje}% (${prob.autosQuePodranCargar} autos)`;
+  li.appendChild(p);
 
-      // Botones
-      const btnDel = document.createElement('button');
-      btnDel.textContent = 'Eliminar';
-      btnDel.style.marginLeft = '10px';
-      btnDel.onclick = () => {
-        this.conductor.eliminarSurtidor(s.nombre);
-        this.mostrarSurtidores();
-      };
+  if (s.estado === 'Sin gasolina') li.style.color = 'red';
+  else if (nivel === 'Alto') li.style.color = 'green';
+  else if (nivel === 'Medio') li.style.color = 'orange';
+  else li.style.color = 'blue';
 
-      const btnEdit = document.createElement('button');
-      btnEdit.textContent = 'Editar';
-      btnEdit.style.marginLeft = '10px';
-      btnEdit.onclick = () => {
-        this.nombreEditando = s.nombre;
-        this.editarNombre.value = s.nombre;
-        this.editarEstado.value = s.estado;
-        this.editarFila.value = s.fila;
-        this.editarZona.value = s.zona;
-        this.editarLitros.value = s.litros;
-        this.editarApertura.value = s.apertura;
-        this.editarCierre.value = s.cierre;
-        this.editarContacto.value = s.contacto;
-        this.editarDireccionInput.value = s.direccion;
-        this.modalEdicion.classList.remove('oculto');
-      };
+  // === Botón Eliminar ===
+  const btnDel = document.createElement('button');
+  btnDel.textContent = 'Eliminar';
+  btnDel.style.marginLeft = '10px';
+  btnDel.onclick = () => {
+    this.conductor.eliminarSurtidor(s.nombre);
+    this.mostrarSurtidores();
+  };
 
-      li.appendChild(btnDel);
-      li.appendChild(btnEdit);
-      listaEl.appendChild(li);
-    });
+  // === Botón Editar ===
+  const btnEdit = document.createElement('button');
+  btnEdit.textContent = 'Editar';
+  btnEdit.style.marginLeft = '10px';
+  btnEdit.onclick = () => {
+    this.nombreEditando = s.nombre;
+    this.editarNombre.value = s.nombre;
+    this.editarEstado.value = s.estado;
+    this.editarFila.value = s.fila;
+    this.editarZona.value = s.zona;
+    this.editarLitros.value = s.litros;
+    this.editarApertura.value = s.apertura;
+    this.editarCierre.value = s.cierre;
+    this.editarContacto.value = s.contacto;
+    this.editarDireccionInput.value = s.direccion;
+    this.modalEdicion.classList.remove('oculto');
+  };
+
+  // === NUEVO: Botón Generar Ticket ===
+  const btnGenerarTicket = document.createElement('button');
+  btnGenerarTicket.textContent = 'Generar Ticket';
+  btnGenerarTicket.style.marginLeft = '10px';
+  btnGenerarTicket.onclick = () => {
+    if (!this.ticketsPorSurtidor[s.nombre]) {
+      this.ticketsPorSurtidor[s.nombre] = [];
+    }
+
+    const nuevoTicket = {
+      fecha: new Date().toLocaleString(),
+      mensaje: `Ticket generado para ${s.nombre}`
+    };
+
+    this.ticketsPorSurtidor[s.nombre].push(nuevoTicket);
+    this.mostrarSurtidores(); // Recargar para actualizar el contador
+  };
+
+  // === NUEVO: Contador de Tickets ===
+  const ticketCount = this.ticketsPorSurtidor[s.nombre]?.length || 0;
+  const ticketInfo = document.createElement('p');
+  ticketInfo.textContent = `Tickets generados: ${ticketCount}`;
+
+  // === NUEVO: Botón Ver Tickets ===
+  const btnVerTickets = document.createElement('button');
+  btnVerTickets.textContent = 'Ver Tickets';
+  btnVerTickets.style.marginLeft = '10px';
+  btnVerTickets.onclick = () => {
+    const tickets = this.ticketsPorSurtidor[s.nombre] || [];
+    const contenido = tickets.length
+      ? tickets.map(t => `📅 ${t.fecha}\n📝 ${t.mensaje}`).join('\n\n')
+      : 'No hay tickets generados para este surtidor.';
+
+    alert(`Tickets de ${s.nombre}:\n\n${contenido}`);
+  };
+
+  // Agregar todo al <li>
+  li.appendChild(btnDel);
+  li.appendChild(btnEdit);
+  li.appendChild(btnGenerarTicket);
+  li.appendChild(ticketInfo);
+  li.appendChild(btnVerTickets);
+
+  listaEl.appendChild(li);
+});
   }
 
   manejarFormulario() {

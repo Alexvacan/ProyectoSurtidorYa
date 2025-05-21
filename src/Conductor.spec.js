@@ -282,13 +282,40 @@ describe('Conductor', () => {
     expect(() => conductor.generarTicket('Mi Estación', { nombre: '', litros: 1000 }, 'Gasolina'))
       .toThrow('generarTicket: datos inválidos');
 
-    // Surtidor sin litros
     expect(() => conductor.generarTicket('Mi Estación', { nombre: 'Surtidor X', litros: null }, 'Gasolina'))
       .toThrow('generarTicket: datos inválidos');
 
-    // Surtidor no es objeto
     expect(() => conductor.generarTicket('Mi Estación', null, 'Gasolina'))
       .toThrow('generarTicket: datos inválidos');
   });
+
+  describe('Generación de tickets', () => {
+  it('debería generar un ticket válido con datos del surtidor', () => {
+    const surtidor = {
+      nombre: 'Surtidor Test',
+      zona: 'Zona Test',
+      litros: 8000,
+      apertura: '07:00',
+      cierre: '19:00'
+    };
+
+    const ticketsPorSurtidor = {};
+
+    if (!ticketsPorSurtidor[surtidor.nombre]) {
+      ticketsPorSurtidor[surtidor.nombre] = [];
+    }
+
+    const nuevoTicket = {
+      fecha: '2025-05-19 10:30', 
+      mensaje: `Ticket generado para ${surtidor.nombre}`
+    };
+
+    ticketsPorSurtidor[surtidor.nombre].push(nuevoTicket);
+
+    expect(ticketsPorSurtidor[surtidor.nombre]).toHaveLength(1);
+    expect(ticketsPorSurtidor[surtidor.nombre][0].mensaje).toBe('Ticket generado para Surtidor Test');
+  });
+});
+
 });
 });

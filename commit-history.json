@@ -15,5 +15,22 @@
     },
     "coverage": 0,
     "test_count": 25
+  },
+  {
+    "sha": "980e5697036c79f34d405479b4600363932e20e9",
+    "author": "chenaoh",
+    "commit": {
+      "date": "2025-05-21T01:29:49.000Z",
+      "message": "Refactorizacion del ticket, para cada surtidor",
+      "url": "https://github.com/Alexvacan/ProyectoSurtidorYa/commit/980e5697036c79f34d405479b4600363932e20e9"
+    },
+    "stats": {
+      "total": 220,
+      "additions": 162,
+      "deletions": 58,
+      "date": "2025-05-21"
+    },
+    "coverage": 0,
+    "test_count": 26
   }
 ]

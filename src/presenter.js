@@ -126,18 +126,49 @@ export class Presenter {
   btnGenerarTicket.textContent = 'Generar Ticket';
   btnGenerarTicket.style.marginLeft = '10px';
   btnGenerarTicket.onclick = () => {
-    if (!this.ticketsPorSurtidor[s.nombre]) {
-      this.ticketsPorSurtidor[s.nombre] = [];
-    }
+  const horarios = this.generarHorariosDisponibles();
 
-    const nuevoTicket = {
-      fecha: new Date().toLocaleString(),
-      mensaje: `Ticket generado para ${s.nombre}`
-    };
+  const horaSeleccionada = prompt(
+    'Selecciona una hora (Ej: 08:00):\n' + horarios.join(', ')
+  );
 
-    this.ticketsPorSurtidor[s.nombre].push(nuevoTicket);
-    this.mostrarSurtidores(); // Recargar para actualizar el contador
+  if (!horarios.includes(horaSeleccionada)) {
+    alert('Hora no válida.');
+    return;
+  }
+
+  const montoStr = prompt('¿Cuánto desea cargar? (Máximo 150 Bs)');
+  const monto = Number(montoStr);
+
+  if (isNaN(monto) || monto <= 0) {
+    alert('Monto inválido.');
+    return;
+  }
+
+  if (monto > 150) {
+    alert('No se puede cargar más de 150 Bs.');
+    return;
+  }
+
+  // Código único
+  const codigo = `TCKT-${Date.now()}-${Math.floor(Math.random() * 1000)}`;
+
+  if (!this.ticketsPorSurtidor[s.nombre]) {
+    this.ticketsPorSurtidor[s.nombre] = [];
+  }
+
+  const nuevoTicket = {
+    fecha: new Date().toLocaleString(),
+    hora: horaSeleccionada,
+    monto: monto.toFixed(2),
+    codigo: codigo,
+    mensaje: `Ticket generado para ${s.nombre}`
   };
+
+  this.ticketsPorSurtidor[s.nombre].push(nuevoTicket);
+  this.mostrarSurtidores(); // Actualiza la UI
+};
+
 
   // === NUEVO: Contador de Tickets ===
   const ticketCount = this.ticketsPorSurtidor[s.nombre]?.length || 0;
@@ -149,13 +180,15 @@ export class Presenter {
   btnVerTickets.textContent = 'Ver Tickets';
   btnVerTickets.style.marginLeft = '10px';
   btnVerTickets.onclick = () => {
-    const tickets = this.ticketsPorSurtidor[s.nombre] || [];
-    const contenido = tickets.length
-      ? tickets.map(t => `📅 ${t.fecha}\n📝 ${t.mensaje}`).join('\n\n')
-      : 'No hay tickets generados para este surtidor.';
+  const tickets = this.ticketsPorSurtidor[s.nombre] || [];
+  const contenido = tickets.length
+    ? tickets.map(t =>
+        `🧾 Código: ${t.codigo}\n📅 Fecha: ${t.fecha}\n⏰ Hora: ${t.hora}\n💵 Monto: ${t.monto} Bs\n📝 ${t.mensaje}`
+      ).join('\n\n')
+    : 'No hay tickets generados para este surtidor.';
+  alert(`Tickets de ${s.nombre}:\n\n${contenido}`);
+};
 
-    alert(`Tickets de ${s.nombre}:\n\n${contenido}`);
-  };
 
   // Agregar todo al <li>
   li.appendChild(btnDel);
@@ -258,6 +291,15 @@ export class Presenter {
     });
   }
 
+  generarHorariosDisponibles() {
+    const horarios = [];
+    for (let h = 0; h < 24; h++) {
+      horarios.push(`${h.toString().padStart(2, '0')}:00`);
+      horarios.push(`${h.toString().padStart(2, '0')}:30`);
+    }
+    return horarios;
+  }
+
   // Pone opciones en el select de surtidor y maneja cambio
   manejarSeleccionSurtidor() {
     const surtidores = this.conductor.listaSurtidores();
@@ -316,7 +358,6 @@ export class Presenter {
       return;
     }
   
-    // Elegimos un surtidor cualquiera para mostrar info (por ejemplo el primero disponible)
     const surtidor = this.conductor.listaSurtidores().find(s => s.estado === 'Disponible');
     if (!surtidor) {
       alert('No hay surtidores disponibles.');
@@ -384,3 +425,4 @@ botonCalcular.addEventListener('click', () => {
 
   }
 }
+ 

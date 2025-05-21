@@ -32,5 +32,22 @@
     },
     "coverage": 0,
     "test_count": 26
+  },
+  {
+    "sha": "4eda7790f17e713fdbca2833c9f9b84e5c2dab57",
+    "author": "chenaoh",
+    "commit": {
+      "date": "2025-05-21T04:50:57.000Z",
+      "message": "Agregar codigos y horarios en la reserva del ticket",
+      "url": "https://github.com/Alexvacan/ProyectoSurtidorYa/commit/4eda7790f17e713fdbca2833c9f9b84e5c2dab57"
+    },
+    "stats": {
+      "total": 74,
+      "additions": 58,
+      "deletions": 16,
+      "date": "2025-05-21"
+    },
+    "coverage": 0,
+    "test_count": 26
   }
 ]

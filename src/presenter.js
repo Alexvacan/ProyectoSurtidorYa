@@ -126,49 +126,8 @@ export class Presenter {
   btnGenerarTicket.textContent = 'Generar Ticket';
   btnGenerarTicket.style.marginLeft = '10px';
   btnGenerarTicket.onclick = () => {
-  const horarios = this.generarHorariosDisponibles();
-
-  const horaSeleccionada = prompt(
-    'Selecciona una hora (Ej: 08:00):\n' + horarios.join(', ')
-  );
-
-  if (!horarios.includes(horaSeleccionada)) {
-    alert('Hora no válida.');
-    return;
-  }
-
-  const montoStr = prompt('¿Cuánto desea cargar? (Máximo 150 Bs)');
-  const monto = Number(montoStr);
-
-  if (isNaN(monto) || monto <= 0) {
-    alert('Monto inválido.');
-    return;
-  }
-
-  if (monto > 150) {
-    alert('No se puede cargar más de 150 Bs.');
-    return;
-  }
-
-  // Código único
-  const codigo = `TCKT-${Date.now()}-${Math.floor(Math.random() * 1000)}`;
-
-  if (!this.ticketsPorSurtidor[s.nombre]) {
-    this.ticketsPorSurtidor[s.nombre] = [];
-  }
-
-  const nuevoTicket = {
-    fecha: new Date().toLocaleString(),
-    hora: horaSeleccionada,
-    monto: monto.toFixed(2),
-    codigo: codigo,
-    mensaje: `Ticket generado para ${s.nombre}`
+  this.mostrarFormularioTicket(s);
   };
-
-  this.ticketsPorSurtidor[s.nombre].push(nuevoTicket);
-  this.mostrarSurtidores(); // Actualiza la UI
-};
-
 
   // === NUEVO: Contador de Tickets ===
   const ticketCount = this.ticketsPorSurtidor[s.nombre]?.length || 0;
@@ -183,10 +142,11 @@ export class Presenter {
   const tickets = this.ticketsPorSurtidor[s.nombre] || [];
   const contenido = tickets.length
     ? tickets.map(t =>
-        `🧾 Código: ${t.codigo}\n📅 Fecha: ${t.fecha}\n⏰ Hora: ${t.hora}\n💵 Monto: ${t.monto} Bs\n📝 ${t.mensaje}`
+      `🧾 Código: ${t.codigo}\n📅 Fecha reserva: ${t.fechaReserva}\n📆 Fecha programada: ${t.fechaProgramada}\n⏰ Hora: ${t.hora}\n💵 Monto: ${t.monto} Bs\n📝 ${t.mensaje}`
       ).join('\n\n')
     : 'No hay tickets generados para este surtidor.';
   alert(`Tickets de ${s.nombre}:\n\n${contenido}`);
+  
 };
 
 
@@ -244,6 +204,25 @@ export class Presenter {
     });
   }  
 
+  crearTarjetaSurtidor(surtidor) {
+  const div = document.createElement("div");
+  div.classList.add("tarjeta");
+  div.id = `surtidor-${surtidor.nombre}`;
+
+  div.innerHTML = `
+    <h3>${surtidor.nombre}</h3>
+    <p>Zona: ${surtidor.zona}</p>
+    <p class="contador-tickets">0</p>
+    <button class="btn-generar-ticket">Generar ticket</button>
+  `;
+
+  div.querySelector(".btn-generar-ticket").onclick = () => {
+    this.mostrarFormularioTicket(surtidor);
+  };
+
+  document.getElementById("contenedor-surtidores").appendChild(div);
+}
+
   manejarToggle() {
     const btn = document.getElementById('toggle-estado');
     btn.addEventListener('click', () => {
@@ -299,6 +278,81 @@ export class Presenter {
     }
     return horarios;
   }
+
+  mostrarFormularioTicket(surtidor) {
+  const modal = document.getElementById("modal-ticket");
+  modal.classList.remove("oculto");
+
+  // Asignar datos al formulario
+  document.getElementById("ticket-nombre").value = surtidor.nombre;
+  document.getElementById("ticket-zona").value = surtidor.zona;
+
+  // Inicializar arreglo si no existe
+  if (!this.ticketsPorSurtidor[surtidor.nombre]) {
+    this.ticketsPorSurtidor[surtidor.nombre] = [];
+  }
+
+  // Generar número de ticket
+  const numero = this.ticketsPorSurtidor[surtidor.nombre].length + 1;
+  const codigo = numero.toString().padStart(4, "0");
+  document.getElementById("ticket-numero").value = codigo;
+
+  const self = this; // ← Clave para que funcione el `this` dentro del onclick
+
+  // Botón Confirmar
+  document.getElementById("guardar-ticket").onclick = function () {
+    const horaSeleccionada = document.getElementById("ticket-hora").value;
+    const fechaProgramada = document.getElementById("ticket-fecha-programada").value;
+    const monto = parseFloat(document.getElementById("ticket-monto").value);
+    const fechaReserva = new Date().toISOString().split("T")[0]; // ← Corrección aquí
+
+    if (!fechaProgramada) {
+      alert("Debe seleccionar una fecha programada.");
+      return;
+    }
+
+    if (isNaN(monto) || monto > 150) {
+      alert("El monto no puede superar los 150 Bs.");
+      return;
+    }
+
+    // Guardar ticket
+    self.ticketsPorSurtidor[surtidor.nombre].push({
+      codigo,
+      hora: horaSeleccionada,
+      fechaProgramada,
+      fechaReserva,
+      monto,
+      surtidor: surtidor.nombre,
+      zona: surtidor.zona
+    });
+
+    // Actualizar contador visual
+    const contador = document.querySelector(`#surtidor-${surtidor.nombre} .contador-tickets`);
+    if (contador) {
+      contador.textContent = self.ticketsPorSurtidor[surtidor.nombre].length;
+    }
+
+    alert(
+      `Ticket ${codigo} generado para ${surtidor.nombre}:\n` +
+      `Hora: ${horaSeleccionada}\n` +
+      `Monto: Bs ${monto}\n` +
+      `Fecha de Reserva: ${fechaReserva}\n` +
+      `Fecha Programada: ${fechaProgramada}`
+    );
+
+    modal.classList.add("oculto");
+    self.mostrarSurtidores(); 
+  };
+
+  // Botón Cancelar
+  document.getElementById("cancelar-ticket").onclick = () => {
+    modal.classList.add("oculto");
+  };
+}
+
+
+
 
   // Pone opciones en el select de surtidor y maneja cambio
   manejarSeleccionSurtidor() {

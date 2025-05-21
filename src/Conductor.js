@@ -158,5 +158,12 @@ generarTicket(estacion, surtidor, tipoCombustible) {
   `;
 }
 
+generarTicketConMonto(monto) {
+  if (isNaN(monto) || monto > 150) {
+    throw new Error("El monto no puede superar los 150 Bs.");
+  }
+  return true;
+}
 
 }
+

@@ -123,6 +123,46 @@
       <button id="guardar-edicion">Guardar</button>
       <button id="cancelar-edicion">Cancelar</button>
     </div>
+
+    <p class="contador-tickets">0</p>
+    
+  <div id="modal-ticket" class="oculto">
+  <h3>Generar Ticket</h3>
+
+  <label>Nombre del surtidor:</label>
+  <input type="text" id="ticket-nombre" disabled /><br><br>
+
+  <label>Zona:</label>
+  <input type="text" id="ticket-zona" disabled /><br><br>
+
+  <label for="fecha-ticket">Fecha de reserva:</label>
+  <input type="date" id="fecha-ticket" disabled>
+
+  <label for="ticket-fecha-programada">Fecha programada:</label>
+<input type="date" id="ticket-fecha-programada" required />
+
+  <label for="ticket-hora">Hora estimada de atención:</label>
+  <select id="ticket-hora" required>
+    <option value="06:00">06:00</option>
+    <option value="07:00">07:00</option>
+    <option value="08:00">08:00</option>
+    <option value="09:00">09:00</option>
+    <option value="10:00">10:00</option>
+  </select><br><br>
+
+  <label>Monto en Bs:</label>
+  <input type="number" id="ticket-monto" min="0" placeholder="Ej: 100" required /><br><br>
+
+  <label>Número de ticket:</label>
+  <input type="text" id="ticket-numero" disabled /><br><br>
+
+  <button id="guardar-ticket">Confirmar</button>
+  <button id="cancelar-ticket">Cancelar</button>
+</div>
+
+
+
   </body>
   </html>
+
 

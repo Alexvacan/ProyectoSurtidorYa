@@ -49,5 +49,22 @@
     },
     "coverage": 0,
     "test_count": 26
+  },
+  {
+    "sha": "c7bed1f209a8bd24072d1694f9573bea8447d27d",
+    "author": "chenaoh",
+    "commit": {
+      "date": "2025-05-21T06:55:59.000Z",
+      "message": "Refactor a generar tickets con montos y fechas",
+      "url": "https://github.com/Alexvacan/ProyectoSurtidorYa/commit/c7bed1f209a8bd24072d1694f9573bea8447d27d"
+    },
+    "stats": {
+      "total": 269,
+      "additions": 226,
+      "deletions": 43,
+      "date": "2025-05-21"
+    },
+    "coverage": 0,
+    "test_count": 30
   }
 ]

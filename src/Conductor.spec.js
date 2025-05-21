@@ -318,4 +318,67 @@ describe('Conductor', () => {
 });
 
 });
+it('debería lanzar un error si el monto excede los 150 Bs', () => {
+  const conductor = new Conductor();
+  const monto = 200; 
+  expect(() => {
+    conductor.generarTicketConMonto(monto);
+  }).toThrow('El monto no puede superar los 150 Bs.');
+});
+
+
+it('debería incluir la fecha de reserva al crear el ticket', () => {
+  const ahora = new Date().toLocaleString();
+  const ticket = {
+    codigo: '0001',
+    hora: '09:00',
+    monto: 100,
+    fechaReserva: ahora,
+    fechaProgramada: '2025-05-20',
+    mensaje: 'Test ticket'
+  };
+
+  expect(ticket.fechaReserva).toBe(ahora);
+  expect(ticket.fechaProgramada).toBe('2025-05-20');
+});
+
+it('debería generar el código del ticket con 4 dígitos', () => {
+  const numero = 3;
+  const codigo = numero.toString().padStart(4, '0');
+  expect(codigo).toBe('0003');
+});
+
+
+it('debería crear un ticket completo con todos los campos válidos', () => {
+  const surtidor = {
+    nombre: 'Surtidor X',
+    zona: 'Zona Y'
+  };
+
+  const ticketsPorSurtidor = {};
+  if (!ticketsPorSurtidor[surtidor.nombre]) {
+    ticketsPorSurtidor[surtidor.nombre] = [];
+  }
+
+  const ticket = {
+    codigo: '0001',
+    hora: '08:30',
+    monto: 120,
+    fechaReserva: '2025-05-19 08:00',
+    fechaProgramada: '2025-05-20',
+    surtidor: surtidor.nombre,
+    zona: surtidor.zona,
+    mensaje: `Ticket generado para ${surtidor.nombre}`
+  };
+
+  ticketsPorSurtidor[surtidor.nombre].push(ticket);
+
+  const t = ticketsPorSurtidor[surtidor.nombre][0];
+  expect(t.codigo).toBe('0001');
+  expect(t.monto).toBeLessThanOrEqual(150);
+  expect(t.fechaReserva).toBe('2025-05-19 08:00');
+  expect(t.fechaProgramada).toBe('2025-05-20');
+  expect(t.surtidor).toBe('Surtidor X');
+});
+
 });

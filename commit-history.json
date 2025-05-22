@@ -83,5 +83,22 @@
     },
     "coverage": 0,
     "test_count": 30
+  },
+  {
+    "sha": "8e0419792b230d46340e15575f0a1f4b5ba86edf",
+    "author": "Fernando Belmonte",
+    "commit": {
+      "date": "2025-05-22T06:04:25.000Z",
+      "message": "Feat:Prueba cypres para Crear Surtidor",
+      "url": "https://github.com/Alexvacan/ProyectoSurtidorYa/commit/8e0419792b230d46340e15575f0a1f4b5ba86edf"
+    },
+    "stats": {
+      "total": 42,
+      "additions": 26,
+      "deletions": 16,
+      "date": "2025-05-22"
+    },
+    "coverage": 0,
+    "test_count": 30
   }
 ]

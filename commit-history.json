@@ -85,6 +85,23 @@
     "test_count": 30
   },
   {
+    "sha": "8e0419792b230d46340e15575f0a1f4b5ba86edf",
+    "author": "Fernando Belmonte",
+    "commit": {
+      "date": "2025-05-22T06:04:25.000Z",
+      "message": "Feat:Prueba cypres para Crear Surtidor",
+      "url": "https://github.com/Alexvacan/ProyectoSurtidorYa/commit/8e0419792b230d46340e15575f0a1f4b5ba86edf"
+    },
+    "stats": {
+      "total": 42,
+      "additions": 26,
+      "deletions": 16,
+      "date": "2025-05-22"
+    },
+    "coverage": 0,
+    "test_count": 30
+  },
+  {
     "sha": "f07dc5f1e352db13f4f5f7209a66fa8d32caf48d",
     "author": "chenaoh",
     "commit": {
@@ -96,6 +113,23 @@
       "total": 341,
       "additions": 286,
       "deletions": 55,
+      "date": "2025-05-22"
+    },
+    "coverage": 0,
+    "test_count": 34
+  },
+  {
+    "sha": "3dfc2c509cb74dce1e653243ef42f41cf67f081f",
+    "author": "chenaoh",
+    "commit": {
+      "date": "2025-05-22T09:07:36.000Z",
+      "message": "Version mergeada con buscador en ver ticket",
+      "url": "https://github.com/Alexvacan/ProyectoSurtidorYa/commit/3dfc2c509cb74dce1e653243ef42f41cf67f081f"
+    },
+    "stats": {
+      "total": 59,
+      "additions": 43,
+      "deletions": 16,
       "date": "2025-05-22"
     },
     "coverage": 0,

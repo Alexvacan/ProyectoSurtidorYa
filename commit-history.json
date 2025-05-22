@@ -66,5 +66,22 @@
     },
     "coverage": 0,
     "test_count": 30
+  },
+  {
+    "sha": "51628e329f0c9137cf4dbe56eb078582848bec14",
+    "author": "Wenba1",
+    "commit": {
+      "date": "2025-05-22T04:20:45.000Z",
+      "message": "Fix: Correcion de errores de Mostrar tickets en Cypress",
+      "url": "https://github.com/Alexvacan/ProyectoSurtidorYa/commit/51628e329f0c9137cf4dbe56eb078582848bec14"
+    },
+    "stats": {
+      "total": 89,
+      "additions": 67,
+      "deletions": 22,
+      "date": "2025-05-22"
+    },
+    "coverage": 0,
+    "test_count": 30
   }
 ]

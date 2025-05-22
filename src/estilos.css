@@ -175,6 +175,42 @@ button:hover {
   overflow-y: auto;
 }
 
+#modal-ver-tickets {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: var(--color-blanco);
+  padding: 2rem;
+  z-index: 1000;
+  border-radius: var(--borde-radio);
+  box-shadow: var(--sombra-suave);
+  max-width: 600px;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+#modal-ver-tickets .modal-contenido {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+#modal-ver-tickets input[type="text"] {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid var(--color-gris);
+  border-radius: 8px;
+  font-size: 1rem;
+}
+
+
+.ticket {
+  border: 1px solid #ccc;
+  padding: 5px;
+  margin: 5px;
+}
+
 .oculto {
   display: none;
 }

@@ -139,14 +139,39 @@ export class Presenter {
   btnVerTickets.textContent = 'Ver Tickets';
   btnVerTickets.style.marginLeft = '10px';
   btnVerTickets.onclick = () => {
+  const modal = document.getElementById("modal-ver-tickets");
+  const contenedor = document.getElementById("contenedor-tickets");
+  const inputBuscar = document.getElementById("buscar-ticket");
+
   const tickets = this.ticketsPorSurtidor[s.nombre] || [];
-  const contenido = tickets.length
-    ? tickets.map(t =>
-      `🧾 Código: ${t.codigo}\n📅 Fecha reserva: ${t.fechaReserva}\n📆 Fecha programada: ${t.fechaProgramada}\n⏰ Hora: ${t.hora}\n💵 Monto: ${t.monto} Bs\n📝 ${t.mensaje}`
-      ).join('\n\n')
-    : 'No hay tickets generados para este surtidor.';
-  alert(`Tickets de ${s.nombre}:\n\n${contenido}`);
-  
+
+  function mostrarTickets(filtro = "") {
+    contenedor.innerHTML = "";
+
+    const filtrados = tickets.filter(t =>
+      t.codigo.toLowerCase().includes(filtro) ||
+      (t.nombreReservante && t.nombreReservante.toLowerCase().includes(filtro))
+    );
+
+    if (filtrados.length === 0) {
+      contenedor.innerHTML = "<p>No se encontraron tickets.</p>";
+      return;
+    }
+
+    filtrados.forEach(t => {
+      const div = document.createElement("div");
+      div.className = "ticket";
+      div.textContent =
+        `🧾 Código: ${t.codigo}\n📅 Fecha reserva: ${t.fechaReserva}\n📆 Fecha programada: ${t.fechaProgramada}\n⏰ Hora: ${t.hora}\n💵 Monto: ${t.monto} Bs\n📝 ${t.nombreReservante}`;
+      contenedor.appendChild(div);
+    });
+  }
+
+  inputBuscar.value = ""; // Limpiar búsqueda anterior
+  inputBuscar.oninput = () => mostrarTickets(inputBuscar.value.toLowerCase());
+
+  mostrarTickets(); // Mostrar sin filtro al principio
+  modal.classList.remove("oculto");
 };
 
 
@@ -297,14 +322,20 @@ export class Presenter {
   const codigo = numero.toString().padStart(4, "0");
   document.getElementById("ticket-numero").value = codigo;
 
-  const self = this; // ← Clave para que funcione el `this` dentro del onclick
+  const self = this; 
 
   // Botón Confirmar
   document.getElementById("guardar-ticket").onclick = function () {
     const horaSeleccionada = document.getElementById("ticket-hora").value;
     const fechaProgramada = document.getElementById("ticket-fecha-programada").value;
     const monto = parseFloat(document.getElementById("ticket-monto").value);
-    const fechaReserva = new Date().toISOString().split("T")[0]; // ← Corrección aquí
+    const fechaReserva = new Date().toISOString().split("T")[0]; 
+    const nombreReservante = document.getElementById("ticket-nombre-reservante").value;
+
+if (!nombreReservante.trim()) {
+  alert("Debe ingresar el nombre del reservante.");
+  return;
+}
 
     if (!fechaProgramada) {
       alert("Debe seleccionar una fecha programada.");
@@ -324,7 +355,8 @@ export class Presenter {
       fechaReserva,
       monto,
       surtidor: surtidor.nombre,
-      zona: surtidor.zona
+      zona: surtidor.zona,
+      nombreReservante
     });
 
     // Actualizar contador visual

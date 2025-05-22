@@ -1,4 +1,7 @@
 import { Conductor } from './Conductor.js';
+import filtrarTickets from './filtrartickets.js';
+console.log('filtrarTickets:', filtrarTickets);
+
 
 beforeEach(() => {
   global.localStorage = {
@@ -379,6 +382,37 @@ it('debería crear un ticket completo con todos los campos válidos', () => {
   expect(t.fechaReserva).toBe('2025-05-19 08:00');
   expect(t.fechaProgramada).toBe('2025-05-20');
   expect(t.surtidor).toBe('Surtidor X');
+});
+
+describe('filtrarTickets', () => {
+  const tickets = [
+    { numero: 'TICKET-001', nombre: 'Juan Pérez' },
+    { numero: 'TICKET-002', nombre: 'María Gómez' },
+    { numero: 'TICKET-003', nombre: 'Pedro Sánchez' }
+  ];
+
+  test('devuelve tickets que coinciden con el nombre', () => {
+    const resultado = filtrarTickets(tickets, 'María');
+    expect(resultado).toHaveLength(1);
+    expect(resultado[0].nombre).toBe('María Gómez');
+  });
+
+  test('devuelve tickets que coinciden con el número', () => {
+    const resultado = filtrarTickets(tickets, '003');
+    expect(resultado).toHaveLength(1);
+    expect(resultado[0].numero).toBe('TICKET-003');
+  });
+
+  test('no distingue mayúsculas o minúsculas', () => {
+    const resultado = filtrarTickets(tickets, 'juan');
+    expect(resultado).toHaveLength(1);
+    expect(resultado[0].nombre).toBe('Juan Pérez');
+  });
+
+  test('devuelve un arreglo vacío si no hay coincidencias', () => {
+    const resultado = filtrarTickets(tickets, 'X123');
+    expect(resultado).toEqual([]);
+  });
 });
 
 });

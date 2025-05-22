@@ -153,6 +153,9 @@
   <label>Monto en Bs:</label>
   <input type="number" id="ticket-monto" min="0" placeholder="Ej: 100" required /><br><br>
 
+  <label for="ticket-nombre-reservante">Nombre del reservante:</label>
+  <input type="text" id="ticket-nombre-reservante" />
+
   <label>Número de ticket:</label>
   <input type="text" id="ticket-numero" disabled /><br><br>
 
@@ -160,7 +163,12 @@
   <button id="cancelar-ticket">Cancelar</button>
 </div>
 
-
+<div id="modal-ver-tickets" class="oculto">
+  <h2>Tickets del surtidor</h2>
+  <input type="text" id="buscar-ticket" placeholder="Buscar por código o nombre del reservante" />
+  <div id="contenedor-tickets"></div>
+  <button id="cerrar-modal-ver-tickets">Cerrar</button>
+</div>
 
   </body>
   </html>

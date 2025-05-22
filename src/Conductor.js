@@ -165,5 +165,9 @@ generarTicketConMonto(monto) {
   return true;
 }
 
+obtenerTodosLosTickets() {
+  return this.tickets || []; 
+}
+
 }
 

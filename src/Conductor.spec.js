@@ -415,4 +415,18 @@ describe('filtrarTickets', () => {
   });
 });
 
+it("debería aceptar solo monto o solo fracción", () => {
+    const validar = (monto, fraccion) => {
+      if ((monto && fraccion) || (!monto && !fraccion)) {
+        throw new Error("Debe ingresar solo uno");
+      }
+      return true;
+    };
+
+    expect(() => validar(100, 0.5)).toThrow();
+    expect(() => validar(null, null)).toThrow();
+    expect(validar(100, null)).toBe(true);
+    expect(validar(null, 0.25)).toBe(true);
+  });
+
 });

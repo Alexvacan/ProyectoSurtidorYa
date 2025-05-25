@@ -329,8 +329,14 @@ export class Presenter {
     const horaSeleccionada = document.getElementById("ticket-hora").value;
     const fechaProgramada = document.getElementById("ticket-fecha-programada").value;
     const monto = parseFloat(document.getElementById("ticket-monto").value);
+    const fraccion = parseFloat(document.getElementById("ticket-fraccion").value);
     const fechaReserva = new Date().toISOString().split("T")[0]; 
     const nombreReservante = document.getElementById("ticket-nombre-reservante").value;
+
+if ((monto && fraccion) || (!monto && !fraccion)) {
+    alert("Debes ingresar solo monto o solo fracción del tanque.");
+    return;
+  }
 
 if (!nombreReservante.trim()) {
   alert("Debe ingresar el nombre del reservante.");

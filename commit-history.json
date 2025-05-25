@@ -134,5 +134,22 @@
     },
     "coverage": 0,
     "test_count": 34
+  },
+  {
+    "sha": "495c46b1c3ee57f25c5478ca6045a3e60fb6b512",
+    "author": "Wenba1",
+    "commit": {
+      "date": "2025-05-25T04:56:09.000Z",
+      "message": "Feat: Agregue la cantidad que va a cargar",
+      "url": "https://github.com/Alexvacan/ProyectoSurtidorYa/commit/495c46b1c3ee57f25c5478ca6045a3e60fb6b512"
+    },
+    "stats": {
+      "total": 28,
+      "additions": 28,
+      "deletions": 0,
+      "date": "2025-05-25"
+    },
+    "coverage": 0,
+    "test_count": 35
   }
 ]

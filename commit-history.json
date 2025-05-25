@@ -151,5 +151,22 @@
     },
     "coverage": 0,
     "test_count": 35
+  },
+  {
+    "sha": "9addb5cebb044db5d08c9277199a7079c73d5851",
+    "author": "Wenba1",
+    "commit": {
+      "date": "2025-05-25T05:29:06.000Z",
+      "message": "Fix: Arreglo de codigo de tickets.cy.js",
+      "url": "https://github.com/Alexvacan/ProyectoSurtidorYa/commit/9addb5cebb044db5d08c9277199a7079c73d5851"
+    },
+    "stats": {
+      "total": 11,
+      "additions": 8,
+      "deletions": 3,
+      "date": "2025-05-25"
+    },
+    "coverage": 0,
+    "test_count": 35
   }
 ]

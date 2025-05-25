@@ -40,6 +40,9 @@ describe("Mostrar tickets", () => {
     cy.get("#ticket-hora").select("10:00");
     cy.get("#ticket-monto").type("100");
 
+    cy.get("#ticket-nombre-reservante").type("Juan");
+
+
     cy.get("#guardar-ticket").click();
 
     cy.on("window:alert", (text) => {
@@ -51,8 +54,10 @@ describe("Mostrar tickets", () => {
       }
     });
 
-    cy.contains("#lista-surtidores li", "Surtidor Test")
-      .contains("Tickets generados: 1")
-      .should("exist");
+    cy.contains("#lista-surtidores li", "Surtidor Test").within(() => {
+    cy.contains("Tickets generados: 1").should("exist");
+    });
+
   });
+  
 });

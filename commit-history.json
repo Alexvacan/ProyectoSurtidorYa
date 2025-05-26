@@ -185,5 +185,22 @@
     },
     "coverage": 0,
     "test_count": 0
+  },
+  {
+    "sha": "cb8dbb743d2a7bd308a322052eb8fe8bd64f0869",
+    "author": "Jorge Vargas",
+    "commit": {
+      "date": "2025-05-26T14:31:32.000Z",
+      "message": "refactor conductor",
+      "url": "https://github.com/Alexvacan/ProyectoSurtidorYa/commit/cb8dbb743d2a7bd308a322052eb8fe8bd64f0869"
+    },
+    "stats": {
+      "total": 105,
+      "additions": 69,
+      "deletions": 36,
+      "date": "2025-05-26"
+    },
+    "coverage": 0,
+    "test_count": 35
   }
 ]

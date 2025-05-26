@@ -15,5 +15,22 @@
     },
     "coverage": 0,
     "test_count": 35
+  },
+  {
+    "sha": "421b61e3429a66520579b5e6de31ef27d1834093",
+    "author": "Fernando Belmonte",
+    "commit": {
+      "date": "2025-05-26T16:07:56.000Z",
+      "message": "Feat:Prueba cypress editar surtidor",
+      "url": "https://github.com/Alexvacan/ProyectoSurtidorYa/commit/421b61e3429a66520579b5e6de31ef27d1834093"
+    },
+    "stats": {
+      "total": 34,
+      "additions": 34,
+      "deletions": 0,
+      "date": "2025-05-26"
+    },
+    "coverage": 0,
+    "test_count": 35
   }
 ]

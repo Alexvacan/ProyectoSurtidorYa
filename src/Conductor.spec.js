@@ -422,11 +422,9 @@ it("debería aceptar solo monto o solo fracción", () => {
       }
       return true;
     };
-
     expect(() => validar(100, 0.5)).toThrow();
     expect(() => validar(null, null)).toThrow();
     expect(validar(100, null)).toBe(true);
     expect(validar(null, 0.25)).toBe(true);
   });
-
 });

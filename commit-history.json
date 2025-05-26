@@ -168,5 +168,22 @@
     },
     "coverage": 0,
     "test_count": 35
+  },
+  {
+    "sha": "aef3c150f4debeebcb7b370b7b19148520b7a120",
+    "author": "Jorge Vargas",
+    "commit": {
+      "date": "2025-05-26T14:02:12.000Z",
+      "message": "refactor: refactor de conductor.js",
+      "url": "https://github.com/Alexvacan/ProyectoSurtidorYa/commit/aef3c150f4debeebcb7b370b7b19148520b7a120"
+    },
+    "stats": {
+      "total": 119,
+      "additions": 37,
+      "deletions": 82,
+      "date": "2025-05-26"
+    },
+    "coverage": 0,
+    "test_count": 0
   }
 ]

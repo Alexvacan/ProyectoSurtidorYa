@@ -28,7 +28,7 @@ export class Conductor {
           },
           {
             nombre: 'Surtidor C',
-            direccion: 'Av. libertad 9012, Quillacollo',
+            direccion: 'Av. Libertad 9012, Quillacollo',
             estado: 'Disponible',
             fila: 2,
             zona: 'Quillacollo',
@@ -48,17 +48,14 @@ export class Conductor {
     if (typeof data !== 'object') {
       throw new Error('agregarSurtidor: se esperaba un objeto');
     }
-  
     const {
       nombre, direccion, estado, fila, zona,
       litros, apertura, cierre, contacto
     } = data;
-  
-    if (!nombre || !zona || !litros || !apertura || !cierre || !contacto) {
+    if (!nombre || !direccion || !zona || litros == null || !apertura || !cierre || !contacto) {
       throw new Error('agregarSurtidor: datos incompletos');
     }
-  
-    const surtidor = {
+    this.surtidores.push({
       nombre,
       direccion,
       estado: String(estado).trim(),
@@ -68,43 +65,25 @@ export class Conductor {
       apertura,
       cierre,
       contacto
-    };
-    this.surtidores.push(surtidor);
-    this.guardarEnLocalStorage();
+    });
+    this._guardarEnLocalStorage();
   }
 
-  eliminarSurtidor(nombre) {  
+  eliminarSurtidor(nombre) {
     this.surtidores = this.surtidores.filter(s => s.nombre !== nombre);
-    this.guardarEnLocalStorage();
+    this._guardarEnLocalStorage();
   }
 
   editarSurtidor(nombreOriginal, ...args) {
     const s = this.surtidores.find(x => x.nombre === nombreOriginal);
     if (!s) return;
-  
     let [nuevoNombre, nuevaDireccion, nuevoEstado, nuevaFila, nuevaZona, nuevosLitros, nuevaApertura, nuevoCierre, nuevoContacto] = [];
-  
-    if (args.length === 4) {
-      // Firma simple: nombre, estado, fila, zona
-      [nuevoNombre, nuevoEstado, nuevaFila, nuevaZona] = args;
-      nuevaDireccion = s.direccion;
-      nuevosLitros   = s.litros;
-      nuevaApertura  = s.apertura;
-      nuevoCierre    = s.cierre;
-      nuevoContacto  = s.contacto;
-    }
-    else if (args.length === 8) {
-      // Firma intermedia sin dirección
-      [nuevoNombre, nuevoEstado, nuevaFila, nuevaZona, nuevosLitros, nuevaApertura, nuevoCierre, nuevoContacto] = args;
-      nuevaDireccion = s.direccion;
-    }
-    else if (args.length === 9) {
-      // Firma completa con dirección
+    // Firma completa:
+    if (args.length === 9) {
       [nuevoNombre, nuevaDireccion, nuevoEstado, nuevaFila, nuevaZona, nuevosLitros, nuevaApertura, nuevoCierre, nuevoContacto] = args;
     } else {
       throw new Error('editarSurtidor: parámetros inválidos');
     }
-  
     s.nombre    = nuevoNombre;
     s.direccion = nuevaDireccion;
     s.estado    = String(nuevoEstado).trim();
@@ -114,14 +93,13 @@ export class Conductor {
     s.apertura  = nuevaApertura;
     s.cierre    = nuevoCierre;
     s.contacto  = nuevoContacto;
-  
-    this.guardarEnLocalStorage();
+    this._guardarEnLocalStorage();
   }
 
   nivelGasolina(litros) {
     if (litros > 10000) return 'Alto';
-    if (litros >= 5000) return 'Medio';
-    if (litros > 0) return 'Bajo';
+    if (litros >= 5000)  return 'Medio';
+    if (litros > 0)      return 'Bajo';
     return 'Sin gasolina';
   }
 
@@ -129,45 +107,33 @@ export class Conductor {
     return this.surtidores.find(s => s.nombre === nombre) || null;
   }
 
-  guardarEnLocalStorage() {
+  _guardarEnLocalStorage() {
     localStorage.setItem('surtidores', JSON.stringify(this.surtidores));
   }
 
-generarTicket(estacion, surtidor, tipoCombustible) {
-  if (
-  !surtidor ||                  // cubre null y undefined
-  typeof surtidor !== 'object' ||    
-  !surtidor.nombre ||
-  surtidor.litros == null
-) {
-  throw new Error('generarTicket: datos inválidos');
-}
-
-
-  const fecha = new Date().toLocaleString();
-  return `
-    *** TICKET DE SURTIDOR ***
-    Estación: ${estacion}
-    Nombre: ${surtidor.nombre}
-    Tipo combustible: ${tipoCombustible}
-    Zona: ${surtidor.zona}
-    Litros disponibles: ${surtidor.litros}
-    Horario: ${surtidor.apertura} - ${surtidor.cierre}
-    Fecha emisión: ${fecha}
-    ----------------------------
-  `;
-}
-
-generarTicketConMonto(monto) {
-  if (isNaN(monto) || monto > 150) {
-    throw new Error("El monto no puede superar los 150 Bs.");
+  // Tickets almacenados en memoria (se podrían persistir)
+  generarTicket(estacion, surtidor, tipoCombustible) {
+    if (!estacion || !tipoCombustible || !surtidor || !surtidor.nombre || surtidor.litros == null) {
+      throw new Error('generarTicket: datos inválidos');
+    }
+    const fecha = new Date().toLocaleString();
+    return `
+*** TICKET DE SURTIDOR ***
+Estación: ${estacion}
+Nombre: ${surtidor.nombre}
+Tipo combustible: ${tipoCombustible}
+Zona: ${surtidor.zona}
+Litros disponibles: ${surtidor.litros}
+Horario: ${surtidor.apertura} - ${surtidor.cierre}
+Fecha emisión: ${fecha}
+----------------------------
+`;
   }
-  return true;
-}
 
-obtenerTodosLosTickets() {
-  return this.tickets || []; 
+  generarTicketConMonto(monto) {
+    if (isNaN(monto) || monto > 150) {
+      throw new Error("El monto no puede superar los 150 Bs.");
+    }
+    return true;
+  }
 }
-
-}
-

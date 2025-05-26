@@ -1,33 +1,16 @@
 [
   {
-    "sha": "a70514c8cbeeb6438647325003eda5d4ae30d062",
+    "sha": "44bdbe9469de86dc51fc74ecfca466ca38e20aa6",
     "author": "Jorge Vargas",
     "commit": {
-      "date": "2025-05-26T14:33:33.000Z",
-      "message": "refactor conductor",
-      "url": "https://github.com/Alexvacan/ProyectoSurtidorYa/commit/a70514c8cbeeb6438647325003eda5d4ae30d062"
-    },
-    "stats": {
-      "total": 20,
-      "additions": 16,
-      "deletions": 4,
-      "date": "2025-05-26"
-    },
-    "coverage": 0,
-    "test_count": 35
-  },
-  {
-    "sha": "909bc7ff5d5eb14c3c2cac56ab65ae848f5bfb40",
-    "author": "Jorge Vargas",
-    "commit": {
-      "date": "2025-05-26T19:30:34.000Z",
+      "date": "2025-05-26T19:31:59.000Z",
       "message": "feat: funcionalidad que muestra las franjas horarias",
-      "url": "https://github.com/Alexvacan/ProyectoSurtidorYa/commit/909bc7ff5d5eb14c3c2cac56ab65ae848f5bfb40"
+      "url": "https://github.com/Alexvacan/ProyectoSurtidorYa/commit/44bdbe9469de86dc51fc74ecfca466ca38e20aa6"
     },
     "stats": {
-      "total": 116,
-      "additions": 80,
-      "deletions": 36,
+      "total": 48,
+      "additions": 48,
+      "deletions": 0,
       "date": "2025-05-26"
     },
     "coverage": 0,

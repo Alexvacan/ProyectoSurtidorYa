@@ -2,7 +2,6 @@ import { Conductor } from './Conductor.js';
 import { calcularProbabilidadCarga } from './probabilidadCargaService.js';
 import { TimeSlotService } from './timeSlotService.js';
 
-
 export class Presenter {
   constructor() {
     this.conductor = new Conductor();
@@ -11,6 +10,7 @@ export class Presenter {
     this.nombreEditando = null;
     this.ticketsPorSurtidor = {};
 
+    // Elementos de edición
     this.modalEdicion = document.getElementById('modal-edicion');
     this.editarNombre = document.getElementById('editar-nombre');
     this.editarDireccionInput = document.getElementById('editar-direccion');
@@ -18,22 +18,27 @@ export class Presenter {
     this.editarFila = document.getElementById('editar-fila');
     this.editarZona = document.getElementById('editar-zona');
     this.editarLitros = document.getElementById('editar-litros');
+    this.editarApertura = document.getElementById('editar-apertura');
+    this.editarCierre = document.getElementById('editar-cierre');
+    this.editarContacto = document.getElementById('editar-contacto');
     this.btnGuardarEdicion = document.getElementById('guardar-edicion');
+
+    // Formulario surtidor
     this.apertura = document.getElementById('apertura');
     this.cierre = document.getElementById('cierre');
     this.contacto = document.getElementById('contacto');
-    this.editarApertura = document.getElementById('editar-apertura');
-    this.editarCierre = document.getElementById('editar-cierre');
-    this.editarContacto = document.getElementById('editar-contacto')
+
+    // Búsqueda y filtros
     this.sortCriteria = 'nombre';
     this.sortSelect = document.getElementById('sort-criteria');
 
+    // Franjas
     this.selectSurtidorFranja = document.getElementById('surtidor-seleccionado');
     this.btnCalcularProb       = document.getElementById('calcular-probabilidad');
     this.textoProbabilidad     = document.getElementById('texto-probabilidad');
-    // ← Aquí añades:
+
+    // Dirección input (ya existente)
     this.direccionInput        = document.getElementById('direccion');
-    this.sortCriteria = 'nombre';
   }
 
   sortList(list) {
@@ -67,32 +72,32 @@ export class Presenter {
     }
 
     surtidores.forEach(s => {
-  const nivel = this.conductor.nivelGasolina(s.litros);
-  const li = document.createElement('li');
-  li.innerHTML = `
-    <strong>${s.nombre}</strong> - ${s.estado}<br>
-    <em>Dirección:</em> ${s.direccion}<br>
-    Autos en fila: ${s.fila} - Zona: ${s.zona}<br>
-    Nivel de gasolina: ${nivel} (${s.litros} litros)<br>
-    Horario: ${s.apertura} - ${s.cierre}<br>
-    Contacto: ${s.contacto}
-  `;
+      const nivel = this.conductor.nivelGasolina(s.litros);
+      const li = document.createElement('li');
+      li.innerHTML = `
+        <strong>${s.nombre}</strong> - ${s.estado}<br>
+        <em>Dirección:</em> ${s.direccion}<br>
+        Autos en fila: ${s.fila} - Zona: ${s.zona}<br>
+        Nivel de gasolina: ${nivel} (${s.litros} litros)<br>
+        Horario: ${s.apertura} - ${s.cierre}<br>
+        Contacto: ${s.contacto}
+      `;
 
-  const tipoAuto = s.tipoAuto || 'pequeno'; 
-  const prob = calcularProbabilidadCarga({
-    combustibleDisponible: Number(s.litros),
-    autosEsperando: Number(s.fila),
-    tipoAuto: tipoAuto 
-  });
+      const tipoAuto = s.tipoAuto || 'pequeno';
+      const prob = calcularProbabilidadCarga({
+        combustibleDisponible: Number(s.litros),
+        autosEsperando: Number(s.fila),
+        tipoAuto
+      });
 
-  const p = document.createElement('p');
-  p.textContent = `Probabilidad de carga: ${prob.porcentaje}% (${prob.autosQuePodranCargar} autos)`;
-  li.appendChild(p);
+      const p = document.createElement('p');
+      p.textContent = `Probabilidad de carga: ${prob.porcentaje}% (${prob.autosQuePodranCargar} autos)`;
+      li.appendChild(p);
 
-  if (s.estado === 'Sin gasolina') li.style.color = 'red';
-  else if (nivel === 'Alto') li.style.color = 'green';
-  else if (nivel === 'Medio') li.style.color = 'orange';
-  else li.style.color = 'blue';
+      if (s.estado === 'Sin gasolina') li.style.color = 'red';
+      else if (nivel === 'Alto') li.style.color = 'green';
+      else if (nivel === 'Medio') li.style.color = 'orange';
+      else li.style.color = 'blue';
 
   // === Botón Eliminar ===
   const btnDel = document.createElement('button');
@@ -264,6 +269,7 @@ export class Presenter {
     select.addEventListener('change', e => {
       this.zonaSeleccionada = e.target.value;
       this.mostrarSurtidores();
+      this.mostrarFranjas(); // actualizar franjas según zona
     });
   }
 
@@ -281,19 +287,57 @@ export class Presenter {
       lista.forEach(s => { const li = document.createElement('li'); li.textContent = `${s.nombre} - ${s.estado} - fila: ${s.fila} - zona: ${s.zona} - litros: ${s.litros}`; ul.appendChild(li); });
     });
   }
-
+generarHorariosSlots() {
+    const slots = [];
+    for (let h = 6; h < 22; h++) {  // ejemplo de 6:00 a 22:00
+      slots.push({
+        start: `${h.toString().padStart(2, '0')}:00`, 
+        end:   `${h.toString().padStart(2, '0')}:30`
+      });
+      slots.push({
+        start: `${h.toString().padStart(2, '0')}:30`, 
+        end:   `${(h+1).toString().padStart(2, '0')}:00`
+      });
+    }
+    return slots;
+  }
   // Muestra las franjas horarias para un surtidor
-  mostrarFranjas(surtidorNombre) {
-    const slots = TimeSlotService.listarSlots(surtidorNombre);
+   mostrarFranjas() {
     const ul = document.getElementById('lista-franjas');
     ul.innerHTML = '';
-    slots.forEach(slot => {
+    const slots = this.generarHorariosSlots();
+    const surtidores = this.conductor.listaSurtidores()
+      .filter(s => s.estado === 'Disponible')
+      .filter(s => !this.zonaSeleccionada || s.zona === this.zonaSeleccionada);
+
+    slots.forEach(({ start, end }) => {
       const li = document.createElement('li');
-      li.textContent = `${slot.horaInicio} - ${slot.horaFin}`;
-      li.classList.add(slot.disponible ? 'disponible' : 'ocupado');
+      li.innerHTML = `<strong>${start} - ${end}</strong>`;
+      const innerUl = document.createElement('ul');
+
+      surtidores.forEach(s => {
+        // comprobar si el surtidor está abierto en ese slot
+        if (s.apertura <= start && s.cierre >= end) {
+          const { porcentaje } = calcularProbabilidadCarga({
+            combustibleDisponible: Number(s.litros),
+            autosEsperando: Number(s.fila),
+            tipoAuto: 'pequeno'
+          });
+          const liEst = document.createElement('li');
+          liEst.textContent = s.nombre;
+          // aplicar color según probabilidad
+          if (porcentaje > 70) liEst.style.color = 'green';
+          else if (porcentaje >= 40) liEst.style.color = 'orange';
+          else liEst.style.color = 'red';
+          innerUl.appendChild(liEst);
+        }
+      });
+
+      li.appendChild(innerUl);
       ul.appendChild(li);
     });
   }
+
 
   generarHorariosDisponibles() {
     const horarios = [];

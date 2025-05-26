@@ -15,5 +15,22 @@
     },
     "coverage": 0,
     "test_count": 35
+  },
+  {
+    "sha": "909bc7ff5d5eb14c3c2cac56ab65ae848f5bfb40",
+    "author": "Jorge Vargas",
+    "commit": {
+      "date": "2025-05-26T19:30:34.000Z",
+      "message": "feat: funcionalidad que muestra las franjas horarias",
+      "url": "https://github.com/Alexvacan/ProyectoSurtidorYa/commit/909bc7ff5d5eb14c3c2cac56ab65ae848f5bfb40"
+    },
+    "stats": {
+      "total": 116,
+      "additions": 80,
+      "deletions": 36,
+      "date": "2025-05-26"
+    },
+    "coverage": 0,
+    "test_count": 35
   }
 ]

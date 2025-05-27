@@ -1,5 +1,7 @@
 import { Conductor } from './Conductor.js';
 import filtrarTickets from './filtrartickets.js';
+import { Presenter } from './presenter.js';   
+
 console.log('filtrarTickets:', filtrarTickets);
 
 
@@ -9,6 +11,16 @@ beforeEach(() => {
     setItem: jest.fn(),
   };
 });
+
+global.document = {
+  getElementById: () => ({
+    style: {},
+    addEventListener: jest.fn(),
+    removeEventListener: jest.fn(),
+    innerHTML: '',
+    value: '',
+  }),
+};
 
 describe('Conductor', () => {
   it('debería retornar una lista de surtidores', () => {
@@ -427,4 +439,44 @@ it("debería aceptar solo monto o solo fracción", () => {
     expect(validar(100, null)).toBe(true);
     expect(validar(null, 0.25)).toBe(true);
   });
+
+  class Surtidor {
+  constructor(nombre, litros) {
+    this.nombre = nombre;
+    this.litros = litros;        
+    this.zona   = 'Prueba';
+    this.apertura = '06:00';
+    this.cierre   = '22:00';
+  }
+}
+
+  describe('Ticket generation and 20% limit', () => {
+  let presenter;
+  let mockSurtidor;
+
+  beforeEach(() => {
+    presenter = new Presenter();
+    mockSurtidor = new Surtidor('S1', 100);          // 100 L
+    presenter.ticketsPorSurtidor[mockSurtidor.nombre] = [];
+  });
+
+  test('should generate ticket code in format T-0001, T-0002...', () => {
+    const codes = ['T-0001', 'T-0002', 'T-0003'];
+    codes.forEach(expected => {
+      const code = presenter.generarCodigoTicket(mockSurtidor);
+      presenter.ticketsPorSurtidor[mockSurtidor.nombre].push({ codigo: code });
+      expect(code).toBe(expected);
+    });
+  });
+
+  test('should not allow more than 20 % tickets', () => {
+    // Pre-cargamos el 20 % (100 L → 20 tickets)
+    for (let i = 0; i < 20; i++) {
+      presenter.ticketsPorSurtidor[mockSurtidor.nombre].push({ codigo: `T-${(i+1).toString().padStart(4,'0')}` });
+    }
+    expect(() => presenter.generarCodigoTicket(mockSurtidor))
+      .toThrow(`Límite de tickets alcanzado para ${mockSurtidor.nombre}`);
+  });
+});
+
 });

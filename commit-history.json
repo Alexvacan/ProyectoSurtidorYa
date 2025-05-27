@@ -66,5 +66,22 @@
     },
     "coverage": 0,
     "test_count": 35
+  },
+  {
+    "sha": "b7ceceae4c1c9540680d2211a39c8cec972fe645",
+    "author": "chenaoh",
+    "commit": {
+      "date": "2025-05-27T05:34:55.000Z",
+      "message": "Refactor para la reserva de tickets",
+      "url": "https://github.com/Alexvacan/ProyectoSurtidorYa/commit/b7ceceae4c1c9540680d2211a39c8cec972fe645"
+    },
+    "stats": {
+      "total": 223,
+      "additions": 187,
+      "deletions": 36,
+      "date": "2025-05-27"
+    },
+    "coverage": 0,
+    "test_count": 37
   }
 ]

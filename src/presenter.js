@@ -352,62 +352,92 @@ generarHorariosSlots() {
   const modal = document.getElementById("modal-ticket");
   modal.classList.remove("oculto");
 
-  // Asignar datos al formulario
-  document.getElementById("ticket-nombre").value = surtidor.nombre;
-  document.getElementById("ticket-zona").value = surtidor.zona;
+  // Referencias al formulario
+  const form = {
+    nombre: document.getElementById("ticket-nombre"),
+    zona: document.getElementById("ticket-zona"),
+    numero: document.getElementById("ticket-numero"),
+    hora: document.getElementById("ticket-hora"),
+    fechaProgramada: document.getElementById("ticket-fecha-programada"),
+    monto: document.getElementById("ticket-monto"),
+    fraccion: document.getElementById("ticket-fraccion"),
+    nombreReservante: document.getElementById("ticket-nombre-reservante")
+  };
 
   // Inicializar arreglo si no existe
   if (!this.ticketsPorSurtidor[surtidor.nombre]) {
     this.ticketsPorSurtidor[surtidor.nombre] = [];
   }
 
-  // Generar número de ticket
-  const numero = this.ticketsPorSurtidor[surtidor.nombre].length + 1;
-  const codigo = numero.toString().padStart(4, "0");
-  document.getElementById("ticket-numero").value = codigo;
+  // Inicializar tickets si no existen
+if (!this.ticketsPorSurtidor[surtidor.nombre]) {
+  this.ticketsPorSurtidor[surtidor.nombre] = [];
+}
 
-  const self = this; 
+// Validar límite del 20%
+const maxTicketsPermitidos = Math.floor(Number(surtidor.litros) * 0.2);
+const ticketsGenerados = this.ticketsPorSurtidor[surtidor.nombre].length;
 
-  // Botón Confirmar
-  document.getElementById("guardar-ticket").onclick = function () {
-    const horaSeleccionada = document.getElementById("ticket-hora").value;
-    const fechaProgramada = document.getElementById("ticket-fecha-programada").value;
-    const monto = parseFloat(document.getElementById("ticket-monto").value);
-    const fraccion = parseFloat(document.getElementById("ticket-fraccion").value);
-    const fechaReserva = new Date().toISOString().split("T")[0]; 
-    const nombreReservante = document.getElementById("ticket-nombre-reservante").value;
-
-if ((monto && fraccion) || (!monto && !fraccion)) {
-    alert("Debes ingresar solo monto o solo fracción del tanque.");
-    return;
-  }
-
-if (!nombreReservante.trim()) {
-  alert("Debe ingresar el nombre del reservante.");
+if (ticketsGenerados >= maxTicketsPermitidos) {
+  alert(`⚠️ Límite de tickets alcanzado para ${surtidor.nombre}. Solo se permiten ${maxTicketsPermitidos} tickets.`);
   return;
 }
+
+// Generar código secuencial con ceros a la izquierda
+const nuevoNumero = ticketsGenerados + 1;
+const codigo = `T-${nuevoNumero.toString().padStart(4, '0')}`;
+form.numero.value = codigo;
+
+  // Asignar datos básicos
+  form.nombre.value = surtidor.nombre;
+  form.zona.value = surtidor.zona;
+
+  const self = this;
+
+  // Confirmar ticket
+  document.getElementById("guardar-ticket").onclick = function () {
+    const horaSeleccionada = form.hora.value;
+    const fechaProgramada = form.fechaProgramada.value;
+    const monto = parseFloat(form.monto.value);
+    const fraccion = parseFloat(form.fraccion.value);
+    const fechaReserva = new Date().toISOString().split("T")[0];
+    const nombreReservante = form.nombreReservante.value;
+
+    // Validaciones
+    if (self.validarMontoYFraccion(monto, fraccion)) {
+      alert("Debes ingresar solo monto o solo fracción del tanque.");
+      return;
+    }
+
+    if (!self.validarNombre(nombreReservante)) {
+      alert("Debe ingresar el nombre del reservante.");
+      return;
+    }
 
     if (!fechaProgramada) {
       alert("Debe seleccionar una fecha programada.");
       return;
     }
 
-    if (isNaN(monto) || monto > 150) {
+    if (!self.validarMontoMaximo(monto)) {
       alert("El monto no puede superar los 150 Bs.");
       return;
     }
 
-    // Guardar ticket
-    self.ticketsPorSurtidor[surtidor.nombre].push({
+    // Generar y guardar ticket
+    const ticket = {
       codigo,
       hora: horaSeleccionada,
       fechaProgramada,
       fechaReserva,
       monto,
+      fraccion,
       surtidor: surtidor.nombre,
       zona: surtidor.zona,
       nombreReservante
-    });
+    };
+
+    self.ticketsPorSurtidor[surtidor.nombre].push(ticket);
 
     // Actualizar contador visual
     const contador = document.querySelector(`#surtidor-${surtidor.nombre} .contador-tickets`);
@@ -415,26 +445,50 @@ if (!nombreReservante.trim()) {
       contador.textContent = self.ticketsPorSurtidor[surtidor.nombre].length;
     }
 
+    // Mostrar resumen
     alert(
       `Ticket ${codigo} generado para ${surtidor.nombre}:\n` +
       `Hora: ${horaSeleccionada}\n` +
-      `Monto: Bs ${monto}\n` +
+      `Monto: Bs ${monto || "N/A"}\n` +
+      `Fracción: ${fraccion || "N/A"}\n` +
       `Fecha de Reserva: ${fechaReserva}\n` +
       `Fecha Programada: ${fechaProgramada}`
     );
 
     modal.classList.add("oculto");
-    self.mostrarSurtidores(); 
+    self.mostrarSurtidores();
   };
 
-  // Botón Cancelar
+  // Cancelar ticket
   document.getElementById("cancelar-ticket").onclick = () => {
     modal.classList.add("oculto");
   };
 }
+// Métodos auxiliares sugeridos:
+validarMontoYFraccion(monto, fraccion) {
+  return (monto && fraccion) || (!monto && !fraccion);
+}
 
+validarNombre(nombre) {
+  return nombre.trim().length > 0;
+}
 
+validarMontoMaximo(monto) {
+  return !isNaN(monto) && monto <= 150;
+}
 
+generarCodigoTicket(surtidor) {
+  // 20 % del total de litros como límite
+  const maxTickets = Math.floor(Number(surtidor.litros) * 0.2);
+  const emitidos   = this.ticketsPorSurtidor[surtidor.nombre]?.length || 0;
+
+  if (emitidos >= maxTickets) {
+    throw new Error(`Límite de tickets alcanzado para ${surtidor.nombre}`);
+  }
+
+  const codigo = `T-${(emitidos + 1).toString().padStart(4, '0')}`;
+  return codigo;
+}
 
   // Pone opciones en el select de surtidor y maneja cambio
   manejarSeleccionSurtidor() {

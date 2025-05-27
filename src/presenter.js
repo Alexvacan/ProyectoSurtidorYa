@@ -459,8 +459,8 @@ generarHorariosSlots() {
 
     let capacidad = 0;
     if (tipoVehiculo === "moto") capacidad = 22;
-    else if (tipoVehiculo === "auto pequeno") capacidad = 52;
-    else if (tipoVehiculo === "auto grande") capacidad = 85;
+    else if (tipoVehiculo === "pequeno") capacidad = 52;
+    else if (tipoVehiculo === "grande") capacidad = 85;
 
     const precioLitro = 3.74;
 

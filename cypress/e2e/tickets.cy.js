@@ -1,11 +1,13 @@
 describe("Mostrar tickets", () => {
   before(() => {
-    cy.visit("/");
+    cy.visit("https://surtidorya.netlify.app/");
     cy.clearLocalStorage();
     cy.get("body").should("exist");
   });
 
   it("Genera y muestra un ticket correctamente", () => {
+    cy.contains("li", "Agregar surtidor").click();
+
     cy.get("#nombre").type("Surtidor Test");
     cy.get("#direccion").type("Av. Test 123");
     cy.get("#estado").select("Disponible");
@@ -23,6 +25,8 @@ describe("Mostrar tickets", () => {
       }
     });
 
+    cy.contains("li", "Surtidores").click();
+
     cy.contains("#lista-surtidores li", "Surtidor Test", { timeout: 10000 }).should("exist");
 
     cy.contains("#lista-surtidores li", "Surtidor Test").within(() => {
@@ -35,13 +39,11 @@ describe("Mostrar tickets", () => {
     const tomorrow = new Date(today);
     tomorrow.setDate(tomorrow.getDate() + 1);
     const fecha = tomorrow.toISOString().split('T')[0];
-    
+
     cy.get("#ticket-fecha-programada").type(fecha);
     cy.get("#ticket-hora").select("10:00");
     cy.get("#ticket-monto").type("100");
-
     cy.get("#ticket-nombre-reservante").type("Juan");
-
 
     cy.get("#guardar-ticket").click();
 
@@ -55,9 +57,7 @@ describe("Mostrar tickets", () => {
     });
 
     cy.contains("#lista-surtidores li", "Surtidor Test").within(() => {
-    cy.contains("Tickets generados: 1").should("exist");
+      cy.contains("Tickets generados: 1").should("exist");
     });
-
   });
-  
 });

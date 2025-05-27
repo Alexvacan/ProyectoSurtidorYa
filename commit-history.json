@@ -32,5 +32,22 @@
     },
     "coverage": 0,
     "test_count": 35
+  },
+  {
+    "sha": "3fad3fe1688fcc9d9522a4e3ceff3a15668bddf5",
+    "author": "Fernando Belmonte",
+    "commit": {
+      "date": "2025-05-27T03:43:18.000Z",
+      "message": "Fix:Cypress arreglados",
+      "url": "https://github.com/Alexvacan/ProyectoSurtidorYa/commit/3fad3fe1688fcc9d9522a4e3ceff3a15668bddf5"
+    },
+    "stats": {
+      "total": 39,
+      "additions": 26,
+      "deletions": 13,
+      "date": "2025-05-27"
+    },
+    "coverage": 0,
+    "test_count": 35
   }
 ]

@@ -4,6 +4,8 @@ describe('Agregar Surtidor', () => {
   });
 
   it('debería agregar un nuevo surtidor correctamente', () => {
+    cy.contains('li', 'Agregar surtidor').click();
+
     cy.get('#nombre').type('Surtidor Test');
     cy.get('#direccion').type('Av. de Prueba 123');
     cy.get('#estado').select('Disponible');
@@ -15,6 +17,8 @@ describe('Agregar Surtidor', () => {
     cy.get('#contacto').type('71234567');
 
     cy.get('#form-surtidor').submit();
+
+    cy.contains('li', 'Surtidores').click();
 
     cy.get('#lista-surtidores')
       .should('contain.text', 'Surtidor Test')

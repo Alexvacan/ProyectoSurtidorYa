@@ -1,6 +1,10 @@
 describe('Generar Ticket', () => {
   beforeEach(() => {
     cy.visit('https://surtidorya.netlify.app/');
+
+    cy.contains('li', 'Generar Ticket').click();
+
+    cy.get('#ticket-gen').should('have.class', 'active');
   });
 
   it('debería agregar un ticket al hacer clic en el botón', () => {
@@ -28,3 +32,4 @@ describe('Generar Ticket', () => {
       });
   });
 });
+

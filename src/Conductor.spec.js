@@ -506,5 +506,54 @@ it('debería aceptar un monto válido para un vehículo pequeño', () => {
   expect(esValido).toBe(true);
 });
 
+describe('Gestión de Tickets', () => {
+  let presenter;
+
+  beforeEach(() => {
+    // Simulamos el objeto presenter con estado inicial
+    presenter = {
+      ticketsPorSurtidor: {
+        'Surtidor1': [
+          { codigo: 'T-0001', monto: 100, nombreReservante: 'Juan', surtidor: 'Surtidor1' },
+          { codigo: 'T-0002', monto: 150, nombreReservante: 'Ana', surtidor: 'Surtidor1' }
+        ]
+      },
+      conductor: {
+        obtenerSurtidorPorNombre: jest.fn().mockReturnValue({ nombre: 'Surtidor1', litros: 100 }),
+      },
+      mostrarFormularioTicket: jest.fn(),
+      mostrarSurtidores: jest.fn(),
+      eliminarTicket(surtidorNombre, index) {
+        this.ticketsPorSurtidor[surtidorNombre].splice(index, 1);
+        this.mostrarSurtidores();
+      },
+      editarTicket(surtidorNombre, index) {
+        const ticket = this.ticketsPorSurtidor[surtidorNombre][index];
+        const surtidor = this.conductor.obtenerSurtidorPorNombre(surtidorNombre);
+        this.mostrarFormularioTicket(surtidor, ticket);
+      }
+    };
+  });
+
+  test('editarTicket llama a mostrarFormularioTicket con surtidor y ticket correctos', () => {
+    presenter.editarTicket('Surtidor1', 1);
+    expect(presenter.conductor.obtenerSurtidorPorNombre).toHaveBeenCalledWith('Surtidor1');
+    expect(presenter.mostrarFormularioTicket).toHaveBeenCalledWith(
+      { nombre: 'Surtidor1', litros: 100 },
+      { codigo: 'T-0002', monto: 150, nombreReservante: 'Ana', surtidor: 'Surtidor1' }
+    );
+  });
+
+  test('eliminarTicket elimina correctamente el ticket y llama a mostrarSurtidores', () => {
+    expect(presenter.ticketsPorSurtidor['Surtidor1']).toHaveLength(2);
+
+    presenter.eliminarTicket('Surtidor1', 0);
+
+    expect(presenter.ticketsPorSurtidor['Surtidor1']).toHaveLength(1);
+    expect(presenter.ticketsPorSurtidor['Surtidor1'][0].codigo).toBe('T-0002');
+    expect(presenter.mostrarSurtidores).toHaveBeenCalled();
+  });
+});
+
 
 });

@@ -9,6 +9,7 @@ export class Presenter {
     this.zonaSeleccionada = '';
     this.nombreEditando = null;
     this.ticketsPorSurtidor = {};
+    this.mostrarTickets = this.mostrarTickets.bind(this);
 
     // Elementos de edición
     this.modalEdicion = document.getElementById('modal-edicion');
@@ -61,142 +62,162 @@ export class Presenter {
   }
 
   mostrarSurtidores() {
-    const listaEl = document.getElementById('lista-surtidores');
-    listaEl.innerHTML = '';
-    let surtidores = this.sortList(this.conductor.listaSurtidores());
-    if (!this.mostrarTodos) {
-      surtidores = surtidores.filter(s => s.estado === 'Disponible');
-    }
-    if (this.zonaSeleccionada) {
-      surtidores = surtidores.filter(s => s.zona === this.zonaSeleccionada);
-    }
+  const listaEl = document.getElementById('lista-surtidores');
+  listaEl.innerHTML = '';
+  let surtidores = this.sortList(this.conductor.listaSurtidores());
+  if (!this.mostrarTodos) {
+    surtidores = surtidores.filter(s => s.estado === 'Disponible');
+  }
+  if (this.zonaSeleccionada) {
+    surtidores = surtidores.filter(s => s.zona === this.zonaSeleccionada);
+  }
 
-    surtidores.forEach(s => {
-      const nivel = this.conductor.nivelGasolina(s.litros);
-      const li = document.createElement('li');
-      li.innerHTML = `
-        <strong>${s.nombre}</strong> - ${s.estado}<br>
-        <em>Dirección:</em> ${s.direccion}<br>
-        Autos en fila: ${s.fila} - Zona: ${s.zona}<br>
-        Nivel de gasolina: ${nivel} (${s.litros} litros)<br>
-        Horario: ${s.apertura} - ${s.cierre}<br>
-        Contacto: ${s.contacto}
-      `;
+  surtidores.forEach(s => {
+    const nivel = this.conductor.nivelGasolina(s.litros);
+    const li = document.createElement('li');
+    li.innerHTML = `
+      <strong>${s.nombre}</strong> - ${s.estado}<br>
+      <em>Dirección:</em> ${s.direccion}<br>
+      Autos en fila: ${s.fila} - Zona: ${s.zona}<br>
+      Nivel de gasolina: ${nivel} (${s.litros} litros)<br>
+      Horario: ${s.apertura} - ${s.cierre}<br>
+      Contacto: ${s.contacto}
+    `;
 
-      const tipoAuto = s.tipoAuto || 'pequeno';
-      const prob = calcularProbabilidadCarga({
-        combustibleDisponible: Number(s.litros),
-        autosEsperando: Number(s.fila),
-        tipoAuto
-      });
+    const tipoAuto = s.tipoAuto || 'pequeno';
+    const prob = calcularProbabilidadCarga({
+      combustibleDisponible: Number(s.litros),
+      autosEsperando: Number(s.fila),
+      tipoAuto
+    });
 
-      const p = document.createElement('p');
-      p.textContent = `Probabilidad de carga: ${prob.porcentaje}% (${prob.autosQuePodranCargar} autos)`;
-      li.appendChild(p);
+    const p = document.createElement('p');
+    p.textContent = `Probabilidad de carga: ${prob.porcentaje}% (${prob.autosQuePodranCargar} autos)`;
+    li.appendChild(p);
 
-      if (s.estado === 'Sin gasolina') li.style.color = 'red';
-      else if (nivel === 'Alto') li.style.color = 'green';
-      else if (nivel === 'Medio') li.style.color = 'orange';
-      else li.style.color = 'blue';
+    if (s.estado === 'Sin gasolina') li.style.color = 'red';
+    else if (nivel === 'Alto') li.style.color = 'green';
+    else if (nivel === 'Medio') li.style.color = 'orange';
+    else li.style.color = 'blue';
 
-  // === Botón Eliminar ===
-  const btnDel = document.createElement('button');
-  btnDel.textContent = 'Eliminar';
-  btnDel.style.marginLeft = '10px';
-  btnDel.onclick = () => {
-    this.conductor.eliminarSurtidor(s.nombre);
-    this.mostrarSurtidores();
-  };
+    // === Botón Eliminar ===
+    const btnDel = document.createElement('button');
+    btnDel.textContent = 'Eliminar';
+    btnDel.style.marginLeft = '10px';
+    btnDel.onclick = () => {
+      this.conductor.eliminarSurtidor(s.nombre);
+      this.mostrarSurtidores();
+    };
 
-  // === Botón Editar ===
-  const btnEdit = document.createElement('button');
-  btnEdit.textContent = 'Editar';
-  btnEdit.style.marginLeft = '10px';
-  btnEdit.onclick = () => {
-    this.nombreEditando = s.nombre;
-    this.editarNombre.value = s.nombre;
-    this.editarEstado.value = s.estado;
-    this.editarFila.value = s.fila;
-    this.editarZona.value = s.zona;
-    this.editarLitros.value = s.litros;
-    this.editarApertura.value = s.apertura;
-    this.editarCierre.value = s.cierre;
-    this.editarContacto.value = s.contacto;
-    this.editarDireccionInput.value = s.direccion;
-    this.modalEdicion.classList.remove('oculto');
-  };
+    // === Botón Editar ===
+    const btnEdit = document.createElement('button');
+    btnEdit.textContent = 'Editar';
+    btnEdit.style.marginLeft = '10px';
+    btnEdit.onclick = () => {
+      this.nombreEditando = s.nombre;
+      this.editarNombre.value = s.nombre;
+      this.editarEstado.value = s.estado;
+      this.editarFila.value = s.fila;
+      this.editarZona.value = s.zona;
+      this.editarLitros.value = s.litros;
+      this.editarApertura.value = s.apertura;
+      this.editarCierre.value = s.cierre;
+      this.editarContacto.value = s.contacto;
+      this.editarDireccionInput.value = s.direccion;
+      this.modalEdicion.classList.remove('oculto');
+    };
 
-  // === NUEVO: Botón Generar Ticket ===
-  const btnGenerarTicket = document.createElement('button');
-  btnGenerarTicket.textContent = 'Generar Ticket';
-  btnGenerarTicket.style.marginLeft = '10px';
-  btnGenerarTicket.onclick = () => {
-  this.mostrarFormularioTicket(s);
-  };
+    // === NUEVO: Botón Generar Ticket ===
+    const btnGenerarTicket = document.createElement('button');
+    btnGenerarTicket.textContent = 'Generar Ticket';
+    btnGenerarTicket.style.marginLeft = '10px';
+    btnGenerarTicket.onclick = () => {
+      this.mostrarFormularioTicket(s);
+    };
 
-  // === NUEVO: Contador de Tickets ===
-  const ticketCount = this.ticketsPorSurtidor[s.nombre]?.length || 0;
-  const ticketInfo = document.createElement('p');
-  ticketInfo.textContent = `Tickets generados: ${ticketCount}`;
+    // === NUEVO: Contador de Tickets ===
+    const ticketCount = this.ticketsPorSurtidor[s.nombre]?.length || 0;
+    const ticketInfo = document.createElement('p');
+    ticketInfo.textContent = `Tickets generados: ${ticketCount}`;
 
-  // === NUEVO: Botón Ver Tickets ===
-  const btnVerTickets = document.createElement('button');
-  btnVerTickets.textContent = 'Ver Tickets';
-  btnVerTickets.style.marginLeft = '10px';
-  btnVerTickets.onclick = () => {
-  const modal = document.getElementById("modal-ver-tickets");
+    // === NUEVO: Botón Ver Tickets ===
+    const btnVerTickets = document.createElement('button');
+    btnVerTickets.textContent = 'Ver Tickets';
+    btnVerTickets.style.marginLeft = '10px';
+    btnVerTickets.onclick = () => {
+      const modal = document.getElementById("modal-ver-tickets");
+      const inputBuscar = document.getElementById("buscar-ticket");
+
+      inputBuscar.value = ""; // Limpiar búsqueda anterior
+      this.mostrarTickets(s.nombre); // Llamar al método mostrarTickets con el nombre del surtidor
+
+      modal.classList.remove("oculto");
+    };
+
+    // Agregar todo al <li>
+    li.appendChild(btnDel);
+    li.appendChild(btnEdit);
+    li.appendChild(btnGenerarTicket);
+    li.appendChild(ticketInfo);
+    li.appendChild(btnVerTickets);
+
+    listaEl.appendChild(li);
+  });
+}
+
+mostrarTickets(surtidorNombre, filtro = "") {
+  console.log('mostrarTickets this:', this);
+  console.log('this.editarTicket:', this.editarTicket);
+
+  const tickets = this.ticketsPorSurtidor[surtidorNombre] || [];
   const contenedor = document.getElementById("contenedor-tickets");
   const inputBuscar = document.getElementById("buscar-ticket");
 
-  const tickets = this.ticketsPorSurtidor[s.nombre] || [];
+  contenedor.innerHTML = "";
 
-  function mostrarTickets(filtro = "") {
-    contenedor.innerHTML = "";
+  const filtrados = tickets.filter(t =>
+    t.codigo.toLowerCase().includes(filtro) ||
+    (t.nombreReservante && t.nombreReservante.toLowerCase().includes(filtro))
+  );
 
-    const filtrados = tickets.filter(t =>
-      t.codigo.toLowerCase().includes(filtro) ||
-      (t.nombreReservante && t.nombreReservante.toLowerCase().includes(filtro))
-    );
-
-    if (filtrados.length === 0) {
-      contenedor.innerHTML = "<p>No se encontraron tickets.</p>";
-      return;
-    }
-
-    filtrados.forEach(t => {
-  const div = document.createElement("div");
-  div.className = "ticket";
-  div.textContent =
-    `🧾 Código: ${t.codigo}\n` +
-    `📅 Fecha reserva: ${t.fechaReserva}\n` +
-    `📆 Fecha programada: ${t.fechaProgramada}\n` +
-    `⏰ Hora: ${t.hora}\n` +
-    `🚗 Tipo de vehículo: ${t.tipoVehiculo || "N/A"}\n` +
-    `💵 Monto: ${t.monto} Bs\n` +
-    `📝 ${t.nombreReservante}`;
-  contenedor.appendChild(div);
-});
-
+  if (filtrados.length === 0) {
+    contenedor.innerHTML = "<p>No se encontraron tickets.</p>";
+    return;
   }
 
-  inputBuscar.value = ""; // Limpiar búsqueda anterior
-  inputBuscar.oninput = () => mostrarTickets(inputBuscar.value.toLowerCase());
+  filtrados.forEach((t, index) => {
+    const div = document.createElement("div");
+    div.className = "ticket";
 
-  mostrarTickets(); // Mostrar sin filtro al principio
-  modal.classList.remove("oculto");
-};
+    div.innerHTML = `
+      <p>🧾 Código: ${t.codigo}<br>
+      📅 Fecha reserva: ${t.fechaReserva}<br>
+      📆 Fecha programada: ${t.fechaProgramada}<br>
+      ⏰ Hora: ${t.hora}<br>
+      🚗 Tipo de vehículo: ${t.tipoVehiculo || "N/A"}<br>
+      💵 Monto: ${t.monto} Bs<br>
+      📝 ${t.nombreReservante}</p>
+    `;
 
+    const btnEditar = document.createElement("button");
+    btnEditar.textContent = "Editar";
+    btnEditar.onclick = () => this.editarTicket(t.surtidor, index);
 
-  // Agregar todo al <li>
-  li.appendChild(btnDel);
-  li.appendChild(btnEdit);
-  li.appendChild(btnGenerarTicket);
-  li.appendChild(ticketInfo);
-  li.appendChild(btnVerTickets);
+    const btnEliminar = document.createElement("button");
+    btnEliminar.textContent = "Eliminar";
+    btnEliminar.onclick = () => {
+      this.eliminarTicket(t.surtidor, index);
+      this.mostrarTickets(surtidorNombre, inputBuscar.value.toLowerCase());
+    };
 
-  listaEl.appendChild(li);
-});
-  }
+    div.appendChild(btnEditar);
+    div.appendChild(btnEliminar);
+
+    contenedor.appendChild(div);
+  });
+
+  inputBuscar.oninput = () => this.mostrarTickets(surtidorNombre, inputBuscar.value.toLowerCase());
+}
 
   manejarFormulario() {
     const form = document.getElementById('form-surtidor');
@@ -276,7 +297,7 @@ export class Presenter {
     select.addEventListener('change', e => {
       this.zonaSeleccionada = e.target.value;
       this.mostrarSurtidores();
-      this.mostrarFranjas(); // actualizar franjas según zona
+      this.mostrarFranjas(); 
     });
   }
 
@@ -296,7 +317,7 @@ export class Presenter {
   }
 generarHorariosSlots() {
     const slots = [];
-    for (let h = 6; h < 22; h++) {  // ejemplo de 6:00 a 22:00
+    for (let h = 6; h < 22; h++) {  
       slots.push({
         start: `${h.toString().padStart(2, '0')}:00`, 
         end:   `${h.toString().padStart(2, '0')}:30`
@@ -308,7 +329,6 @@ generarHorariosSlots() {
     }
     return slots;
   }
-  // Muestra las franjas horarias para un surtidor
    mostrarFranjas() {
     const ul = document.getElementById('lista-franjas');
     ul.innerHTML = '';
@@ -345,7 +365,6 @@ generarHorariosSlots() {
     });
   }
 
-
   generarHorariosDisponibles() {
     const horarios = [];
     for (let h = 0; h < 24; h++) {
@@ -355,7 +374,7 @@ generarHorariosSlots() {
     return horarios;
   }
 
-  mostrarFormularioTicket(surtidor) {
+  mostrarFormularioTicket(surtidor, ticket = null, index = null) {
   const modal = document.getElementById("modal-ticket");
   modal.classList.remove("oculto");
 
@@ -371,37 +390,48 @@ generarHorariosSlots() {
     vehiculo: document.getElementById("ticket-vehiculo")
   };
 
-  // Inicializar arreglo si no existe
   if (!this.ticketsPorSurtidor[surtidor.nombre]) {
     this.ticketsPorSurtidor[surtidor.nombre] = [];
   }
 
-  // Inicializar tickets si no existen
-if (!this.ticketsPorSurtidor[surtidor.nombre]) {
-  this.ticketsPorSurtidor[surtidor.nombre] = [];
-}
+  // Variables para saber si estamos editando
+  this.ticketEditando = { surtidorNombre: surtidor.nombre, index };
 
-// Validar límite del 20%
-const maxTicketsPermitidos = Math.floor(Number(surtidor.litros) * 0.2);
-const ticketsGenerados = this.ticketsPorSurtidor[surtidor.nombre].length;
-
-if (ticketsGenerados >= maxTicketsPermitidos) {
-  alert(`⚠️ Límite de tickets alcanzado para ${surtidor.nombre}. Solo se permiten ${maxTicketsPermitidos} tickets.`);
-  return;
-}
-
-// Generar código secuencial con ceros a la izquierda
-const nuevoNumero = ticketsGenerados + 1;
-const codigo = `T-${nuevoNumero.toString().padStart(4, '0')}`;
-form.numero.value = codigo;
-
-  // Asignar datos básicos
-  form.nombre.value = surtidor.nombre;
-  form.zona.value = surtidor.zona;
+  if (ticket) {
+    // Rellenar formulario con ticket existente (editar)
+    form.numero.value = ticket.codigo;
+    form.nombre.value = surtidor.nombre;
+    form.zona.value = surtidor.zona;
+    form.hora.value = ticket.hora;
+    form.fechaProgramada.value = ticket.fechaProgramada;
+    form.monto.value = ticket.monto || "";
+    form.fraccion.value = ticket.fraccion || "";
+    form.nombreReservante.value = ticket.nombreReservante;
+    form.vehiculo.value = ticket.tipoVehiculo || "auto pequeno";
+  } else {
+    // Crear nuevo ticket
+    let codigo;
+    try {
+      codigo = this.generarCodigoTicket(surtidor);
+    } catch (error) {
+      alert(`⚠️ ${error.message}.`);
+      modal.classList.add("oculto");
+      return;
+    }
+    form.numero.value = codigo;
+    form.nombre.value = surtidor.nombre;
+    form.zona.value = surtidor.zona;
+    form.hora.value = "";
+    form.fechaProgramada.value = "";
+    form.monto.value = "";
+    form.fraccion.value = "";
+    form.nombreReservante.value = "";
+    form.vehiculo.value = "auto pequeno";
+    this.ticketEditando = null; // No estamos editando
+  }
 
   const self = this;
 
-  // Confirmar ticket
   document.getElementById("guardar-ticket").onclick = function () {
     const horaSeleccionada = form.hora.value;
     const fechaProgramada = form.fechaProgramada.value;
@@ -410,7 +440,6 @@ form.numero.value = codigo;
     const fechaReserva = new Date().toISOString().split("T")[0];
     const nombreReservante = form.nombreReservante.value;
 
-    // Validaciones
     if (self.validarMontoYFraccion(monto, fraccion)) {
       alert("Debes ingresar solo monto o solo fracción del tanque.");
       return;
@@ -428,36 +457,36 @@ form.numero.value = codigo;
 
     const tipoVehiculo = form.vehiculo.value;
 
-let capacidad = 0;
-if (tipoVehiculo === "moto") capacidad = 22;
-else if (tipoVehiculo === "auto pequeno") capacidad = 52;
-else if (tipoVehiculo === "auto grande") capacidad = 85;
+    let capacidad = 0;
+    if (tipoVehiculo === "moto") capacidad = 22;
+    else if (tipoVehiculo === "auto pequeno") capacidad = 52;
+    else if (tipoVehiculo === "auto grande") capacidad = 85;
 
-const precioLitro = 3.74;
+    const precioLitro = 3.74;
 
-// Validar por monto o fracción
-if (!isNaN(monto)) {
-  const montoMaximo = Math.round(capacidad * precioLitro);
-  if (monto > montoMaximo) {
-    alert(`El monto no puede superar ${montoMaximo} Bs para un ${tipoVehiculo}.`);
-    return;
-  }
-}
+    if (!isNaN(monto)) {
+      const montoMaximo = Math.round(capacidad * precioLitro);
+      if (monto > montoMaximo) {
+        alert(`El monto no puede superar ${montoMaximo} Bs para un ${tipoVehiculo}.`);
+        return;
+      }
+    }
 
-if (!isNaN(fraccion)) {
-  if (fraccion < 0 || fraccion > 1) {
-    alert("La fracción debe estar entre 0 y 1.");
-    return;
-  }
-  const montoCalculado = capacidad * fraccion * precioLitro;
-  if (montoCalculado > capacidad * precioLitro) {
-    alert(`El monto calculado (${montoCalculado.toFixed(2)} Bs) excede la capacidad para un ${tipoVehiculo}.`);
-    return;
-  }
-}
+    if (!isNaN(fraccion)) {
+      if (fraccion < 0 || fraccion > 1) {
+        alert("La fracción debe estar entre 0 y 1.");
+        return;
+      }
+      const montoCalculado = capacidad * fraccion * precioLitro;
+      if (montoCalculado > capacidad * precioLitro) {
+        alert(`El monto calculado (${montoCalculado.toFixed(2)} Bs) excede la capacidad para un ${tipoVehiculo}.`);
+        return;
+      }
+    }
 
-    // Generar y guardar ticket
-    const ticket = {
+    const codigo = form.numero.value;
+
+    const nuevoTicket = {
       codigo,
       tipoVehiculo,
       hora: horaSeleccionada,
@@ -470,31 +499,28 @@ if (!isNaN(fraccion)) {
       nombreReservante
     };
 
-    self.ticketsPorSurtidor[surtidor.nombre].push(ticket);
-
-    // Actualizar contador visual
-    const contador = document.querySelector(`#surtidor-${surtidor.nombre} .contador-tickets`);
-    if (contador) {
-      contador.textContent = self.ticketsPorSurtidor[surtidor.nombre].length;
+    if (self.ticketEditando) {
+      // Actualizar ticket existente
+      const { surtidorNombre, index } = self.ticketEditando;
+      self.ticketsPorSurtidor[surtidorNombre][index] = nuevoTicket;
+      alert(`Ticket ${codigo} actualizado.`);
+    } else {
+      // Crear ticket nuevo
+      self.ticketsPorSurtidor[surtidor.nombre].push(nuevoTicket);
+      alert(`Ticket ${codigo} generado para ${surtidor.nombre}.`);
     }
 
-    alert(
-      `Ticket ${codigo} generado para ${surtidor.nombre}:\n` +
-      `Hora: ${horaSeleccionada}\n` +
-      `Monto: Bs ${monto || "N/A"}\n` +
-      `Fracción: ${fraccion || "N/A"}\n` +
-      `Fecha de Reserva: ${fechaReserva}\n` +
-      `Fecha Programada: ${fechaProgramada}`
-    );
-
+    self.ticketEditando = null;
     modal.classList.add("oculto");
     self.mostrarSurtidores();
   };
 
   document.getElementById("cancelar-ticket").onclick = () => {
     modal.classList.add("oculto");
+    self.ticketEditando = null;
   };
 }
+
 validarMontoYFraccion(monto, fraccion) {
   return (monto && fraccion) || (!monto && !fraccion);
 }
@@ -514,6 +540,19 @@ generarCodigoTicket(surtidor) {
 
   const codigo = `T-${(emitidos + 1).toString().padStart(4, '0')}`;
   return codigo;
+}
+
+editarTicket(surtidorNombre, index) {
+  const ticket = this.ticketsPorSurtidor[surtidorNombre][index];
+  const surtidor = this.conductor.obtenerSurtidorPorNombre(surtidorNombre);
+  this.mostrarFormularioTicket(surtidor, ticket, index);
+}
+
+
+eliminarTicket(surtidorNombre, index) {
+  this.ticketsPorSurtidor[surtidorNombre].splice(index, 1);
+  alert("Ticket eliminado");
+  this.mostrarSurtidores(); // para actualizar el contador de tickets
 }
 
   // Pone opciones en el select de surtidor y maneja cambio

@@ -117,5 +117,22 @@
     },
     "coverage": 0,
     "test_count": 41
+  },
+  {
+    "sha": "19d1796d4d2b22ef81dacb14a0b13e459cdd7ace",
+    "author": "chenaoh",
+    "commit": {
+      "date": "2025-05-27T11:04:49.000Z",
+      "message": "Nuevo boton editar y eliminar tickets",
+      "url": "https://github.com/Alexvacan/ProyectoSurtidorYa/commit/19d1796d4d2b22ef81dacb14a0b13e459cdd7ace"
+    },
+    "stats": {
+      "total": 468,
+      "additions": 278,
+      "deletions": 190,
+      "date": "2025-05-27"
+    },
+    "coverage": 0,
+    "test_count": 43
   }
 ]

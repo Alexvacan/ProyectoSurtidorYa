@@ -1,43 +1,43 @@
-export function calcularProbabilidadCarga({ combustibleDisponible, autosEsperando, consumoPromedioPorAuto, tipoAuto }) {
-  let consumoPorAuto;
-
-  if (consumoPromedioPorAuto) {
-    consumoPorAuto = consumoPromedioPorAuto;
-  } else if (tipoAuto) {
-    switch (tipoAuto) {
-      case 'pequeno':
-        consumoPorAuto = 20;
-        break;
-      case 'grande':
-        consumoPorAuto = 50;
-        break;
-      case 'moto':
-        consumoPorAuto = 7;
-        break;
-      default:
-        consumoPorAuto = 30;
-    }
-  } else {
-    // Manejo por defecto si falta el dato necesario
-    return {
-      autosQuePodranCargar: 0,
-      porcentaje: 0
-    };
+export function calcularProbabilidadCarga({ 
+  combustibleDisponible,
+  autosEsperando,
+  consumoPromedioPorAuto,
+  tipoAuto
+}) {
+  if (autosEsperando == null) {
+    return { autosQuePodranCargar: 0, porcentaje: 0 };
   }
 
-  const autosQuePodranCargar = Math.min(
-    Math.floor(combustibleDisponible / consumoPorAuto),
-    autosEsperando
-  );
+  autosEsperando = Number(autosEsperando);
 
-  const porcentaje = autosEsperando > 0
-    ? Math.round((autosQuePodranCargar / autosEsperando) * 100)
-    : 0;
+  const combustibleUtilizable = combustibleDisponible * 0.8;
+
+  const consumoPromedioPorTipo = {
+    moto: 10,
+    pequeno: 25,
+    grande: 50,
+    default: 30
+  };
+
+  const consumo = consumoPromedioPorAuto ||
+    consumoPromedioPorTipo[tipoAuto] ||
+    consumoPromedioPorTipo.grande;
+
+  if (!combustibleUtilizable || !consumo) {
+    return { autosQuePodranCargar: 0, porcentaje: 0 };
+  }
+
+  const autosQuePodranCargar = Math.floor(combustibleUtilizable / consumo);
+
+  let porcentaje = 0;
+  if (autosEsperando + 1 <= autosQuePodranCargar) {
+    porcentaje = 100;
+  } else {
+    porcentaje = Math.round((autosQuePodranCargar / (autosEsperando + 1)) * 100);
+  }
 
   return {
-    autosQuePodranCargar,
+    autosQuePodranCargar: Math.min(autosQuePodranCargar, autosEsperando),
     porcentaje
   };
 }
-
-module.exports = { calcularProbabilidadCarga };

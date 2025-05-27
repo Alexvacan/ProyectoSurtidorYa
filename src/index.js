@@ -28,31 +28,28 @@ document.getElementById("btn-ver-ticket").addEventListener("click", () => {
     renderizarTickets(ticketsFiltrados);
   });
 
-
   const select = document.getElementById('surtidor-seleccionado');
   const btnGenerarTicket = document.getElementById('btn-generar-ticket');
   const ticketTextarea = document.getElementById('ticket-textarea');
+  
 
   document.getElementById('calcular-probabilidad').addEventListener('click', () => {
-    const nombreSeleccionado = select.value;
-    const surtidores = presenter.conductor.listaSurtidores();
-    const surtidor = surtidores.find(s => s.nombre === nombreSeleccionado);
+  const nombreSeleccionado = select.value;
+  const resultado = presenter.obtenerProbabilidadCarga(nombreSeleccionado);
 
-    if (!surtidor) {
-      alert('Surtidor no encontrado');
-      return;
-    }
+  if (!resultado) {
+    alert('No se pudo calcular la probabilidad');
+    return;
+  }
 
-    const tipoAuto = 'pequeno'; // puedes modificar esto para hacerlo dinámico
-    const resultado = calcularProbabilidadCarga({
-      combustibleDisponible: surtidor.litros,
-      autosEsperando: surtidor.fila,
-      tipoAuto
-    });
+  // Evita destructuring directo sin validar
+  const porcentaje = resultado.porcentaje ?? 0;
+  const autosQuePodranCargar = resultado.autosQuePodranCargar ?? 0;
 
-    document.getElementById('texto-probabilidad').innerText =
-      `Probabilidad: ${resultado.porcentaje.toFixed(2)}%. Autos que podrán cargar: ${resultado.autosQuePodranCargar}`;
-  });
+  document.getElementById('texto-probabilidad').innerText =
+    `Probabilidad: ${porcentaje.toFixed(2)}%. Autos que podrán cargar: ${autosQuePodranCargar}`;
+});
+
 
   btnGenerarTicket.addEventListener('click', () => {
     const surtidores = presenter.conductor.listaSurtidores();
@@ -194,5 +191,34 @@ document.getElementById("buscar-ticket").addEventListener("input", (e) => {
   );
   renderizarTickets(ticketsFiltrados);
 });
+
+// === Lógica de cálculo de monto sugerido por tipo de vehículo ===
+const precioLitro = 3.74;
+const selectVehiculo = document.getElementById('ticket-vehiculo');
+const fraccionInput = document.getElementById('ticket-fraccion');
+const montoInput = document.getElementById('ticket-monto');
+
+function calcularMontoMaximo() {
+  const tipo = selectVehiculo.value;
+  const fraccion = parseFloat(fraccionInput.value);
+
+  let capacidad = 0;
+  if (tipo === 'moto') capacidad = 22;
+  else if (tipo === 'pequeno') capacidad = 52;
+  else if (tipo === 'grande') capacidad = 85;
+
+  if (capacidad > 0 && fraccion > 0) {
+    const monto = Math.round(capacidad * fraccion * precioLitro);
+    montoInput.value = monto;
+    montoInput.max = monto;
+  } else {
+    montoInput.value = '';
+  }
+}
+
+// Activar cálculo automático al cambiar tipo de vehículo o fracción
+selectVehiculo?.addEventListener('change', calcularMontoMaximo);
+fraccionInput?.addEventListener('input', calcularMontoMaximo);
+
 
 });

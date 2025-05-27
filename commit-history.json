@@ -100,5 +100,22 @@
     },
     "coverage": 0,
     "test_count": 39
+  },
+  {
+    "sha": "c13cd0986044531909f8469564847f2a350a6f3a",
+    "author": "chenaoh",
+    "commit": {
+      "date": "2025-05-27T09:20:21.000Z",
+      "message": "Refactor y mejor calculo probabilidad carga",
+      "url": "https://github.com/Alexvacan/ProyectoSurtidorYa/commit/c13cd0986044531909f8469564847f2a350a6f3a"
+    },
+    "stats": {
+      "total": 379,
+      "additions": 236,
+      "deletions": 143,
+      "date": "2025-05-27"
+    },
+    "coverage": 0,
+    "test_count": 41
   }
 ]

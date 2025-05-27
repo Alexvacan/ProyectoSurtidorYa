@@ -65,6 +65,7 @@ export class Conductor {
       fila: parseInt(fila, 10),
       zona,
       litros: parseInt(litros, 10),
+      litrosOriginal: parseInt(litros, 10), 
       apertura,
       cierre,
       contacto

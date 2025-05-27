@@ -430,8 +430,8 @@ form.numero.value = codigo;
 
 let capacidad = 0;
 if (tipoVehiculo === "moto") capacidad = 22;
-else if (tipoVehiculo === "pequeno") capacidad = 52;
-else if (tipoVehiculo === "grande") capacidad = 85;
+else if (tipoVehiculo === "auto pequeno") capacidad = 52;
+else if (tipoVehiculo === "auto grande") capacidad = 85;
 
 const precioLitro = 3.74;
 
@@ -478,7 +478,6 @@ if (!isNaN(fraccion)) {
       contador.textContent = self.ticketsPorSurtidor[surtidor.nombre].length;
     }
 
-    // Mostrar resumen
     alert(
       `Ticket ${codigo} generado para ${surtidor.nombre}:\n` +
       `Hora: ${horaSeleccionada}\n` +
@@ -492,12 +491,10 @@ if (!isNaN(fraccion)) {
     self.mostrarSurtidores();
   };
 
-  // Cancelar ticket
   document.getElementById("cancelar-ticket").onclick = () => {
     modal.classList.add("oculto");
   };
 }
-// Métodos auxiliares sugeridos:
 validarMontoYFraccion(monto, fraccion) {
   return (monto && fraccion) || (!monto && !fraccion);
 }
@@ -532,10 +529,16 @@ generarCodigoTicket(surtidor) {
   }
   manejarCalculoProbabilidad() {
     this.btnCalcularProb.addEventListener('click', () => {
-      const nombre = this.selectSurtidorFranja.value;
-      const { porcentaje, autosQuePodranCargar } = this.obtenerProbabilidadCarga(nombre);
-      this.textoProbabilidad.textContent = `Probabilidad de carga: ${porcentaje}% (${autosQuePodranCargar} autos podrán cargar)`;
-    });
+  const nombre = this.selectSurtidorFranja.value;
+  const resultado = this.obtenerProbabilidadCarga(nombre);
+  console.log('Resultado obtenerProbabilidadCarga:', resultado);
+  if (!resultado) {
+    alert('No se pudo calcular la probabilidad');
+    return;
+  }
+  const { porcentaje, autosQuePodranCargar } = resultado;
+  this.textoProbabilidad.textContent = `Probabilidad de carga: ${porcentaje}% (${autosQuePodranCargar} autos podrán cargar)`;
+});
   }
   
   manejarEdicion() {
@@ -559,14 +562,52 @@ generarCodigoTicket(surtidor) {
   }
 
   obtenerProbabilidadCarga(nombre) {
-    const s = this.conductor.obtenerSurtidorPorNombre(nombre);
-    if (!s) return { porcentaje: 0, autosQuePodranCargar: 0 };
-    return calcularProbabilidadCarga({
-      combustibleDisponible: Number(s.litros),
-      autosEsperando: Number(s.fila),
-      consumoPromedioPorAuto: 10
-    });
+  const surtidor = this.conductor.obtenerSurtidorPorNombre(nombre);
+  if (!surtidor) {
+    console.warn(`Surtidor con nombre "${nombre}" no encontrado.`);
+    return { porcentaje: 0, autosQuePodranCargar: 0 };
   }
+
+  const tipoAuto = this.selectTipoAuto?.value || 'grande';
+  const autosEsperando = Number(surtidor.fila);
+
+  const resultado = calcularProbabilidadCarga({
+    combustibleDisponible: surtidor.litros,
+    autosEsperando,
+    tipoAuto
+  });
+
+  console.log('Resultado calcularProbabilidadCarga:', resultado);
+
+  if (!resultado) {
+    console.error('calcularProbabilidadCarga retornó undefined o null');
+    return { porcentaje: 0, autosQuePodranCargar: 0 };
+  }
+
+  return resultado;
+}
+
+
+calcularProbabilidadParaSurtidorConTipo(nombre, tipoAuto) {
+  const surtidor = this.conductor.obtenerSurtidorPorNombre(nombre);
+  if (!surtidor) return { porcentaje: 0, autosQuePodranCargar: 0 };
+
+  const autosEsperando = Number(surtidor.fila);
+
+  return calcularProbabilidadCarga({
+    combustibleDisponible: surtidor.litros,
+    autosEsperando,
+    tipoAuto
+  });
+}
+
+obtenerTipoAuto() {
+  return 'grande';
+}
+
+getLitrosOriginal(surtidor) {
+  return surtidor.litrosOriginal ?? surtidor.litros;
+}
 
   generarTicket() {
     const estacion = document.getElementById('inputEstacion').value.trim();
@@ -603,45 +644,16 @@ generarCodigoTicket(surtidor) {
   }
 
   inicializar() {
-    this.mostrarSurtidores();
-    this.manejarFormulario();
-    this.manejarToggle();
-    this.manejarFiltroZona();
-    this.manejarBusquedaNombre();
-    this.manejarEdicion();
-    this.manejarOrdenacion();
-    this.manejarSeleccionSurtidor();
-    this.manejarCalculoProbabilidad();
-
-
-    const botonCalcular = document.getElementById('calcular-probabilidad');
-botonCalcular.addEventListener('click', () => {
-  const select = document.getElementById('surtidor-seleccionado');
-  const nombreSeleccionado = select.value;
-
-  const surtidor = this.conductor.listaSurtidores().find(s => s.nombre === nombreSeleccionado);
-
-  if (!surtidor) {
-    alert('Surtidor no encontrado');
-    return;
-  }
-
-  const combustibleDisponible = surtidor.litros;  
-  const autosEsperando = surtidor.fila;           
-  
-  // Suponiendo que el tipo de auto siempre es 'pequeno' (esto puede cambiar dinámicamente si lo necesitas)
-  const tipoAuto = 'pequeno'; 
-
-  const resultado = calcularProbabilidadCarga({
-    combustibleDisponible,
-    autosEsperando,
-    tipoAuto
-  });
-
-  document.getElementById('texto-probabilidad').innerText =
-    `Probabilidad: ${resultado.porcentaje.toFixed(2)}%. Autos que podrán cargar: ${resultado.autosQuePodranCargar}`;
-});
-
+  this.selectTipoAuto = document.getElementById('ticket-vehiculo');
+  this.mostrarSurtidores();
+  this.manejarFormulario();
+  this.manejarToggle();
+  this.manejarFiltroZona();
+  this.manejarBusquedaNombre();
+  this.manejarEdicion();
+  this.manejarOrdenacion();
+  this.manejarSeleccionSurtidor();
+  this.manejarCalculoProbabilidad(); 
   }
 }
  

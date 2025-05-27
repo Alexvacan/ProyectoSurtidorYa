@@ -164,12 +164,19 @@ export class Presenter {
     }
 
     filtrados.forEach(t => {
-      const div = document.createElement("div");
-      div.className = "ticket";
-      div.textContent =
-        `🧾 Código: ${t.codigo}\n📅 Fecha reserva: ${t.fechaReserva}\n📆 Fecha programada: ${t.fechaProgramada}\n⏰ Hora: ${t.hora}\n💵 Monto: ${t.monto} Bs\n📝 ${t.nombreReservante}`;
-      contenedor.appendChild(div);
-    });
+  const div = document.createElement("div");
+  div.className = "ticket";
+  div.textContent =
+    `🧾 Código: ${t.codigo}\n` +
+    `📅 Fecha reserva: ${t.fechaReserva}\n` +
+    `📆 Fecha programada: ${t.fechaProgramada}\n` +
+    `⏰ Hora: ${t.hora}\n` +
+    `🚗 Tipo de vehículo: ${t.tipoVehiculo || "N/A"}\n` +
+    `💵 Monto: ${t.monto} Bs\n` +
+    `📝 ${t.nombreReservante}`;
+  contenedor.appendChild(div);
+});
+
   }
 
   inputBuscar.value = ""; // Limpiar búsqueda anterior
@@ -352,7 +359,6 @@ generarHorariosSlots() {
   const modal = document.getElementById("modal-ticket");
   modal.classList.remove("oculto");
 
-  // Referencias al formulario
   const form = {
     nombre: document.getElementById("ticket-nombre"),
     zona: document.getElementById("ticket-zona"),
@@ -361,7 +367,8 @@ generarHorariosSlots() {
     fechaProgramada: document.getElementById("ticket-fecha-programada"),
     monto: document.getElementById("ticket-monto"),
     fraccion: document.getElementById("ticket-fraccion"),
-    nombreReservante: document.getElementById("ticket-nombre-reservante")
+    nombreReservante: document.getElementById("ticket-nombre-reservante"),
+    vehiculo: document.getElementById("ticket-vehiculo")
   };
 
   // Inicializar arreglo si no existe
@@ -419,14 +426,40 @@ form.numero.value = codigo;
       return;
     }
 
-    if (!self.validarMontoMaximo(monto)) {
-      alert("El monto no puede superar los 150 Bs.");
-      return;
-    }
+    const tipoVehiculo = form.vehiculo.value;
+
+let capacidad = 0;
+if (tipoVehiculo === "moto") capacidad = 22;
+else if (tipoVehiculo === "pequeno") capacidad = 52;
+else if (tipoVehiculo === "grande") capacidad = 85;
+
+const precioLitro = 3.74;
+
+// Validar por monto o fracción
+if (!isNaN(monto)) {
+  const montoMaximo = Math.round(capacidad * precioLitro);
+  if (monto > montoMaximo) {
+    alert(`El monto no puede superar ${montoMaximo} Bs para un ${tipoVehiculo}.`);
+    return;
+  }
+}
+
+if (!isNaN(fraccion)) {
+  if (fraccion < 0 || fraccion > 1) {
+    alert("La fracción debe estar entre 0 y 1.");
+    return;
+  }
+  const montoCalculado = capacidad * fraccion * precioLitro;
+  if (montoCalculado > capacidad * precioLitro) {
+    alert(`El monto calculado (${montoCalculado.toFixed(2)} Bs) excede la capacidad para un ${tipoVehiculo}.`);
+    return;
+  }
+}
 
     // Generar y guardar ticket
     const ticket = {
       codigo,
+      tipoVehiculo,
       hora: horaSeleccionada,
       fechaProgramada,
       fechaReserva,
@@ -471,10 +504,6 @@ validarMontoYFraccion(monto, fraccion) {
 
 validarNombre(nombre) {
   return nombre.trim().length > 0;
-}
-
-validarMontoMaximo(monto) {
-  return !isNaN(monto) && monto <= 150;
 }
 
 generarCodigoTicket(surtidor) {

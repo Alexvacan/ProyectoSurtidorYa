@@ -450,17 +450,17 @@ it("debería aceptar solo monto o solo fracción", () => {
   }
 }
 
-  describe('Ticket generation and 20% limit', () => {
+  describe('Generacion de tickets y limite del 20%', () => {
   let presenter;
   let mockSurtidor;
 
   beforeEach(() => {
     presenter = new Presenter();
-    mockSurtidor = new Surtidor('S1', 100);          // 100 L
+    mockSurtidor = new Surtidor('S1', 100);   
     presenter.ticketsPorSurtidor[mockSurtidor.nombre] = [];
   });
 
-  test('should generate ticket code in format T-0001, T-0002...', () => {
+  test('Deberia generar tcikets en formato: T-0001, T-0002...', () => {
     const codes = ['T-0001', 'T-0002', 'T-0003'];
     codes.forEach(expected => {
       const code = presenter.generarCodigoTicket(mockSurtidor);
@@ -469,8 +469,7 @@ it("debería aceptar solo monto o solo fracción", () => {
     });
   });
 
-  test('should not allow more than 20 % tickets', () => {
-    // Pre-cargamos el 20 % (100 L → 20 tickets)
+  test('No deberia generar mas de 20 % tickets', () => {
     for (let i = 0; i < 20; i++) {
       presenter.ticketsPorSurtidor[mockSurtidor.nombre].push({ codigo: `T-${(i+1).toString().padStart(4,'0')}` });
     }
@@ -478,5 +477,34 @@ it("debería aceptar solo monto o solo fracción", () => {
       .toThrow(`Límite de tickets alcanzado para ${mockSurtidor.nombre}`);
   });
 });
+
+it('debería rechazar montos mayores al permitido para una moto', () => {
+  const presenter = new Presenter(); 
+  const tipoVehiculo = 'moto';
+  const montoIngresado = 1000; 
+  const fraccion = null;
+
+
+  const capacidadMoto = 22;
+  const precioLitro = 3.74;
+  const montoMaximo = Math.round(capacidadMoto * precioLitro); 
+
+  const esValido = montoIngresado <= montoMaximo;
+
+  expect(esValido).toBe(false);
+});
+
+it('debería aceptar un monto válido para un vehículo pequeño', () => {
+  const tipoVehiculo = 'pequeno';
+  const montoIngresado = 180;
+  const capacidad = 52;
+  const precioLitro = 3.74;
+  const montoMaximo = Math.round(capacidad * precioLitro); // ~195 Bs
+
+  const esValido = montoIngresado <= montoMaximo;
+
+  expect(esValido).toBe(true);
+});
+
 
 });

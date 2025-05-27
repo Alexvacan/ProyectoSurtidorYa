@@ -166,6 +166,14 @@
     <input type="text" id="ticket-nombre" disabled /><br><br>
     <label>Zona:</label>
     <input type="text" id="ticket-zona" disabled /><br><br>
+    <label for="ticket-vehiculo">Tipo de vehículo:</label>
+    <select id="ticket-vehiculo" required>
+    <option value="">Seleccionar vehículo</option>
+    <option value="moto">Moto (5-22 Litros)</option>
+    <option value="pequeno">Auto pequeño (40-52 Litros)</option>
+    <option value="grande">Auto grande (52-85 Litros)</option>
+    </select>
+
     <label for="fecha-ticket">Fecha de reserva:</label>
     <input type="date" id="fecha-ticket" disabled>
     <label for="ticket-fecha-programada">Fecha programada:</label>

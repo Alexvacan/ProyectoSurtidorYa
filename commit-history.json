@@ -83,5 +83,22 @@
     },
     "coverage": 0,
     "test_count": 37
+  },
+  {
+    "sha": "7bd22f529e61f7d74de06d292c00bce780e68faa",
+    "author": "chenaoh",
+    "commit": {
+      "date": "2025-05-27T06:31:54.000Z",
+      "message": "Agregar tipo de vehiculo en la generacion de ticket",
+      "url": "https://github.com/Alexvacan/ProyectoSurtidorYa/commit/7bd22f529e61f7d74de06d292c00bce780e68faa"
+    },
+    "stats": {
+      "total": 107,
+      "additions": 86,
+      "deletions": 21,
+      "date": "2025-05-27"
+    },
+    "coverage": 0,
+    "test_count": 39
   }
 ]

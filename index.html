@@ -1,14 +1,40 @@
-  <!DOCTYPE html>
-  <html lang="es">
-  <head>
-    <title>Parcel App</title>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <script type="module" defer src="./src/index.js"></script>
-    <link rel="stylesheet" href="./src/estilos.css">
-  </head>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <title>Parcel App</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script type="module" defer src="./src/index.js"></script>
+  <link rel="stylesheet" href="./src/estilos.css">
+  <style>
+    nav { background: #2c3e50; color: white; padding: 1rem; }
+    nav ul { list-style: none; display: flex; gap: 1rem; margin: 0; padding: 0; }
+    nav li { cursor: pointer; }
+    section { display: none; padding: 1rem; }
+    section.active { display: block; }
+    .oculto { display: none; }
+  </style>
+</head>
+<body>
+  <nav>
+    <ul>
+      <li data-target="home">Inicio</li>
+      <li data-target="listado">Surtidores</li>
+      <li data-target="nuevo">Agregar surtidor</li>
+      <li data-target="ticket-gen">Generar Ticket</li>
+      <li data-target="probabilidad">Probabilidad</li>
+      <li data-target="franjas">Franjas</li>
+    </ul>
+  </nav>
 
-  <body>
+  <!-- SECCIÓN INTRODUCTORIA -->
+  <section id="home" class="active">
+    <h1>Bienvenido a Parcel App</h1>
+    <p>Selecciona una opción del menú para comenzar.</p>
+  </section>
+
+  <!-- LISTADO DE SURTIDORES -->
+  <section id="listado">
     <h1>Surtidores</h1>
 
     <label for="sort-criteria">Ordenar por:</label>
@@ -21,10 +47,25 @@
     <label for="busqueda-nombre">Buscar por nombre:</label>
     <input type="text" id="busqueda-nombre" placeholder="Ej. Surtidor A" />
 
+    <label for="filtro-zona">Filtrar por zona:</label>
+    <select id="filtro-zona">
+      <option value="">Todas las zonas</option>
+      <option value="Cercado">Cercado</option>
+      <option value="Pacata">Pacata</option>
+      <option value="Quillacollo">Quillacollo</option>
+      <option value="Tiquipaya">Tiquipaya</option>
+    </select>
+
+    <ul id="lista-surtidores"></ul>
+  </section>
+
+  <!-- AGREGAR SURTIDOR -->
+  <section id="nuevo">
+    <h2>Agregar surtidor</h2>
     <form id="form-surtidor">
       <input type="text" id="nombre" placeholder="Nombre del surtidor" required />
-    <label for="direccion">Dirección:</label>
-    <input type="text" id="direccion" placeholder="Ej. Av. Siempre Viva 742" required />
+      <label for="direccion">Dirección:</label>
+      <input type="text" id="direccion" placeholder="Ej. Av. Siempre Viva 742" required />
       <select id="estado">
         <option value="Disponible">Disponible</option>
         <option value="Sin gasolina">Sin gasolina</option>
@@ -50,133 +91,127 @@
 
       <label for="contacto">Número de contacto:</label>
       <input type="tel" id="contacto" required>
+
       <br><br>
       <button type="submit">Agregar surtidor</button>
     </form>
+  </section>
 
-    <label for="filtro-zona">Filtrar por zona:</label>
-    <select id="filtro-zona">
-      <option value="">Todas las zonas</option>
+  <!-- GENERAR TICKET -->
+  <section id="ticket-gen">
+    <h2>Generar Ticket</h2>
+    <textarea id="ticket-textarea" rows="8" cols="50" readonly></textarea><br>
+    <button id="btn-generar-ticket">Generar Ticket</button>
+    <button id="btn-ver-ticket">Ver Ticket</button>
+  </section>
+
+  <!-- CONSULTAR PROBABILIDAD -->
+  <section id="probabilidad">
+    <h2>Consultar Probabilidad de Carga</h2>
+    <label for="surtidor-seleccionado">Selecciona un surtidor:</label>
+    <select id="surtidor-seleccionado"></select>
+    <button id="calcular-probabilidad">Calcular Probabilidad</button>
+    <div id="resultado-probabilidad">
+      <p id="texto-probabilidad">Aquí aparecerá la probabilidad.</p>
+    </div>
+  </section>
+
+  <!-- DISPONIBILIDAD DE FRANJAS -->
+  <section id="franjas">
+    <h2>Disponibilidad de Franjas</h2>
+    <label for="surtidor-franja-seleccionado">Selecciona surtidor:</label>
+    <select id="surtidor-franja-seleccionado"></select>
+    <ul id="lista-franjas"></ul>
+  </section>
+
+  <!-- MODAL EDICIÓN SÓLO VISUAL, MISMO CONTENIDO E IDS -->
+  <div id="modal-edicion" class="oculto">
+    <h3>Editar Surtidor</h3>
+    <label>Nombre:</label>
+    <input type="text" id="editar-nombre"><br><br>
+    <label>Estado:</label>
+    <select id="editar-estado">
+      <option value="Disponible">Disponible</option>
+      <option value="Sin gasolina">Sin gasolina</option>
+    </select><br><br>
+    <label>Fila:</label>
+    <input type="number" id="editar-fila"><br><br>
+    <label>Zona:</label>
+    <select id="editar-zona">
       <option value="Cercado">Cercado</option>
       <option value="Pacata">Pacata</option>
       <option value="Quillacollo">Quillacollo</option>
       <option value="Tiquipaya">Tiquipaya</option>
-    </select>
-
-    <textarea id="ticket-textarea" rows="8" cols="50" readonly></textarea>
-<br>
-<button id="btn-generar-ticket">Generar Ticket</button>
-<button id="btn-ver-ticket">Ver Ticket</button>
-
-
-
-    <ul id="lista-surtidores"></ul>
-
-    <h2>Consultar Probabilidad de Carga</h2>
-
-    <label for="surtidor-seleccionado">Selecciona un surtidor:</label>
-    <select id="surtidor-seleccionado">
-      <!-- Aquí se cargarán los surtidores disponibles -->
-    </select>
-
-    <button id="calcular-probabilidad">Calcular Probabilidad</button>
-
-    <div id="resultado-probabilidad">
-      <p id="texto-probabilidad">Aquí aparecerá la probabilidad.</p>
-    </div>
-
-    <h2>Disponibilidad de Franjas</h2>
-    <label for="surtidor-seleccionado">Selecciona surtidor:</label>
-    <select id="surtidor-franja-seleccionado"></select>
-    <ul id="lista-franjas"></ul>
-
-    <div id="modal-edicion" class="oculto">
-      <h3>Editar Surtidor</h3>
-      <label>Nombre:</label>
-      <input type="text" id="editar-nombre"><br><br>
-      <label>Estado:</label>
-      <select id="editar-estado">
-        <option value="Disponible">Disponible</option>
-        <option value="Sin gasolina">Sin gasolina</option>
-      </select><br><br>
-      <label>Fila:</label>
-      <input type="number" id="editar-fila"><br><br>
-      <label>Zona:</label>
-      <select id="editar-zona">
-        <option value="Cercado">Cercado</option>
-        <option value="Pacata">Pacata</option>
-        <option value="Quillacollo">Quillacollo</option>
-        <option value="Tiquipaya">Tiquipaya</option>
-      </select><br><br>
-      <label>Litros:</label>
-      <input type="number" id="editar-litros" placeholder="Litros" required min="0" /><br><br>
-      <label for="editar-hora-reabastecimiento">Hora reabastecimiento:</label>
-      <input type="time" id="editar-hora-reabastecimiento" required /><br><br>
-      <label for="editar-apertura">Hora de apertura:</label>
-      <input type="time" id="editar-apertura">
-      <label for="editar-cierre">Hora de cierre:</label>
-      <input type="time" id="editar-cierre">
-      <label for="editar-contacto">Número de contacto:</label>
-      <input type="tel" id="editar-contacto"placeholder="Número de contacto" required>
+    </select><br><br>
+    <label>Litros:</label>
+    <input type="number" id="editar-litros" placeholder="Litros" required min="0" /><br><br>
+    <label for="editar-hora-reabastecimiento">Hora reabastecimiento:</label>
+    <input type="time" id="editar-hora-reabastecimiento" required /><br><br>
+    <label for="editar-apertura">Hora de apertura:</label>
+    <input type="time" id="editar-apertura">
+    <label for="editar-cierre">Hora de cierre:</label>
+    <input type="time" id="editar-cierre">
+    <label for="editar-contacto">Número de contacto:</label>
+    <input type="tel" id="editar-contacto" placeholder="Número de contacto" required>
     <label for="editar-direccion">Dirección:</label>
     <input type="text" id="editar-direccion" required /><br><br>
-      <button id="guardar-edicion">Guardar</button>
-      <button id="cancelar-edicion">Cancelar</button>
-    </div>
+    <button id="guardar-edicion">Guardar</button>
+    <button id="cancelar-edicion">Cancelar</button>
+  </div>
 
-    <p class="contador-tickets">0</p>
-    
+  <!-- MODAL GENERAR TICKET DETALLADO (igual IDs) -->
   <div id="modal-ticket" class="oculto">
-  <h3>Generar Ticket</h3>
+    <h3>Generar Ticket</h3>
+    <label>Nombre del surtidor:</label>
+    <input type="text" id="ticket-nombre" disabled /><br><br>
+    <label>Zona:</label>
+    <input type="text" id="ticket-zona" disabled /><br><br>
+    <label for="fecha-ticket">Fecha de reserva:</label>
+    <input type="date" id="fecha-ticket" disabled>
+    <label for="ticket-fecha-programada">Fecha programada:</label>
+    <input type="date" id="ticket-fecha-programada" required />
+    <label for="ticket-hora">Hora estimada de atención:</label>
+    <select id="ticket-hora" required>
+      <option value="06:00">06:00</option>
+      <option value="07:00">07:00</option>
+      <option value="08:00">08:00</option>
+      <option value="09:00">09:00</option>
+      <option value="10:00">10:00</option>
+    </select><br><br>
+    <label>Monto en Bs:</label>
+    <input type="number" id="ticket-monto" min="0" placeholder="Ej: 100" required /><br><br>
+    <label for="ticket-fraccion">Fracción del tanque:</label>
+    <select id="ticket-fraccion">
+      <option value="">Seleccionar fracción</option>
+      <option value="0.25">1/4</option>
+      <option value="0.5">1/2</option>
+      <option value="0.75">3/4</option>
+    </select>
+    <label for="ticket-nombre-reservante">Nombre del reservante:</label>
+    <input type="text" id="ticket-nombre-reservante" />
+    <label>Número de ticket:</label>
+    <input type="text" id="ticket-numero" disabled /><br><br>
+    <button id="guardar-ticket">Confirmar</button>
+    <button id="cancelar-ticket">Cancelar</button>
+  </div>
 
-  <label>Nombre del surtidor:</label>
-  <input type="text" id="ticket-nombre" disabled /><br><br>
+  <!-- MODAL VER TICKETS -->
+  <div id="modal-ver-tickets" class="oculto">
+    <h2>Tickets del surtidor</h2>
+    <input type="text" id="buscar-ticket" placeholder="Buscar por código o nombre del reservante" />
+    <div id="contenedor-tickets"></div>
+    <button id="cerrar-modal-ver-tickets">Cerrar</button>
+  </div>
 
-  <label>Zona:</label>
-  <input type="text" id="ticket-zona" disabled /><br><br>
-
-  <label for="fecha-ticket">Fecha de reserva:</label>
-  <input type="date" id="fecha-ticket" disabled>
-
-  <label for="ticket-fecha-programada">Fecha programada:</label>
-<input type="date" id="ticket-fecha-programada" required />
-
-  <label for="ticket-hora">Hora estimada de atención:</label>
-  <select id="ticket-hora" required>
-    <option value="06:00">06:00</option>
-    <option value="07:00">07:00</option>
-    <option value="08:00">08:00</option>
-    <option value="09:00">09:00</option>
-    <option value="10:00">10:00</option>
-  </select><br><br>
-
-  <label>Monto en Bs:</label>
-  <input type="number" id="ticket-monto" min="0" placeholder="Ej: 100" required /><br><br>
-  <label for="ticket-fraccion">Fracción del tanque:</label>
-  <select id="ticket-fraccion">
-    <option value="">Seleccionar fracción</option>
-    <option value="0.25">1/4</option>
-    <option value="0.5">1/2</option>
-    <option value="0.75">3/4</option>
-  </select>
-
-
-  <label for="ticket-nombre-reservante">Nombre del reservante:</label>
-  <input type="text" id="ticket-nombre-reservante" />
-
-  <label>Número de ticket:</label>
-  <input type="text" id="ticket-numero" disabled /><br><br>
-
-  <button id="guardar-ticket">Confirmar</button>
-  <button id="cancelar-ticket">Cancelar</button>
-</div>
-
-<div id="modal-ver-tickets" class="oculto">
-  <h2>Tickets del surtidor</h2>
-  <input type="text" id="buscar-ticket" placeholder="Buscar por código o nombre del reservante" />
-  <div id="contenedor-tickets"></div>
-  <button id="cerrar-modal-ver-tickets">Cerrar</button>
-</div>
-
-  </body>
-  </html>
+  <script>
+    // Navegación entre secciones
+    document.querySelectorAll('nav li').forEach(li => {
+      li.addEventListener('click', () => {
+        const target = li.dataset.target;
+        document.querySelectorAll('section').forEach(sec => sec.classList.remove('active'));
+        document.getElementById(target).classList.add('active');
+      });
+    });
+  </script>
+</body>
+</html>

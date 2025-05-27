@@ -15,5 +15,22 @@
     },
     "coverage": 0,
     "test_count": 35
+  },
+  {
+    "sha": "dd441610d1f3166bafad7aae289504ba4d48b9d6",
+    "author": "Jorge Vargas",
+    "commit": {
+      "date": "2025-05-27T01:21:26.000Z",
+      "message": "refactor: mejorando la visualizacion del sitio",
+      "url": "https://github.com/Alexvacan/ProyectoSurtidorYa/commit/dd441610d1f3166bafad7aae289504ba4d48b9d6"
+    },
+    "stats": {
+      "total": 287,
+      "additions": 161,
+      "deletions": 126,
+      "date": "2025-05-27"
+    },
+    "coverage": 0,
+    "test_count": 35
   }
 ]
